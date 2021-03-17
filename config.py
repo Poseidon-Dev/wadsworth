@@ -1,7 +1,7 @@
 import os
 
-debug = True
-testing = True
+debug = False
+testing = False
 
 # Discord Information
 BOT_PREFIX = ('!', '+')
