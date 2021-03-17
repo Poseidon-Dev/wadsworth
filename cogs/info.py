@@ -20,7 +20,7 @@ class Help(commands.Cog, name='help'):
         """
         embed = discord.Embed(color=0x333333)
         embed.set_footer(text=f"'Help' ping request by {ctx.message.author}")
-        await self.channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
     @commands.command(name='help', aliases=['h'])
@@ -40,7 +40,7 @@ class Help(commands.Cog, name='help'):
             help_text = '\n'.join(f'- {n} : {d}' for n,d in zip(command_names, command_descriptions))
             embed.add_field(name=f'{cog.qualified_name.capitalize()}', value=help_text, inline=False)
             embed.add_field(name='** **', value=f'** **', inline=False)
-        await self.channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
     @commands.command(name='about', aliases=['readme', '-i'])
@@ -57,7 +57,7 @@ class Help(commands.Cog, name='help'):
         embed.add_field(name='Python Version', value=f'{platform.python_version()}', inline=False)
         embed.add_field(name='Wadsworth Version', value=f'{config.VERSION}', inline=False)
         embed.add_field(name='Description', value=f'{config.DESCRIPTION}', inline=False)
-        await self.channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
     @commands.command(name='futures', aliases=['-f'])
@@ -82,7 +82,7 @@ class Help(commands.Cog, name='help'):
         for feature in features:
             embed.add_field(name=feature[0], value=feature[1], inline=False)
             embed.add_field(name='** **', value=f'** **', inline=False)
-        await self.channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
         
 def setup(bot):
