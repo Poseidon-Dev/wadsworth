@@ -6,12 +6,13 @@ if not os.path.isfile('config.py'):
 else:
     import config
 
+from data import JitBitTickets, JitBitTicketComments
+
 class Tasks(commands.Cog, name='scheduled tasks'):
 
     def __init__(self, bot):
-        self.index = 0
         self.bot = bot
-        self.printer.start()
+        self.check_for_desk_changes.start()
 
     @commands.command(name='task-ping', aliases=['tp'])
     async def task_ping(self, ctx):
@@ -25,15 +26,15 @@ class Tasks(commands.Cog, name='scheduled tasks'):
     def cog_unload(self):
         self.printer.cancel()
 
-    @tasks.loop(seconds=5.0)
-    async def printer(self):
-        print(self.index)
-        self.index += 1
-
-    @printer.before_loop
-    async def before_printer(self):
-        print('waiting...')
-        await self.bot.wait_until_ready()
+    @tasks.loop(seconds=10.0)
+    async def check_for_desk_changes(self):
+        print('checking')
+        check = JitBitTickets().check_ticket_differences()
+        if check:
+            JitBitTickets().process_ticket_differences()
+            JitBitTicketComments().push_comments()
+        else:
+            print('No ticket changes found')
 
         
 def setup(bot):

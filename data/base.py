@@ -15,15 +15,18 @@ class DB:
         self.columns = tuple()
 
     def execute(self, command):
+        print(command)
         self.cursor.execute(command)
         result = self.cursor.fetchall()
         self.connection.commit()
         return result
 
     # General Select Queries
-    def select_all(self, where=''):
+    def select_all(self, table=None, where=''):
+        if not table:
+            table = self.table
         command = f"""
-        SELECT * FROM {self.table}
+        SELECT * FROM {table}
         {where}
         """
         return self.execute(command)

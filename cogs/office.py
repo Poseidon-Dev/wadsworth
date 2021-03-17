@@ -14,7 +14,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
     def __init__(self, bot):
         OfficeTable.__init__(self)
         self.bot = bot
-        self.channel = config.BOT_CHANNEL
+        self.channel = self.bot.get_channel(config.BOT_CHANNEL)
         self.arguments = ['-a', '-r', '-h', '-d', '-m', '-c' 'add', 'read', 'history', 'delete', 'me', 'count']
         self.boolean_choices = ["y", "n", "yes", "no", "yep", "nope", "yea", "nah"]
 

@@ -66,7 +66,7 @@ class TicketCommentTable(DB):
     def run(self):
         self.create_table()
 
-class JitBitAPI(object):
+class JitBitAPI:
 
     def __init__(self):
         self.auth = HTTPBasicAuth(config.HELPDESK_USER, config.HELPDESK_PWD)
@@ -90,6 +90,7 @@ class JitBitAPI(object):
         Default method for JitBit API calls
         """
         url = f'{config.HELPDESK_URL}/api/{method}'
+        print(url)
         return requests.get(url, auth=self.auth)
 
 

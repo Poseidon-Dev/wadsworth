@@ -1,49 +1,53 @@
-import discord
-import re
+import discord, re, os, sys
 from discord.ext import commands
 
-from data.database import WadsworthDB
-from data.jitbit import LocalTicketDB
-from data.messages import WadsworthMsg
+if not os.path.isfile('config.py'):
+    sys.exit("'config.py' not found. Please check your directory and try again")
+else:
+    import config
 
-conection = 'data/wadsworth.db'
-
-class TicketsCog(commands.Cog):
+from data import TicketTable, TicketCommentTable, WadsworthMsg
+class TicketsCog(commands.Cog, TicketTable):
 
     def __init__(self, bot):
+        TicketTable.__init__(self)
         self.bot = bot
-        self.channel = 819731985780965376
-        self.ticket_url = 'https://support.arizonapipeline.com/helpdesk/Ticket/'
-        self.db = LocalTicketDB(conection)
-        self.msg = WadsworthMsg()
-        
-        self.db.run()
+        self.channel = self.bot.get_channel(config.BOT_CHANNEL)
 
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        channel = self.bot.get_channel(self.channel)
+        channel = self.channel
         await channel.send('Wadsworth here, reporting for duty, coming from Ticket Cog')
 
     # Commands
     @commands.command()
-    async def ticket_ping(self, ctx):
+    async def tickets_ping(self, ctx):
+        """
+        Checks to see if commands are reaching the 'Tickets' module
+        """
         await ctx.send('Tickets Online')
 
 
     @commands.command(name='ticket', description='Lists a ticket based on IssueID input')
     async def list_ticket_detail(self, ctx, ticket):
+        """
+        Returns a single ticket from local db in pretty format
+        """
         await ctx.message.delete()
-        await ctx.send(self.msg.debanair_messages(ctx.message.author.display_name))
-        ticket = self.db.get_single_ticket_detail(ticket)
-        embed = self.pretty_ticket(ctx, ticket)
+        await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
+        ticket = self.select_row_by_key(self.table, ticket)
+        embed = self.pretty_ticket(ctx, ticket[0])
         await ctx.send(embed=embed)
 
     @commands.command(name='tickets')
     async def list_current_tickets(self, ctx):
+        """
+        Returns all current tickets stored in local db in pretty format 
+        """
         await ctx.message.delete()
-        await ctx.send(self.msg.debanair_messages(ctx.message.author.display_name))
-        tickets = self.db.get_current_tickets()
+        await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
+        tickets = self.select_all()
         for ticket in tickets:
             embed = self.pretty_ticket(ctx, ticket)
             await ctx.send(embed=embed)
@@ -52,15 +56,17 @@ class TicketsCog(commands.Cog):
     @commands.command(name='url')
     async def list_ticket_from_url(self, ctx, url, comment_quantity: int=None):
         await ctx.message.delete()
-        await ctx.send(self.msg.debanair_messages(ctx.message.author.display_name))
+        await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
         ticket_id = int(self.extract_ticket_from_url(url))
-        ticket = self.db.get_single_ticket_detail(ticket_id)
-        embed = self.pretty_ticket(ctx, ticket)
+        print(ticket_id)
+        ticket = self.select_row_by_key(self.table, ticket_id)
+        embed = self.pretty_ticket(ctx, ticket[0])
         await ctx.send(embed=embed)
 
         if comment_quantity:
-            ticket_comments = self.db.get_single_ticket_comments(ticket_id)
+            ticket_comments = self.select_all(table="ticket_comments", where=f"WHERE ticket_id = '{ticket_id}'")
             i = 0
+            print(ticket_comments)
             for comment in ticket_comments:
                 embed = self.pretty_comment(ctx, comment)
                 await ctx.send(embed=embed)
@@ -71,33 +77,33 @@ class TicketsCog(commands.Cog):
 
     def pretty_ticket(self, ctx, ticket):
         embed = discord.Embed(
-            title=f'**{ticket["Subject"]}**',
-            url=f'{self.ticket_url}{ticket["ID"]}',
+            title=f'**{ticket[2]}**',
+            url=f'{config.HELPDESK_URL}{ticket[0]}',
             color=0x03f8fc,
             timestamp=ctx.message.created_at)
-        embed.add_field(name='Tech', value=ticket['Tech'], inline=True)
-        embed.add_field(name='Status', value=ticket['Status'], inline=True)
-        embed.add_field(name='Subject', value=ticket['Subject'], inline=False)
-        embed.add_field(name='Body', value=ticket['Body'], inline=False)
+        embed.add_field(name='Tech', value=ticket[1], inline=True)
+        embed.add_field(name='Status', value=ticket[3], inline=True)
+        embed.add_field(name='Subject', value=ticket[2], inline=False)
+        embed.add_field(name='Body', value=ticket[4], inline=False)
         embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
         return embed
 
 
     def pretty_comment(self, ctx, comment):
         embed = discord.Embed(
-        author=comment['User'],
+        author=comment[2],
         color=discord.Color.green()
         )
-        embed.add_field(name='User', value=comment['User'], inline=True)
-        embed.add_field(name='Tech only', value=comment['Type'], inline=True)
-        embed.add_field(name='Message', value=comment['Body'], inline=False)
+        embed.add_field(name='User', value=comment[2], inline=True)
+        embed.add_field(name='Tech only', value=comment[3], inline=True)
+        embed.add_field(name='Message', value=comment[4], inline=False)
         embed.set_footer(text='\u2800' * 75)
         return embed
 
 
-    def extract_ticket_from_url(self, url):
-        url = re.sub(self.ticket_url, '', url)
-        return url
+    def extract_ticket_from_url(self, url_input):
+        ticket_url = f'{config.HELPDESK_URL}Ticket/'
+        return re.sub(ticket_url,"", url_input)
 
 
 def setup(bot):

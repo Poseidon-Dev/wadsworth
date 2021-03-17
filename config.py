@@ -4,7 +4,7 @@ debug = False
 testing = False
 
 # Discord Information
-BOT_PREFIX = ('!', '+')
+BOT_PREFIX = ('!', '-')
 TOKEN = os.getenv('WADSWORTH_TOKEN')
 APPLICATION_ID = os.getenv('APPLICATION_ID')
 OWNERS = [322840172985188355,]
@@ -13,7 +13,7 @@ BLACKLIST = []
 
 # Current Modeules
 STARTUP_COGS = [
-    'cogs.office', 'cogs.info', 'cogs.ticket'
+    'cogs.office', 'cogs.info', 'cogs.ticket', 'cogs.tasks',
 ] 
 
 # db Information
@@ -24,9 +24,9 @@ else:
 
 
 # JitBit Information
-HELPDESK_URL = os.getenv('JITBIT_SUPPORT_URL')
-HELPDESK_USER = os.getenv('JITBIT_USER')
-HELPDESK_PWD = os.getenv('JITBIT_PASSWORD')
+HELPDESK_URL = 'https://support.arizonapipeline.com/helpdesk/'
+HELPDESK_USER = 'bot@arizonapipeline.com'
+HELPDESK_PWD = '5(/Py5$3wx~6(yKT'
 
 # Constants
 CONFIRMS = ["y", "yes", "yep", "yea",]

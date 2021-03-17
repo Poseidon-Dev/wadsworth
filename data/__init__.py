@@ -9,12 +9,12 @@ __all__ = ['OfficeTable', 'TicketTable', 'TicketCommentTable', 'DB', 'WadsworthM
 def create_and_fill_tables():
     # Create tables on LocalDB
     OfficeTable().run()
-    # TicketTable().run()
-    # TicketCommentTable().run()
+    TicketTable().run()
+    TicketCommentTable().run()
 
     # Fill Data on init
-    # JitBitTickets().push_tickets()
-    # JitBitTicketComments().push_comments()
+    JitBitTickets().push_tickets()
+    JitBitTicketComments().push_comments()
 
     complete = 'Initial Connection to JitBit API Complete'
     return complete
