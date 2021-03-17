@@ -13,7 +13,7 @@ BLACKLIST = []
 
 # Current Modeules
 STARTUP_COGS = [
-    'cogs.office',
+    'cogs.office', 'cogs.info', 'cogs.ticket'
 ] 
 
 # db Information
