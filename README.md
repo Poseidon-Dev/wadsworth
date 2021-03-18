@@ -5,6 +5,7 @@ Wadsworth is a multi-modular application designed to streamline repetitive proce
 Each module is a seperate application with discord running as the user interface. 
 
 ## Authors
+
 * **[Johnny Whitworth (@Poseidon-dev)](https://github.com/poseidon-dev)** 
 
 ## Support
