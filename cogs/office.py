@@ -93,7 +93,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         """
         Deletes a key from the office_table db based on ID
         """
-        if msg.content.lower() in config.CONFIRMS
+        if msg.content.lower() in config.CONFIRMS:
             self.delete_row_by_key(key)
             return ctx.send(f'I have set key : {key} in with the other rubbish.')
         if msg.content.lower() in config.DENIES:
