@@ -56,7 +56,7 @@ class OfficeTable(DB):
         """
         Returns a list of available keys
         """
-        return self.select_all('WHERE available=1')
+        return self.select_all(table='office_table', where='WHERE available=1')
 
     def select_all_inactive(self):
         """

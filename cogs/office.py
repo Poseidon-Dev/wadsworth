@@ -52,52 +52,74 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
             if key:
                 # Argument -a
                 if argument in ['-a', 'add']:
-                    if len(key) != 29:
-                        await ctx.send(f"I do apologize, but I do not believe that '**{key}**' is a valid key") 
-                    else:
-                        self.insert_key(key)
-                        await ctx.send(f'I have added key {key} with the others') 
+                    await self.add_key(ctx, key)
 
                 # Argument -d
                 if argument in ['-d', 'delete']:
                     await ctx.send(f"Are you positive you'd like to retire key: {key}?")
-                    msg = await self.bot.wait_for('message')
-                    if msg.content.lower() in config.CONFIRMS:
-                        self.delete_row_by_key(key)
-                        await ctx.send(f'I have set key : {key} in with the other rubbish.')
-                    if msg.content.lower() in config.DENIES:
-                        await ctx.send("I'll put it back with the others then")
-                    else:
-                        await ctx.send("I'm not sure I understand your response")
+                    del_msg = await self.bot.wait_for('message')
+                    self.del_key(ctx, msg, key)
 
             else:
                 # Argument -r
                 if argument in ['-r', 'read']:
-                    keys = self.select_all_active()
+                    keys = self.read_available()
                     await ctx.send(embed=self.pretty_keys(keys))
 
                 # Argument -m 
                 if argument in ['-m', 'me']:
                     await ctx.send('What was the email you used?')
                     email_msg = await self.bot.wait_for('message')
-
                     await ctx.send('And what was the computer name')
                     comp_msg = await self.bot.wait_for('message')
-
-                    try:
-                        key = self.retrieve_and_log_key(comp_msg.content.lower(), email_msg.content.lower())
-                        response = '```' + 'Here is your key : ' + key[0][1] + '```'
-                    except Exception as e:
-                        response = 'No keys available'
-                    await ctx.send(f'There are {self.count_keys()[0][0]} left')
-                    await ctx.send(response)
+                    await self.deliver_available_key(email_msg, comp_msg, key)
+                    await ctx.send(f'There are {self.count_keys()[0][0]} key now left ')
                 
                 # Arguement -c
                 if argument in ['-c', 'count']:
                     await ctx.send(f'```There are {self.count_keys()[0][0]} keys left```')
 
+    
+    def add_key(self, ctx, key):
+        """
+        Adds a key to office_table db
+        """
+        if len(key) != 29:
+            return ctx.send(f"I do apologize, but I do not believe that '**{key}**' is a valid key") 
+        self.insert_key(key)
+        return ctx.send(f'I have added key {key} with the others') 
+
+    def del_key(self, ctx, msg, id):
+        """
+        Deletes a key from the office_table db based on ID
+        """
+        if msg.content.lower() in config.CONFIRMS
+            self.delete_row_by_key(key)
+            return ctx.send(f'I have set key : {key} in with the other rubbish.')
+        if msg.content.lower() in config.DENIES:
+            return ctx.send("I'll put it back with the others then")
+        
+        
+    def read_available(self):
+        """
+        Reads all currently available keys
+        """
+        return self.select_all_active()
+
+
+    def deliver_available_key(self, email_msg, comp_msg, key):
+        try:
+            key = self.retrieve_and_log_key(comp_msg.content.lower(), email_msg.content.lower())
+            response = '```' + 'Here is your key : ' + key[0][1] + '```'
+        except Exception as e:
+            response = 'No keys available'
+        return response
+
 
     def pretty_keys(self, keys):
+        """
+        Returns an embed for keys for a prettier discord format
+        """
         embed = discord.Embed(
             title='Office Keys',
             color=0x03f8fc
