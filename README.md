@@ -15,13 +15,13 @@ If you need some help for something, please reach out to me directly or submit a
 
 An up-to-date list of modules and their current commands
 
-| Injection         | What it is                                                            |
-| ------------------| ----------------------------------------------------------------------|
-| key -a [KEY]      | Adds the key to the office keys db. Must be 29 characters long        |
-| key -d [KEY]      | Deletes a key from the office keys db based on table ID. Irreversible |
-| key -m            | Prompts for computer and email and delivers an avilable key           |
-| key -r            | Lists all available keys                                              |
-| ticket [TICKETID] | Retrieves a ticket based on ticket ID                                 |
-| tickets           | Retrieves all active tickets                                          |
-| url [URL] [COUNT] | Retrieves a ticket based on URL, delivers comments based on count     |
+| Injection                   | What it is                                                                  |
+| ----------------------------| ----------------------------------------------------------------------------|
+| key -a [KEY]                | Adds the key to the office keys db. Must be 29 characters long              |
+| key -d [KEY]                | Deletes a key from the office keys db based on table ID. Irreversible       |
+| key -m                      | Prompts for computer and email and delivers an avilable key                 |
+| key -r                      | Lists all available keys                                                    |
+| ticket [TICKETID]           | Retrieves a ticket based on ticket ID                                       |
+| tickets                     | Retrieves all active tickets                                                |
+| url [URL] [COUNT]           | Retrieves a ticket based on URL, delivers comments based on count           |
 
