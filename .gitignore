@@ -11,3 +11,6 @@ venv.bak/
 *.db
 
 volumnes/
+
+test.*
+*.test
