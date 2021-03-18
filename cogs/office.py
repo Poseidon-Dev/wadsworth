@@ -26,7 +26,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
 
 
     # Commands
-    @commands.command()
+    @commands.command(name='office-ping')
     async def office_ping(self, ctx):
         """
         Checks to see if commands are reaching the 'Office' module
@@ -37,8 +37,13 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
     @commands.command(name='key')
     async def office_key_commands(self, ctx, argument, key=None):
         """
-        Add (-a), delete (-d), Read available (-a), Retrieve and retire active key (-m), Show key count (-c)
-            \u2800\u2800\u2800ex: !key -a
+        [ARG] [KEY]
+            \u2800\u2800Runs functions based on input switch arguments
+            \u2800\u2800(-a) : Adds [KEY] to local db
+            \u2800\u2800(-d) : Dels [KEY] from local db
+            \u2800\u2800(-r) : Reads available keys from local db
+            \u2800\u2800(-m) : Gathers and stores key use
+            \u2800\u2800(-c) : Returns count of available keys
         """
         await ctx.message.delete()
         if argument not in self.arguments:

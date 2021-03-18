@@ -11,6 +11,7 @@ class Help(commands.Cog, name='help'):
     def __init__(self, bot):
         self.bot = bot
         self.channel = self.bot.get_channel(config.BOT_CHANNEL)
+        self.hidden = ['ping', 'futures']
         
 
     @commands.command(name='help-ping', aliases=['hp'])
@@ -29,15 +30,18 @@ class Help(commands.Cog, name='help'):
         List all commands from each loaded cog
         """
         embed = discord.Embed(
-            title='help',
+            title='Wadsworth Help',
             desciption='List of available commands',
-            color=0x99CCFF) 
+            color=0xE3E3E3) 
         for cog in self.bot.cogs:
             cog = self.bot.get_cog(cog)
             commands = cog.get_commands()
-            command_names = [command.name for command in commands]
-            command_descriptions = [command.help for command in commands]
-            help_text = '\n'.join(f'- {n} : {d}' for n,d in zip(command_names, command_descriptions))
+            help_commands = [
+                (command.name, command.help)
+                for command in commands
+                if command.name not in self.hidden
+                ]
+            help_text = '\n'.join(f'{n} : {h}' for n, h in help_commands)
             embed.add_field(name=f'{cog.qualified_name.capitalize()}', value=help_text, inline=False)
             embed.add_field(name='** **', value=f'** **', inline=False)
         await ctx.send(embed=embed)
