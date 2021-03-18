@@ -78,7 +78,7 @@ class TicketsCog(commands.Cog, TicketTable):
     def pretty_ticket(self, ctx, ticket):
         embed = discord.Embed(
             title=f'**{ticket[2]}**',
-            url=f'{config.HELPDESK_URL}{ticket[0]}',
+            url=f'{config.HELPDESK_URL}Ticket/{ticket[0]}',
             color=0x03f8fc,
             timestamp=ctx.message.created_at)
         embed.add_field(name='Tech', value=ticket[1], inline=True)
