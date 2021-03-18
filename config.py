@@ -14,9 +14,6 @@ BLACKLIST = []
 STARTUP_COGS = [
     'cogs.office', 'cogs.info', 'cogs.ticket', 'cogs.tasks',
 ] 
-# STARTUP_COGS = [
-#     'cogs.info', 
-# ] 
 
 # db Information
 DB_LOCATION = os.getenv('DB_LOCATION')
@@ -40,3 +37,6 @@ Wadworth was created specifically for the Arizona Pipeline IT department to bett
 if TESTING:
     DB_LOCATION = os.getenv('DB_TEST_LOCATION')
     TOKEN = os.getenv('BOT_TEST_TOKEN')
+    STARTUP_COGS = [
+    'cogs.info', 
+    ] 
