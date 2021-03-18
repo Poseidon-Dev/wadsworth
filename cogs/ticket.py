@@ -7,7 +7,7 @@ else:
     import config
 
 from data import TicketTable, TicketCommentTable, WadsworthMsg
-class TicketsCog(commands.Cog, TicketTable):
+class TicketsCog(commands.Cog, TicketTable, name='tickets'):
 
     def __init__(self, bot):
         TicketTable.__init__(self)
@@ -21,7 +21,7 @@ class TicketsCog(commands.Cog, TicketTable):
         await channel.send('Wadsworth here, reporting for duty, coming from Ticket Cog')
 
     # Commands
-    @commands.command()
+    @commands.command(name='ticket-ping')
     async def tickets_ping(self, ctx):
         """
         Checks to see if commands are reaching the 'Tickets' module
@@ -32,7 +32,8 @@ class TicketsCog(commands.Cog, TicketTable):
     @commands.command(name='ticket', description='Lists a ticket based on IssueID input')
     async def list_ticket_detail(self, ctx, ticket):
         """
-        Returns a single ticket from local db in pretty format
+        [TICKETID]
+            \u2800\u2800Returns a ticket base on TicketID input
         """
         await ctx.message.delete()
         await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
@@ -55,6 +56,11 @@ class TicketsCog(commands.Cog, TicketTable):
 
     @commands.command(name='url')
     async def list_ticket_from_url(self, ctx, url, comment_quantity: int=None):
+        """
+        [URL] [COUNT]
+            \u2800\u2800Returns a ticket base on URL input
+            \u2800\u2800Returns [COUNT] of recent comments (op)
+        """
         await ctx.message.delete()
         await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
         ticket_id = int(self.extract_ticket_from_url(url))

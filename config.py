@@ -1,6 +1,6 @@
 import os
 
-TESTING = True
+TESTING = False
 
 # Discord Information
 BOT_PREFIX = ('!', '-')
@@ -14,6 +14,9 @@ BLACKLIST = []
 STARTUP_COGS = [
     'cogs.office', 'cogs.info', 'cogs.ticket', 'cogs.tasks',
 ] 
+# STARTUP_COGS = [
+#     'cogs.info', 
+# ] 
 
 # db Information
 DB_LOCATION = os.getenv('DB_LOCATION')
