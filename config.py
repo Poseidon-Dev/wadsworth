@@ -1,6 +1,6 @@
 import os
 
-TESTING = True
+TESTING = False
 
 # Discord Information
 BOT_PREFIX = ('!', '-')
