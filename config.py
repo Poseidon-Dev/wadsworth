@@ -12,11 +12,12 @@ BLACKLIST = []
 
 # Current Modeules
 STARTUP_COGS = [
-    'cogs.office', 'cogs.info', 'cogs.ticket', 'cogs.tasks',
+    'cogs.office', 'cogs.info', 'cogs.ticket', 'cogs.tasks', 'cogs.password'
 ] 
 
 # db Information
 DB_LOCATION = os.getenv('DB_LOCATION')
+WORD_SITE = os.getenv('WORD_SITE')
 
 # JitBit Information
 HELPDESK_URL = os.getenv('JITBIT_SUPPORT_URL')
@@ -38,5 +39,5 @@ if TESTING:
     DB_LOCATION = os.getenv('DB_TEST_LOCATION')
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     STARTUP_COGS = [
-    'cogs.info', 'cogs.office'
+    'cogs.info', 'cogs.password'
     ] 
