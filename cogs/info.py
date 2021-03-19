@@ -6,12 +6,14 @@ if not os.path.isfile('config.py'):
 else:
     import config
 
+from data import WadsworthMsg
+
 class Help(commands.Cog, name='help'):
 
     def __init__(self, bot):
         self.bot = bot
         self.channel = self.bot.get_channel(config.BOT_CHANNEL)
-        self.hidden = ['ping', 'futures']
+        self.hidden = ['ping', 'futures', '/?']
         
 
     @commands.command(name='help-ping', aliases=['hp'])
@@ -88,6 +90,11 @@ class Help(commands.Cog, name='help'):
             embed.add_field(name='** **', value=f'** **', inline=False)
         await ctx.send(embed=embed)
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.content == '/?':
+            await message.channel.send(WadsworthMsg().trash_talk())
+ 
         
 def setup(bot):
     bot.add_cog(Help(bot))

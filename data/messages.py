@@ -44,14 +44,12 @@ class WadsworthMsg:
         if not token:
             token = ''
         messages = [
-            f"I don't have the energy to pretend to like you today, {token}",
-            f"What? You like to talk behind my back {token}?",
-            f"Sweetie, leave the sarcasm and insults to the pros. You're going to hurt yourself",
-            f"Hey! Go play in traffic {token}...",
+            f"I don't have the energy to pretend to like you today",
+            f"Hey! Go play in traffic ...",
             f"If I give you a straw, will you go and suck the joy out of someone else's life?",
-            f"If you didn't want sarcastic answers, you shouldn't ask stupid questions, {token}",
+            f"If you didn't want sarcastic answers, you shouldn't ask stupid questions",
             f"My silence is not a weakness, it's the beginning of my revenge",
-            f"{token}, you are the reason they put instructions on shampoo .",
+            f"You are the reason they put instructions on shampoo .",
             ]
         return str(messages[randint(0, len(messages)-1)])
 
