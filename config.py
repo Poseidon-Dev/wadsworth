@@ -1,6 +1,6 @@
 import os
 
-TESTING = True
+TESTING = False
 
 # Discord Information
 BOT_PREFIX = ('!', '-')
@@ -39,5 +39,5 @@ if TESTING:
     DB_LOCATION = os.getenv('DB_TEST_LOCATION')
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     STARTUP_COGS = [
-    'cogs.info', 'cogs.equipment',
+    'cogs.info',
     ] 
