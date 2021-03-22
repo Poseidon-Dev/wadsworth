@@ -5,9 +5,9 @@ from data.base import DB
 
 __all__ = ['OfficeTable', 'TicketTable', 'TicketCommentTable', 'DB', 'WadsworthMsg', 'EquipmentsTable', 'EmailTable']
 
-
 def create_and_fill_tables():
     # Create tables on LocalDB
+    print('from here')
     OfficeTable().run()
     TicketTable().run()
     TicketCommentTable().run()
@@ -16,7 +16,3 @@ def create_and_fill_tables():
     JitBitTickets().push_tickets()
     JitBitTicketComments().push_comments()
 
-    complete = 'Initial Connection to JitBit API Complete'
-    return complete
-
-create_and_fill_tables()

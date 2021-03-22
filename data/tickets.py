@@ -17,20 +17,20 @@ class TicketTable(DB):
     
     def __init__(self):
         super(TicketTable, self).__init__()
-        self.connection.execute("PRAGMA foreign_keys= 1")
-        self.columns = ('Tech','Subject','Status', 'Body')
+        # self.connection.execute("PRAGMA foreign_keys= 1")
+        self.columns = '(tech, subject, status, body)'
         self.table = 'ticket_table'
 
     def create_table(self):
         command = f"""
         CREATE TABLE IF NOT EXISTS
         {self.table}(
-            ID                  INTEGER         PRIMARY KEY,
-            Tech                VARCHAR(100),
-            Subject             VARCHAR(256),
-            Status              VARCHAR(30),
-            Body                TEXT
-        )
+            id                  INT             PRIMARY KEY,
+            tech                VARCHAR(100),
+            subject             VARCHAR(256),
+            status              VARCHAR(30),
+            body                TEXT
+        );
         """
         self.execute(command)
 
@@ -42,7 +42,7 @@ class TicketCommentTable(DB):
 
     def __init__(self):
         super(TicketCommentTable, self).__init__()
-        self.connection.execute("PRAGMA foreign_keys= 1")
+        # self.connection.execute("PRAGMA foreign_keys= 1")
         self.columns = ('ticket_id','user','type','body')
         self.table = 'ticket_comments'
 
@@ -50,16 +50,16 @@ class TicketCommentTable(DB):
         command = f"""
         CREATE TABLE IF NOT EXISTS
         {self.table}(
-            ID          INTEGER         PRIMARY KEY,
-            ticket_id   INTEGER,
-            user        VARCHAR(100),
-            type        BOOLEAN,
-            body        TEXT,
+            id                 INT             PRIMARY KEY,
+            ticket_id          INT,
+            ticket_user        VARCHAR(100),
+            type               BOOLEAN,
+            body               TEXT,
             CONSTRAINT fk_ticket_table
                 FOREIGN KEY(ticket_id) 
                 REFERENCES ticket_table(ID)
                 ON DELETE CASCADE
-        )
+        );
         """
         self.execute(command)
 
@@ -70,8 +70,6 @@ class JitBitAPI:
 
     def __init__(self):
         self.auth = HTTPBasicAuth(config.HELPDESK_USER, config.HELPDESK_PWD)
-        self.connection = sqlite3.connect(config.DB_LOCATION)
-        self.cursor = self.connection.cursor()
 
         if not self.test_creds():
             raise ValueError("Authorization failed, please check your credentials")
@@ -99,7 +97,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
     def __init__(self):
         JitBitAPI.__init__(self)
         TicketTable.__init__(self)
-        self.columns = ('ID', 'Tech','Subject','Status', 'Body')   
+        self.columns = '(id, tech, subject, status, body)'
 
     def pull_ticket(self, ticket):
         """
@@ -131,7 +129,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
             subject = ticket['Subject'] if ticket['Subject'] else 'None'
             status = ticket['Status'] if ticket['Status'] else 'None'
             body = self.get_ticket_body(ticket['IssueID']) if self.get_ticket_body(ticket['IssueID']) else 'None'
-            values = (issue_id, tech, subject, status, body)
+            values = (str(issue_id), str(tech), str(subject), str(status), str(body))
             self.insert_or_replace(values, self.columns)
 
     def check_ticket_differences(self):
@@ -166,12 +164,12 @@ class JitBitTickets(JitBitAPI, TicketTable):
         else:
             for key in tickets['diff']:
                 ticket = self.pull_ticket(key)
-                ticket_id = ticket['TicketID']
-                tech = ticket['AssigneeUserInfo']['FirstName'] if ticket['AssigneeUserInfo'] else 'None'
+                issue_id = ticket['IssueID']
+                tech = ticket['TechFirstName'] if ticket['TechFirstName'] else 'None'
                 subject = ticket['Subject'] if ticket['Subject'] else 'None'
                 status = ticket['Status'] if ticket['Status'] else 'None'
-                body = clean_html(ticket['Body']) if ticket['Body'] else 'None'
-                values = (ticket_id, tech, subject, status, body)
+                body = self.get_ticket_body(ticket['IssueID']) if self.get_ticket_body(ticket['IssueID']) else 'None'
+                values = (str(issue_id), str(tech), str(subject), str(status), str(body))
                 self.insert_or_replace(values)                
 
     def get_ticket_body(self, id):
@@ -190,7 +188,7 @@ class JitBitTicketComments(JitBitAPI, TicketCommentTable):
     def __init__(self):
         JitBitAPI.__init__(self)
         TicketCommentTable.__init__(self)
-        self.columns = ('ID', 'ticket_id','user','type','body')
+        self.columns = '(id, ticket_id, ticket_user, type, body)'
 
     def pull_comment(self, ticket):
         """
@@ -208,17 +206,17 @@ class JitBitTicketComments(JitBitAPI, TicketCommentTable):
         for comment in self.pull_comment(ticket):
             comment_id = comment['CommentID']
             ticket_id = comment['IssueID']
-            user = comment['UserName'] if comment['UserName'] else 'None'
+            ticket_user = comment['UserName'] if comment['UserName'] else 'None'
             comment_type = comment['ForTechsOnly']
             body = clean_html(comment['Body']) if clean_html(comment['Body']) else 'None'
-            values = (comment_id, ticket_id, user, comment_type, body)
+            values = (str(comment_id), str(ticket_id), str(ticket_user), str(comment_type), str(body))
             self.insert_or_replace(values, self.columns)
 
     def push_comments(self):
         """
         Batch process push_comments to populate local db with all available tickets
         """
-        tickets = self.select_columns(columns='ID', table='ticket_table')
+        tickets = self.select_columns(columns='id', table='ticket_table')
         for ticket in tickets:
             self.push_comment(ticket[0])
 
@@ -230,4 +228,5 @@ def clean_html(raw_html):
     cleantext = cleantext.replace('\n', '')
     cleantext = cleantext.replace('\t', '')
     cleantext = cleantext.replace('\r', '')
+    cleantext = cleantext.replace("'", '')
     return cleantext

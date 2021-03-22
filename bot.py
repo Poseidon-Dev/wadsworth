@@ -2,6 +2,8 @@ import os, sys
 import discord
 from discord.ext import commands, tasks
 
+import data
+
 if not os.path.isfile('config.py'):
     sys.exit("'config.py' not found. Please check your directory and try again")
 else:
@@ -22,7 +24,8 @@ async def on_ready():
     for extension in config.STARTUP_COGS:
         extension = extension.replace('cogs.', '')
         await channel.send(f'...{extension.capitalize()}')
-
+    
+    data.create_and_fill_tables()
     for extension in config.STARTUP_COGS:
         try:
             bot.load_extension(extension)
@@ -34,10 +37,6 @@ async def on_ready():
             extension = extension.replace('cogs.', '')
             await channel.send(f"He couldn't seem to find '{extension.capitalize()}' module.")
     await channel.send('Wadsworth here, reporting for duty!')
-
-@tasks.loop(seconds=5.0, count=5)
-async def slow_count():
-    print(slow_count.current_loop)
 
 
 bot.run(config.TOKEN)

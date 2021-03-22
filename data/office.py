@@ -17,7 +17,7 @@ class OfficeTable(DB):
         command = f"""
         CREATE TABLE IF NOT EXISTS
         {self.table}(
-            ID              INTEGER          PRIMARY KEY,
+            id              SERIAL          PRIMARY KEY ,
             office_keys     VARCHAR(30),
             available       BOOLEAN,
             computer_name   VARCHAR(50),
@@ -31,7 +31,7 @@ class OfficeTable(DB):
         """
         Inserts a new office key into db
         """
-        key = f"('{key}', 1)"
+        key = f"('{key}', '1')"
         self.insert_or_replace(columns='(office_keys, available)', values=key)
 
     def retrieve_and_log_key(self, computer, email):
@@ -39,7 +39,7 @@ class OfficeTable(DB):
         Retrieves and returns an available key, logs computer and email. Then changes status
         to unavailable with current date
         """
-        row = self.select_top_row(columns='available', values=1)
+        row = self.select_top_row(columns='available', values='True')
         try:
             self.update_record(row[0][0], (0, computer, email, date.today()),('available', 'computer_name', 'email', 'date'))
             return row
@@ -50,13 +50,13 @@ class OfficeTable(DB):
         """
         Returns a count of available keys 
         """
-        return self.count_records("WHERE available=1")
+        return self.count_records("WHERE available=True")
 
     def select_all_active(self):
         """
         Returns a list of available keys
         """
-        return self.select_all(table='office_table', where='WHERE available=1')
+        return self.select_all(table='office_table', where="WHERE available=True")
 
     def select_all_inactive(self):
         """

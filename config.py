@@ -1,6 +1,6 @@
 import os, psycopg2
 
-TESTING = False
+TESTING = True
 POSTGRES = True
 
 # Discord Information
@@ -13,7 +13,7 @@ BLACKLIST = []
 
 # Current Modeules
 STARTUP_COGS = [
-    'cogs.office', 'cogs.info', 'cogs.ticket', 'cogs.tasks', 'cogs.password'
+    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks',
 ] 
 
 # db Information
@@ -50,5 +50,15 @@ if TESTING:
     DB_LOCATION = os.getenv('DB_TEST_LOCATION')
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     STARTUP_COGS = [
-    'cogs.info',
+    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks',
     ] 
+    def conn():
+        POSTGRES_CONN = psycopg2.connect(
+            host=os.getenv('POSTGRES_HOST'),
+            database=os.getenv('POSTGRES_TEST_DB'),
+            user=os.getenv('POSTGRES_USER'),
+            password=os.getenv('POSTGRES_PWD'),
+            port=os.getenv('POSTGRES_PORT')
+        )
+        return POSTGRES_CONN
+    print('=' * 8 + 'TESTING MODE' + '=' * 8 )

@@ -15,7 +15,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         OfficeTable.__init__(self)
         self.bot = bot
         self.channel = self.bot.get_channel(config.BOT_CHANNEL)
-        self.arguments = ['-a', '-r', '-h', '-d', '-m', '-c' 'add', 'read', 'history', 'delete', 'me', 'count']
+        self.arguments = ['-a', '-r', '-h', '-d', '-m', '-c', 'add', 'read', 'history', 'delete', 'me', 'count']
         self.boolean_choices = ["y", "n", "yes", "no", "yep", "nope", "yea", "nah"]
 
     # Events
@@ -58,7 +58,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
                 if argument in ['-d', 'delete']:
                     await ctx.send(f"Are you positive you'd like to retire key: {key}?")
                     del_msg = await self.bot.wait_for('message')
-                    self.del_key(ctx, msg, key)
+                    await self.del_key(ctx, del_msg, key)
 
             else:
                 # Argument -r
@@ -72,8 +72,10 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
                     email_msg = await self.bot.wait_for('message')
                     await ctx.send('And what was the computer name')
                     comp_msg = await self.bot.wait_for('message')
-                    await self.deliver_available_key(email_msg, comp_msg, key)
-                    await ctx.send(f'There are {self.count_keys()[0][0]} key now left ')
+                    office_key = self.deliver_available_key(email_msg, comp_msg, key)
+                    print(office_key)
+                    await ctx.send(office_key)
+                    # await ctx.send(f'There are {self.count_keys()[0][0]} key now left ')
                 
                 # Arguement -c
                 if argument in ['-c', 'count']:
@@ -89,7 +91,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         self.insert_key(key)
         return ctx.send(f'I have added key {key} with the others') 
 
-    def del_key(self, ctx, msg, id):
+    def del_key(self, ctx, msg, key):
         """
         Deletes a key from the office_table db based on ID
         """

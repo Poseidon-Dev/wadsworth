@@ -1,4 +1,4 @@
-import sqlite3, os, sys
+import sqlite3, os, sys, psycopg2
 from datetime import date
 
 if not os.path.isfile('config.py'):
@@ -9,7 +9,7 @@ else:
 class DB:
 
     def __init__(self):
-        self.connection = sqlite3.connect(config.DB_LOCATION)
+        self.connection = config.conn()
         self.cursor = self.connection.cursor()
         self.table = ''
         self.columns = tuple()
@@ -17,9 +17,12 @@ class DB:
     def execute(self, command):
         print(command)
         self.cursor.execute(command)
-        result = self.cursor.fetchall()
+        try:
+            returns = self.cursor.fetchall()
+        except Exception as e:
+              returns = ''
         self.connection.commit()
-        return result
+        return returns
 
     # General Select Queries
     def select_all(self, table=None, where=''):
@@ -74,7 +77,7 @@ class DB:
             table = self.table
         command = f"""
         DELETE FROM {table}
-        WHERE ID = {key}
+        WHERE id = {key}
         """
         print(command)
         return self.execute(command)
@@ -98,8 +101,10 @@ class DB:
         if not columns:
             columns = self.columns
         command = f"""
-        INSERT OR REPLACE INTO {self.table} {columns}
+        INSERT INTO {self.table} {columns}
         VALUES {values}
+        ON CONFLICT ON CONSTRAINT {self.table}_pkey
+            DO NOTHING
         """
         self.execute(command)
 
