@@ -3,7 +3,7 @@ from data.tickets import TicketTable, TicketCommentTable, JitBitTickets, JitBitT
 from data.messages import WadsworthMsg
 from data.base import DB
 
-__all__ = ['OfficeTable', 'TicketTable', 'TicketCommentTable', 'DB', 'WadsworthMsg']
+__all__ = ['OfficeTable', 'TicketTable', 'TicketCommentTable', 'DB', 'WadsworthMsg', 'EquipmentsTable', 'EmailTable']
 
 
 def create_and_fill_tables():

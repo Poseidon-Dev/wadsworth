@@ -50,5 +50,5 @@ if TESTING:
     DB_LOCATION = os.getenv('DB_TEST_LOCATION')
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     STARTUP_COGS = [
-    'cogs.info', 'cogs.password'
+    'cogs.info',
     ] 
