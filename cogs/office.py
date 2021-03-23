@@ -73,8 +73,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
                     await ctx.send('And what was the computer name')
                     comp_msg = await self.bot.wait_for('message')
                     office_key = self.deliver_available_key(email_msg, comp_msg, key)
-                    print(office_key)
-                    await ctx.send(office_key)
+                    await ctx.send(str(office_key))
                     # await ctx.send(f'There are {self.count_keys()[0][0]} key now left ')
                 
                 # Arguement -c
