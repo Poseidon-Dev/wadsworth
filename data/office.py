@@ -21,7 +21,7 @@ class OfficeTable(DB):
             office_keys     VARCHAR(30),
             available       BOOLEAN,
             computer_name   VARCHAR(50),
-            email           VARCHAR(10),
+            email           VARCHAR(50),
             date            VARCHAR(20)
         )
         """
