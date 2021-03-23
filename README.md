@@ -17,7 +17,7 @@ If you need some help for something, please reach out to me directly or submit a
 
 An up-to-date list of modules and their current commands
 
-| Injection <img width=250/>  | What it is <img width=500/>                                                 |
+| Injection <img width=200/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | key -a [KEY]                | Adds the key to the office keys db. Must be 29 characters long              |
 | key -d [KEY]                | Deletes a key from the office keys db based on table ID. Irreversible       |
@@ -31,7 +31,7 @@ An up-to-date list of modules and their current commands
 
 ## Current Modules
 
-| Module <img width=250/>     | Description <img width=500/>                                                |
+| Module <img width=200/>     | Description <img width=500/>                                                |
 | ----------------------------| ----------------------------------------------------------------------------|
 | JitBit API                  | Creates a request integration into discord to allow for quicker viewing     |
 | Office                      | Stores and logs MS Office keys                                              |
