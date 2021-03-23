@@ -1,6 +1,6 @@
 import os, psycopg2
 
-TESTING = True
+TESTING = False
 POSTGRES = True
 
 # Discord Information
