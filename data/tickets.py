@@ -134,43 +134,33 @@ class JitBitTickets(JitBitAPI, TicketTable):
 
     def check_ticket_differences(self):
         """
-        Return True if ticket differences are found 
-        """
+        Compare JitBit tickets with tickets in local db
+        Update local db to match JitBit Current
+        """        
         current_tickets = self.pull_tickets()
         jitbit_tickets = [ticket['IssueID'] for ticket in current_tickets]
         db_tickets = [ticket[0] for ticket in self.select_columns(columns='ID', table='ticket_table')]
         set_changes = set(jitbit_tickets).symmetric_difference(db_tickets)
         if set_changes:
-            return True
-        else:
-            return False
-
-    def process_ticket_differences(self):
-        """
-        Compare JitBit tickets with tickets in local db
-        """
-        current_tickets = self.pull_tickets()
-        jitbit_tickets = [ticket['IssueID'] for ticket in current_tickets]
-        db_tickets = [ticket[0] for ticket in self.select_columns(columns='ID', table='ticket_table')]
-        set_changes = set(jitbit_tickets).symmetric_difference(db_tickets)
-        tickets = {
-            'JitBit' : jitbit_tickets,
-            'db' : db_tickets,
-            'diff' : set_changes
-        }
-        if tickets['diff'].issubset(tickets['db']):
+            tickets = {'JitBit' : jitbit_tickets, 'db' : db_tickets, 'diff' : set_changes}
             for key in tickets['diff']:
-                self.delete_row_by_key(key)
+                if key in tickets['db']:
+                    self.delete_row_by_key(key)
+                if key in tickets['JitBit']:
+                    ticket = self.pull_ticket(key)
+                    issue_id = ticket['TicketID']
+                    tech = ticket['AssigneeUserInfo']['FirstName'] if ticket['AssigneeUserInfo']['FirstName'] else 'None'
+                    subject = ticket['Subject'] if ticket['Subject'] else 'None'
+                    status = ticket['Status'] if ticket['Status'] else 'None'
+                    body = clean_html(ticket['Body']) if ticket['Body'] else 'None'
+                    values = (str(issue_id), str(tech), str(subject), str(status), str(body))
+                    self.insert_or_replace(values) 
+                    return issue_id
+                else:
+                    return None
         else:
-            for key in tickets['diff']:
-                ticket = self.pull_ticket(key)
-                issue_id = ticket['IssueID']
-                tech = ticket['TechFirstName'] if ticket['TechFirstName'] else 'None'
-                subject = ticket['Subject'] if ticket['Subject'] else 'None'
-                status = ticket['Status'] if ticket['Status'] else 'None'
-                body = self.get_ticket_body(ticket['IssueID']) if self.get_ticket_body(ticket['IssueID']) else 'None'
-                values = (str(issue_id), str(tech), str(subject), str(status), str(body))
-                self.insert_or_replace(values)                
+            raise Exception('No changes found')
+          
 
     def get_ticket_body(self, id):
         """

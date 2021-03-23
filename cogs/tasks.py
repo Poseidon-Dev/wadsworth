@@ -29,12 +29,20 @@ class Tasks(commands.Cog, name='scheduled tasks'):
     @tasks.loop(seconds=10.0)
     async def check_for_desk_changes(self):
         print('checking')
-        check = JitBitTickets().check_ticket_differences()
-        if check:
-            JitBitTickets().process_ticket_differences()
-            JitBitTicketComments().push_comments()
-        else:
-            print('No ticket changes found')
+        try:
+            ticket = JitBitTickets().check_ticket_differences()
+            print(ticket)
+            if ticket:
+                JitBitTicketComments().push_comment(ticket)
+        except Exception as e:
+            print(e)
+
+        # check = JitBitTickets().check_ticket_differences()
+        # if check:
+        #     JitBitTickets().process_ticket_differences()
+        #     JitBitTicketComments().push_comments()
+        # else:
+        #     print('No ticket changes found')
 
         
 def setup(bot):
