@@ -17,7 +17,6 @@ class TicketTable(DB):
     
     def __init__(self):
         super(TicketTable, self).__init__()
-        # self.connection.execute("PRAGMA foreign_keys= 1")
         self.columns = '(tech, subject, status, body)'
         self.table = 'ticket_table'
 
@@ -42,7 +41,6 @@ class TicketCommentTable(DB):
 
     def __init__(self):
         super(TicketCommentTable, self).__init__()
-        # self.connection.execute("PRAGMA foreign_keys= 1")
         self.columns = ('ticket_id','user','type','body')
         self.table = 'ticket_comments'
 
@@ -128,7 +126,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
             tech = ticket['TechFirstName'] if ticket['TechFirstName'] else 'None'
             subject = ticket['Subject'] if ticket['Subject'] else 'None'
             status = ticket['Status'] if ticket['Status'] else 'None'
-            body = self.get_ticket_body(ticket['IssueID']) if self.get_ticket_body(ticket['IssueID']) else 'None'
+            body = self.get_ticket_body(ticket['IssueID']) if ticket['IssueID'] else 'None'
             values = (str(issue_id), str(tech), str(subject), str(status), str(body))
             self.insert_or_replace(values, self.columns)
 

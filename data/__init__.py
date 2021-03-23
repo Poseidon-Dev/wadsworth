@@ -7,7 +7,6 @@ __all__ = ['OfficeTable', 'TicketTable', 'TicketCommentTable', 'DB', 'WadsworthM
 
 def create_and_fill_tables():
     # Create tables on LocalDB
-    print('from here')
     OfficeTable().run()
     TicketTable().run()
     TicketCommentTable().run()
