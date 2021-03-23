@@ -13,6 +13,7 @@ class Tasks(commands.Cog, name='scheduled tasks'):
     def __init__(self, bot):
         self.bot = bot
         self.check_for_desk_changes.start()
+        self.channel = config.BOT_CHANNEL
 
     @commands.command(name='task-ping', aliases=['tp'])
     async def task_ping(self, ctx):
