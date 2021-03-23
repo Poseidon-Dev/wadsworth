@@ -1,8 +1,24 @@
 # Wadsworth | IT Assistant
 
+<p align="center">
+  <a href="//github.com/Poseidon-Dev/wadsworth/releases"><img src="https://img.shields.io/github/v/release/Poseidon-Dev/wadsworth/"></a>
+  <a href="//github.com/Poseidon-Dev/wadsworth/commits/main"><img src="https://img.shields.io/github/last-commit/Poseidon-Dev/wadsworth/"></a>
+  <a href="//github.com/Poseidon-Dev/wadsworth/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/Poseidon-Dev/wadsworth/"></a>
+  <a href="//github.com/Poseidon-Dev/wadsworth/"><img src="https://img.shields.io/github/languages/code-size/Poseidon-Dev/wadsworth/"></a>
+  <a href="//github.com/Poseidon-Dev/wadsworth/issues"><img src="https://img.shields.io/github/issues-raw/kkrypt0nn/Python-Discord-Bot-Template"></a>
+</p>
+
 Wadsworth is a multi-modular application designed to streamline repetitive processes into a single discord command interface.
 
 Each module is a seperate application with discord running as the user interface. 
+
+### Current Modules
+
+| Module                      | Description                                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| JitBit API                  | Creates a request integration into discord to allow for quicker viewing     |
+| Office                      | Stores and logs MS Office keys                                              |
+| Passwords                   | Password generator                                                          |
 
 ## Authors
 
@@ -22,7 +38,17 @@ An up-to-date list of modules and their current commands
 | key -d [KEY]                | Deletes a key from the office keys db based on table ID. Irreversible       |
 | key -m                      | Prompts for computer and email and delivers an avilable key                 |
 | key -r                      | Lists all available keys                                                    |
+| key -c                      | Count available keys                                                        |
 | ticket [TICKETID]           | Retrieves a ticket based on ticket ID                                       |
 | tickets                     | Retrieves all active tickets                                                |
 | url [URL] [COUNT]           | Retrieves a ticket based on URL, delivers comments based on count           |
+| pass                        | Generates a random password based on a list of 4000 words                   |
 
+## Potential future modules
+
+- [x] Password Generator
+- [ ] ERP employee integration
+- [ ] Employee asset managmenet
+- [ ] Google admin API integration
+- [ ] Verizon API
+- [ ] Github API 
