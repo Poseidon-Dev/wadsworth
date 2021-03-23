@@ -8,6 +8,7 @@ else:
     import config
 
 from data import OfficeTable, WadsworthMsg
+from utils import Pretty
 
 class OfficeCog(commands.Cog, OfficeTable, name='office'):
 
@@ -31,7 +32,8 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         """
         Checks to see if commands are reaching the 'Office' module
         """
-        await ctx.send('Office Online')
+        embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
+        await ctx.send(embed=embed)
 
 
     @commands.command(name='key')
@@ -64,7 +66,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
                 # Argument -r
                 if argument in ['-r', 'read']:
                     keys = self.read_available()
-                    await ctx.send(embed=self.pretty_keys(keys))
+                    await ctx.send(embed=Pretty().pretty_keys(ctx, keys))
 
                 # Argument -m 
                 if argument in ['-m', 'me']:
@@ -74,7 +76,6 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
                     comp_msg = await self.bot.wait_for('message')
                     office_key = self.deliver_available_key(email_msg, comp_msg, key)
                     await ctx.send(str(office_key))
-                    # await ctx.send(f'There are {self.count_keys()[0][0]} key now left ')
                 
                 # Arguement -c
                 if argument in ['-c', 'count']:
@@ -115,21 +116,6 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         except Exception as e:
             response = 'No keys available'
         return response
-
-
-    def pretty_keys(self, keys):
-        """
-        Returns an embed for keys for a prettier discord format
-        """
-        embed = discord.Embed(
-            title='Office Keys',
-            color=0x03f8fc
-        )
-        for key in keys:
-            id_value = f'{key[0]}' + '\u2800' * 50
-            embed.add_field(name='ID', value=id_value, inline=False)
-            embed.add_field(name='Key', value=key[1], inline=False)
-        return embed
 
 
 def setup(bot):

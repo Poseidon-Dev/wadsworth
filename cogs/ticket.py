@@ -7,6 +7,7 @@ else:
     import config
 
 from data import TicketTable, TicketCommentTable, WadsworthMsg
+from utils import Pretty
 class TicketsCog(commands.Cog, TicketTable, name='tickets'):
 
     def __init__(self, bot):
@@ -26,7 +27,8 @@ class TicketsCog(commands.Cog, TicketTable, name='tickets'):
         """
         Checks to see if commands are reaching the 'Tickets' module
         """
-        await ctx.send('Tickets Online')
+        embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
+        await ctx.send(embed=embed)
 
 
     @commands.command(name='ticket', description='Lists a ticket based on IssueID input')
@@ -38,7 +40,7 @@ class TicketsCog(commands.Cog, TicketTable, name='tickets'):
         await ctx.message.delete()
         await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
         ticket = self.select_row_by_key(self.table, ticket)
-        embed = self.pretty_ticket(ctx, ticket[0])
+        embed = Pretty().pretty_ticket(ctx, ticket[0])
         await ctx.send(embed=embed)
 
     @commands.command(name='tickets')
@@ -50,7 +52,7 @@ class TicketsCog(commands.Cog, TicketTable, name='tickets'):
         await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
         tickets = self.select_all()
         for ticket in tickets:
-            embed = self.pretty_ticket(ctx, ticket)
+            embed = Pretty().pretty_ticket(ctx, ticket)
             await ctx.send(embed=embed)
         await ctx.send(f"That is all. There are currently {len(tickets)} open tickets")
 
@@ -66,7 +68,7 @@ class TicketsCog(commands.Cog, TicketTable, name='tickets'):
         ticket_id = int(self.extract_ticket_from_url(url))
         print(ticket_id)
         ticket = self.select_row_by_key(self.table, ticket_id)
-        embed = self.pretty_ticket(ctx, ticket[0])
+        embed = Pretty().pretty_ticket(ctx, ticket[0])
         await ctx.send(embed=embed)
 
         if comment_quantity:
@@ -74,37 +76,11 @@ class TicketsCog(commands.Cog, TicketTable, name='tickets'):
             i = 0
             print(ticket_comments)
             for comment in ticket_comments:
-                embed = self.pretty_comment(ctx, comment)
+                embed = Pretty().pretty_comment(ctx, comment)
                 await ctx.send(embed=embed)
                 i += 1
                 if i == comment_quantity:
                     break
-
-
-    def pretty_ticket(self, ctx, ticket):
-        embed = discord.Embed(
-            title=f'**{ticket[2]}**',
-            url=f'{config.HELPDESK_URL}Ticket/{ticket[0]}',
-            color=0x03f8fc,
-            timestamp=ctx.message.created_at)
-        embed.add_field(name='Tech', value=ticket[1], inline=True)
-        embed.add_field(name='Status', value=ticket[3], inline=True)
-        embed.add_field(name='Subject', value=ticket[2], inline=False)
-        embed.add_field(name='Body', value=ticket[4], inline=False)
-        embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
-        return embed
-
-
-    def pretty_comment(self, ctx, comment):
-        embed = discord.Embed(
-        author=comment[2],
-        color=discord.Color.green()
-        )
-        embed.add_field(name='User', value=comment[2], inline=True)
-        embed.add_field(name='Tech only', value=comment[3], inline=True)
-        embed.add_field(name='Message', value=comment[4], inline=False)
-        embed.set_footer(text='\u2800' * 75)
-        return embed
 
 
     def extract_ticket_from_url(self, url_input):

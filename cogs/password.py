@@ -9,6 +9,8 @@ if not os.path.isfile('config.py'):
 else:
     import config
 
+from utils import Pretty
+
 
 class PasswordCog(commands.Cog, name='password'):
 
@@ -33,7 +35,8 @@ class PasswordCog(commands.Cog, name='password'):
         """
         Checks to see if commands are reaching the 'Password' module
         """
-        await ctx.send('Password Online')
+        embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
+        await ctx.send(embed=embed)
 
     @commands.command(name='pass')
     async def password_module(self, ctx):

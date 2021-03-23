@@ -7,6 +7,7 @@ else:
     import config
 
 from data import JitBitTickets, JitBitTicketComments
+from utils import Pretty
 
 class Tasks(commands.Cog, name='scheduled tasks'):
 
@@ -20,9 +21,8 @@ class Tasks(commands.Cog, name='scheduled tasks'):
         """
         Checks to see if commands are reaching the 'Task' module
         """
-        embed = discord.Embed(color=0x333333)
-        embed.set_footer(text=f"'Task' ping request by {ctx.message.author}")
-        await self.channel.send(embed=embed)
+        embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
+        await ctx.send(embed=embed)
 
     def cog_unload(self):
         self.printer.cancel()
@@ -37,13 +37,6 @@ class Tasks(commands.Cog, name='scheduled tasks'):
                 JitBitTicketComments().push_comment(ticket)
         except Exception as e:
             print(e)
-
-        # check = JitBitTickets().check_ticket_differences()
-        # if check:
-        #     JitBitTickets().process_ticket_differences()
-        #     JitBitTicketComments().push_comments()
-        # else:
-        #     print('No ticket changes found')
 
         
 def setup(bot):

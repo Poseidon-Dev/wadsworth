@@ -7,6 +7,7 @@ else:
     import config
 
 from data import WadsworthMsg
+from utils import Pretty
 
 class Help(commands.Cog, name='help'):
 
@@ -21,8 +22,7 @@ class Help(commands.Cog, name='help'):
         """
         Checks to see if commands are reaching the 'Help' module
         """
-        embed = discord.Embed(color=0x333333)
-        embed.set_footer(text=f"'Help' ping request by {ctx.message.author}")
+        embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
         await ctx.send(embed=embed)
 
 
