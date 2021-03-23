@@ -1,6 +1,6 @@
 import os, psycopg2
 
-TESTING = True
+TESTING = False
 POSTGRES = True
 
 # Discord Information
@@ -49,6 +49,7 @@ Wadworth was created specifically for the Arizona Pipeline IT department to bett
 if TESTING:
     DB_LOCATION = os.getenv('DB_TEST_LOCATION')
     TOKEN = os.getenv('BOT_TEST_TOKEN')
+    BOT_CHANNEL = int(os.getenv('BOT_TEST_CHANNEL'))
     STARTUP_COGS = [
     'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks',
     ] 
