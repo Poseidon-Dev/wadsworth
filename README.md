@@ -28,6 +28,7 @@ An up-to-date list of modules and their current commands
 | tickets                     | Retrieves all active tickets                                                |
 | url [URL] [COUNT]           | Retrieves a ticket based on URL, delivers comments based on count           |
 | pass                        | Generates a random password based on a list of 4000 words                   |
+| whois id [ID]               | Retrieves current employee record                                           |
 
 ## Current Modules
 
@@ -36,10 +37,11 @@ An up-to-date list of modules and their current commands
 | JitBit API                  | Creates a request integration into discord to allow for quicker viewing     |
 | Office                      | Stores and logs MS Office keys                                              |
 | Passwords                   | Password generator                                                          |
+| Employee                    | ERP Connection                                                              |
 ## Potential future modules
 
 - [x] Password Generator
-- [ ] ERP employee integration
+- [x] ERP employee integration
 - [ ] Employee asset managmenet
 - [ ] Google admin API integration
 - [ ] Verizon API
