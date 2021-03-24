@@ -1,6 +1,6 @@
 import os, psycopg2
 
-TESTING = False
+TESTING = True
 POSTGRES = True
 
 # Discord Information
@@ -13,7 +13,7 @@ BLACKLIST = []
 
 # Current Modeules
 STARTUP_COGS = [
-    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 'cogs.employee',
+    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 
 ] 
 
 # db Information
@@ -56,7 +56,7 @@ if TESTING:
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     BOT_CHANNEL = int(os.getenv('BOT_TEST_CHANNEL'))
     STARTUP_COGS = [
-    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 'cogs.employee',
+    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 
     ] 
     def conn():
         POSTGRES_CONN = psycopg2.connect(

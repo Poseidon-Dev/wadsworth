@@ -11,6 +11,8 @@ requests = "*"
 bs4 = "*"
 psycopg2 = "*"
 pyodbc = "*"
+psycopg2-binary = "*"
+certificates = "*"
 
 [requires]
 python_version = "*"

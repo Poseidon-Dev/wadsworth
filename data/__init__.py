@@ -2,7 +2,7 @@ from data.office import OfficeTable
 from data.tickets import TicketTable, TicketCommentTable, JitBitTickets, JitBitTicketComments
 from data.messages import WadsworthMsg
 from data.base import DB
-from data.erp import EmployeeTable
+# from data.erp import EmployeeTable
 
 __all__ = [
     'OfficeTable',
@@ -17,8 +17,8 @@ __all__ = [
 
 def create_and_fill_tables():
     # Create tables on LocalDB
-    EmployeeTable().run()
-    EmployeeTable().insert_data()
+    # EmployeeTable().run()
+    # EmployeeTable().insert_data()
     OfficeTable().run()
 
     # Fill Data on init
