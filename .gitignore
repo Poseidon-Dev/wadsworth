@@ -5,6 +5,7 @@
 env/
 venv/
 ENV/
+Test/
 env.bak/
 venv.bak/
 

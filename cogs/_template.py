@@ -14,12 +14,13 @@ class NewCog(commands.Cog, name='cog-name'):
 
 
     # Commands
-    @commands.command(name='new-ping')
-    async def new_ping(self, ctx):
+    @commands.command(name='office-ping')
+    async def office_ping(self, ctx):
         """
-        Checks to see if commands are reaching the 'New' module
+        Checks to see if commands are reaching the 'Office' module
         """
-        await ctx.send('New Online')
+        embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(NewCog(bot))

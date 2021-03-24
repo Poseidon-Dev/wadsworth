@@ -10,6 +10,7 @@ discord = "*"
 requests = "*"
 bs4 = "*"
 psycopg2 = "*"
+pyodbc = "*"
 
 [requires]
 python_version = "*"

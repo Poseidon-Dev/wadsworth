@@ -1,6 +1,6 @@
 import os, psycopg2
 
-TESTING = False
+TESTING = True
 POSTGRES = True
 
 # Discord Information
@@ -13,7 +13,7 @@ BLACKLIST = []
 
 # Current Modeules
 STARTUP_COGS = [
-    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks',
+    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 'cogs.employee',
 ] 
 
 # db Information
@@ -28,6 +28,11 @@ def conn():
         port=os.getenv('POSTGRES_PORT')
     )
     return POSTGRES_CONN
+
+# ERP Information
+ERP_HOST = os.getenv('ERP_HOST')
+ERP_UID = os.getenv('ERP_UID')
+ERP_PWD = os.getenv('ERP_PWD')
 
 
 # JitBit Information
@@ -51,7 +56,7 @@ if TESTING:
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     BOT_CHANNEL = int(os.getenv('BOT_TEST_CHANNEL'))
     STARTUP_COGS = [
-    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks',
+    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 'cogs.employee',
     ] 
     def conn():
         POSTGRES_CONN = psycopg2.connect(

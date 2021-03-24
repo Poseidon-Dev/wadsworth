@@ -1,4 +1,4 @@
-import sqlite3, json, os, sys, re, requests, sched, time
+import json, os, sys, re, requests, sched, time
 from requests.auth import HTTPBasicAuth
 from bs4 import BeautifulSoup
 from datetime import date

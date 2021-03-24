@@ -64,3 +64,20 @@ class Pretty:
             embed.add_field(name='Key', value=key[1], inline=False)
             embed.set_footer(text=f"'Requested by {ctx.message.author}")
         return embed
+
+    def pretty_employee(self, ctx, employee):
+        """
+        Returns an embed for an employee for a prettier discord format
+        """
+        print(employee)
+        embed = discord.Embed(
+            title=employee[0],
+            color=0x03f8fc
+        )
+        embed.add_field(name='First', value=employee[1], inline=True)
+        embed.add_field(name='Middle', value=employee[2], inline=True)
+        embed.add_field(name='Last', value=employee[4], inline=True)
+        embed.add_field(name='Security', value=employee[5], inline=True)
+        embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
+        embed.set_footer(text=f"'Requested by {ctx.message.author}")
+        return embed
