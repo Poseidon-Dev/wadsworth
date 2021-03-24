@@ -12,10 +12,10 @@ class EmployeeTable(DB):
     
     def __init__(self):
         super(EmployeeTable, self).__init__()
-        self.erp_conn = pyodbc.connect(f'DSN={config.ERP_HOST}; UID={config.ERP_UID}; PWD={config.ERP_PWD}')
-        self.erp_cur = self.erp_conn.cursor()
+        # self.erp_conn = pyodbc.connect(f'DSN={config.ERP_HOST}; UID={config.ERP_UID}; PWD={config.ERP_PWD}')
+        # self.erp_cur = self.erp_conn.cursor()
         self.table = 'employee_table'
-        self.columns = '(id, first, middle1, middle2, last, security, division)'
+        self.columns = '(id, first, middle1, middle2, last, security, division, status)'
 
     def create_table(self):
         """
@@ -24,13 +24,14 @@ class EmployeeTable(DB):
         command = f"""
         CREATE TABLE IF NOT EXISTS
         {self.table}(
-            id              INT               PRIMARY KEY ,
+            id              INT            PRIMARY KEY,
             first           VARCHAR(30),
             middle1         VARCHAR(30),
             middle2         VARCHAR(30),
             last            VARCHAR(30),
             security        INT,
-            division        VARCHAR(30)
+            division        INT            REFERENCES division_table(id) ON DELETE NO ACTION,
+            status          VARCHAR(30)
         );
         """
         self.execute(command)
@@ -39,18 +40,11 @@ class EmployeeTable(DB):
         command = """SELECT 
                     EMPLOYEENO, FIRSTNAME25, MIDDLENAME1, MIDDLENAME2, LASTNAME25, LVLCODE, 
                         CASE
-                            WHEN LENGTH(DEPTNO) = 1 THEN 'Corporate'
-                            WHEN LENGTH(DEPTNO) = 2 AND LEFT(DEPTNO,1)=2 THEN 'Phoenix'
-                            WHEN LENGTH(DEPTNO) = 2 AND LEFT(DEPTNO,1)=3 THEN 'Hesperia'
-                            WHEN LENGTH(DEPTNO) = 2 AND LEFT(DEPTNO,1)=4 THEN 'Corona'
-                            WHEN LENGTH(DEPTNO) = 2 AND LEFT(DEPTNO,1)=5 THEN 'Las Vegas'
-                            WHEN LENGTH(DEPTNO) = 2 AND LEFT(DEPTNO,1)=6 THEN 'Pipeline'
-                            WHEN LENGTH(DEPTNO) = 2 AND LEFT(DEPTNO,1)=7 THEN 'Reno'
-                            WHEN LENGTH(DEPTNO) = 2 AND LEFT(DEPTNO,1)=8 THEN 'Carson'
-                            WHEN LENGTH(DEPTNO) = 2 AND LEFT(DEPTNO,1)=9 THEN 'Pacific'
-                            WHEN LENGTH(DEPTNO) = 3 THEN 'Bullhead'
+                            WHEN LENGTH(DEPTNO) = 1 THEN DEPTNO
+                            WHEN LENGTH(DEPTNO) = 2 THEN LEFT(DEPTNO, 1)
+                            WHEN LENGTH(DEPTNO) = 3 THEN LEFT(DEPTNO, 2)
                             END
-                        AS DIVISION
+                        AS DIVISION, STATUSCODE
                     FROM CMSFIL.HRTEMP
                     WHERE COMPANYNO = 1 AND STATUSCODE = 'A' AND EMPLOYEENO > 0
                     """
@@ -64,7 +58,8 @@ class EmployeeTable(DB):
             'Middle2' : str(row[3]).strip(),
             'LastName' : str(row[4]).strip(),
             'SecurityLevel' : int(row[5]),
-            'Department' : row[6],
+            'Department' : int(row[6]),
+            'Status' : str(row[7]).strip(),
             }
             for row in rows
         ]
@@ -80,7 +75,8 @@ class EmployeeTable(DB):
             last = str(record['LastName']).capitalize() 
             security = str(record['SecurityLevel'])
             division = str(record['Department']).capitalize()
-            values = (eid, first, middle1, middle2, last, security, division)
+            status = str(record['Status']).capitalize()
+            values = (eid, first, middle1, middle2, last, security, division, status)
             self.insert_or_replace(values, self.columns)
 
     def run(self):

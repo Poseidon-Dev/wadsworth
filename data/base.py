@@ -108,6 +108,15 @@ class DB:
         """
         self.execute(command)
 
+    def insert_single_record(self, values):
+        command = f"""
+        INSERT INTO {self.table} {self.columns}
+        VALUES ({values})
+        ON CONFLICT ON CONSTRAINT {self.table}_pkey
+            DO NOTHING
+        """
+        self.execute(command)
+
     # Update Queries
     def update_record(self, key, values, columns=None):
         if not columns:

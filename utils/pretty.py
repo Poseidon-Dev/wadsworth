@@ -5,6 +5,8 @@ if not os.path.isfile('config.py'):
 else:
     import config
 
+from data import DB
+
 class Pretty:
 
     def pretty_ping(self, ctx, name):
@@ -69,7 +71,7 @@ class Pretty:
         """
         Returns an embed for an employee for a prettier discord format
         """
-        print(employee)
+        division = DB().select_row_by_key(table='division_table', key=employee[6])
         embed = discord.Embed(
             title=employee[0],
             color=0x03f8fc
@@ -78,6 +80,7 @@ class Pretty:
         embed.add_field(name='Middle', value=employee[2], inline=True)
         embed.add_field(name='Last', value=employee[4], inline=True)
         embed.add_field(name='Security', value=employee[5], inline=True)
+        embed.add_field(name='Division', value=division[0][1], inline=True)
         embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
         embed.set_footer(text=f"'Requested by {ctx.message.author}")
         return embed
