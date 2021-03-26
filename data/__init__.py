@@ -6,6 +6,8 @@ from data.base import DB
 from data.erp import EmployeeTable
 from data.assets import AssetTable
 
+import config
+
 __all__ = [
     'OfficeTable',
     'TicketTable',
@@ -18,18 +20,20 @@ __all__ = [
     ]
 
 def create_and_fill_tables():
-    CategoryTable().run()
-    DivisionTable().run()
-    StatusTable().run()
-    # Create tables on LocalDB
-    EmployeeTable().run()
-    AssetTable().run()
-    # EmployeeTable().insert_data()
-    OfficeTable().run()
+    if config.TESTING:
+        EmployeeTable().run()
+    else:
+        CategoryTable().run()
+        DivisionTable().run()
+        StatusTable().run()
+        # Create tables on LocalDB
+        EmployeeTable().run()
+        AssetTable().run()
+        # EmployeeTable().insert_data()
+        OfficeTable().run()
 
-    # Fill Data on init
-    TicketTable().run()
-    TicketCommentTable().run()
-    JitBitTickets().push_tickets()
-    JitBitTicketComments().push_comments()
-
+        # Fill Data on init
+        TicketTable().run()
+        TicketCommentTable().run()
+        JitBitTickets().push_tickets()
+        JitBitTicketComments().push_comments()

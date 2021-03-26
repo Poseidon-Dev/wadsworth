@@ -56,7 +56,7 @@ if TESTING:
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     BOT_CHANNEL = int(os.getenv('BOT_TEST_CHANNEL'))
     STARTUP_COGS = [
-    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 'cogs.employee'
+    'cogs.info', 'cogs.employee'
     ] 
     def conn():
         POSTGRES_CONN = psycopg2.connect(

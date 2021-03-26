@@ -39,5 +39,11 @@ class AssetTable(DB):
         """
         self.execute(command)
 
+    def return_asset_minified(self, key):
+        response = self.select_columns('category, brand, model, serial, status', 'asset_table', where=f'WHERE empid={key}')
+        return response
+
+
+
     def run(self):
         self.create_table()

@@ -31,6 +31,7 @@ class EmployeeCog(commands.Cog, EmployeeTable, name='employee'):
         if argument in ['id',]:
             employee = self.select_row_by_key(self.table, int(key))
             await ctx.send(embed=Pretty().pretty_employee(ctx, employee[0]))
+            await ctx.send(embed=Pretty().pretty_assets(ctx, key))
 
 def setup(bot):
     bot.add_cog(EmployeeCog(bot))
