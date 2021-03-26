@@ -124,7 +124,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
         for ticket in tickets:
             issue_id = ticket['IssueID']
             tech = ticket['TechFirstName'] if ticket['TechFirstName'] else 'None'
-            subject = ticket['Subject'] if ticket['Subject'] else 'None'
+            subject = clean_html(ticket['Subject']) if ticket['Subject'] else 'None'
             status = ticket['Status'] if ticket['Status'] else 'None'
             body = self.get_ticket_body(ticket['IssueID']) if ticket['IssueID'] else 'None'
             values = (str(issue_id), str(tech), str(subject), str(status), str(body))
@@ -148,7 +148,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
                     ticket = self.pull_ticket(key)
                     issue_id = ticket['TicketID']
                     tech = ticket['AssigneeUserInfo']['FirstName'] if ticket['AssigneeUserInfo']['FirstName'] else 'None'
-                    subject = ticket['Subject'] if ticket['Subject'] else 'None'
+                    subject = clean_html(ticket['Subject']) if ticket['Subject'] else 'None'
                     status = ticket['Status'] if ticket['Status'] else 'None'
                     body = clean_html(ticket['Body']) if ticket['Body'] else 'None'
                     values = (str(issue_id), str(tech), str(subject), str(status), str(body))
@@ -217,4 +217,6 @@ def clean_html(raw_html):
     cleantext = cleantext.replace('\t', '')
     cleantext = cleantext.replace('\r', '')
     cleantext = cleantext.replace("'", '')
+    cleantext = cleantext.replace("\"", ' ')
+    cleantext = cleantext.replace(u'\xa0', u' ')
     return cleantext
