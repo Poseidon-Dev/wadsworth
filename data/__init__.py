@@ -29,7 +29,7 @@ def create_and_fill_tables():
         # Create tables on LocalDB
         EmployeeTable().run()
         AssetTable().run()
-        # EmployeeTable().insert_data()
+        EmployeeTable().insert_data()
         OfficeTable().run()
 
         # Fill Data on init

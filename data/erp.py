@@ -12,8 +12,8 @@ class EmployeeTable(DB):
     
     def __init__(self):
         super(EmployeeTable, self).__init__()
-        # self.erp_conn = pyodbc.connect(f'DSN={config.ERP_HOST}; UID={config.ERP_UID}; PWD={config.ERP_PWD}')
-        # self.erp_cur = self.erp_conn.cursor()
+        self.erp_conn = pyodbc.connect(f'DSN={config.ERP_HOST}; UID={config.ERP_UID}; PWD={config.ERP_PWD}')
+        self.erp_cur = self.erp_conn.cursor()
         self.table = 'employee_table'
         self.columns = '(id, first, middle1, middle2, last, security, division, status)'
 
