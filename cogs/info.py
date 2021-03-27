@@ -98,21 +98,7 @@ class Help(commands.Cog, name='help'):
             embed.add_field(name=feature[0], value=feature[1], inline=False)
             embed.add_field(name='** **', value=f'** **', inline=False)
         await ctx.send(embed=embed)
-
-
-    @commands.command(name='test', aliases=['-t'])
-    async def tests(self, ctx):
-        await ctx.send(f'message: {ctx.message.content}')
-        await ctx.send(f'channel: {ctx.message.channel}')
-        await ctx.send(f'author: {ctx.message.author}')
-        await asyncio.sleep(1)
-        await ctx.send('What would you like to say?')
-        test_msg = await self.bot.wait_for('message')
-        if Validators().author(ctx, test_msg):
-            await ctx.send('Worked')
-        else:
-            await ctx.channel.send('Also worked')
-    
+   
  
         
 def setup(bot):

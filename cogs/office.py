@@ -23,13 +23,6 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         else:
             self.channel = self.bot.get_channel(config.OFFICE_CHANNEL)
 
-    # Events
-    @commands.Cog.listener()
-    async def on_ready(self):
-        channel = self.bot.get_channel(self.channel)
-        await channel.send('Wadsworth here, reporting for duty, coming from Office Cog')
-
-
     # Commands
     @commands.command(name='office-ping')
     async def office_ping(self, ctx):
