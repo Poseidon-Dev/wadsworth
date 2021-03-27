@@ -1,4 +1,4 @@
-import discord, os, platform
+import discord, os, platform, asyncio
 from discord.ext import commands
 
 if not os.path.isfile('config.py'):
@@ -7,7 +7,7 @@ else:
     import config
 
 from data import WadsworthMsg
-from utils import Pretty
+from utils import Pretty, Validators
 
 class Help(commands.Cog, name='help'):
 
@@ -15,8 +15,17 @@ class Help(commands.Cog, name='help'):
         self.bot = bot
         self.channel = self.bot.get_channel(config.BOT_CHANNEL)
         self.hidden = ['ping', 'futures', '/?']
+
+
+    
+    # Events
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.content == '/?':
+            await message.channel.send(WadsworthMsg().trash_talk())
         
 
+    # Commands
     @commands.command(name='help-ping', aliases=['hp'])
     async def info_ping(self, ctx):
         """
@@ -90,10 +99,20 @@ class Help(commands.Cog, name='help'):
             embed.add_field(name='** **', value=f'** **', inline=False)
         await ctx.send(embed=embed)
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.content == '/?':
-            await message.channel.send(WadsworthMsg().trash_talk())
+
+    @commands.command(name='test', aliases=['-t'])
+    async def tests(self, ctx):
+        await ctx.send(f'message: {ctx.message.content}')
+        await ctx.send(f'channel: {ctx.message.channel}')
+        await ctx.send(f'author: {ctx.message.author}')
+        await asyncio.sleep(1)
+        await ctx.send('What would you like to say?')
+        test_msg = await self.bot.wait_for('message')
+        if Validators().author(ctx, test_msg):
+            await ctx.send('Worked')
+        else:
+            await ctx.channel.send('Also worked')
+    
  
         
 def setup(bot):

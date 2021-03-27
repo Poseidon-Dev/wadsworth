@@ -21,11 +21,12 @@ __all__ = [
 
 def create_and_fill_tables():
     if config.TESTING:
-        EmployeeTable().run()
+        return None
     else:
         CategoryTable().run()
         DivisionTable().run()
         StatusTable().run()
+
         # Create tables on LocalDB
         EmployeeTable().run()
         AssetTable().run()
