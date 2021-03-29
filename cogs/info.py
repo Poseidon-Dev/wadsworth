@@ -81,8 +81,6 @@ class Help(commands.Cog, name='help'):
         await self.channel.send(f'{ctx.author.mention}')
         await self.channel.send(embed=embed)
 
-        
-
 
     @commands.command(name='futures', aliases=['-f'])
     async def futures(self, ctx):

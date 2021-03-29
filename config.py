@@ -18,7 +18,7 @@ EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
 
 # Current Modeules
 STARTUP_COGS = [
-    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 'cogs.employee',
+    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.ticket', 'cogs.tasks', 'cogs.employee', 'cogs.censor'
 ] 
 
 # db Information
@@ -48,6 +48,7 @@ HELPDESK_PWD = os.getenv('JITBIT_PASSWORD')
 # Constants
 CONFIRMS = ["y", "yes", "yep", "yea",]
 DENIES = ["n", "no", "nope",  "nah"]
+SWEAR_LIST = os.getenv('SWEAR_WORDS').split()
 
 # Info
 VERSION = os.getenv('VERSION')
@@ -61,7 +62,7 @@ if TESTING:
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     BOT_CHANNEL = int(os.getenv('BOT_TEST_CHANNEL'))
     STARTUP_COGS = [
-    'cogs.info', 'cogs.office', 'cogs.password',
+    'cogs.info', 'cogs.office', 'cogs.password', 'cogs.censor'
     ] 
     def conn():
         POSTGRES_CONN = psycopg2.connect(

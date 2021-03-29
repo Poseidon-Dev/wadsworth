@@ -110,7 +110,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
         """
         Retrieves all unclosed tickets from JitBit API
         """
-        method = 'Tickets/mode?mode=unclosed'
+        method = 'Tickets/mode?mode=unclosed?'
         response = self._make_request(method)
         tickets = json.loads(response.content)
         return tickets

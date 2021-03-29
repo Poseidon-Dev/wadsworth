@@ -17,7 +17,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         self.bot = bot
         self.arguments = ['-a', '-r', '-h', '-d', '-m', '-c', 'add', 'read', 'history', 'delete', 'me', 'count']
         self.boolean_choices = ["y", "n", "yes", "no", "yep", "nope", "yea", "nah"]
-        self.timeout = 8
+        self.timeout = 15
         self.ping_channel = self.bot.get_channel(config.WADSWORTH_CHANNEL)
         if config.TESTING:
             self.channel = self.bot.get_channel(config.BOT_CHANNEL)

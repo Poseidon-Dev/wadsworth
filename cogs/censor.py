@@ -13,6 +13,14 @@ class CensorCog(commands.Cog, name='Censor-Cog'):
         self.channel = self.bot.get_channel(config.BOT_CHANNEL)
         self.ping_channel = self.bot.get_channel(config.WADSWORTH_CHANNEL)
 
+    # Events
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        for word in message.content.split():
+            if word.lower() in config.SWEAR_LIST:
+                await message.delete()
+                await message.channel.send("Please don't speak that way in this server.")
+
 
     # Commands
     @commands.command(name='censor-ping')
