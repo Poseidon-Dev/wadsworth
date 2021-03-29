@@ -14,12 +14,8 @@ class TicketsCog(commands.Cog, TicketTable, name='tickets'):
         TicketTable.__init__(self)
         self.bot = bot
         self.channel = self.bot.get_channel(config.BOT_CHANNEL)
+        self.ping_channel = self.bot.get_channel(config.WADSWORTH_CHANNEL)
 
-    # Events
-    @commands.Cog.listener()
-    async def on_ready(self):
-        channel = self.channel
-        await channel.send('Wadsworth here, reporting for duty, coming from Ticket Cog')
 
     # Commands
     @commands.command(name='ticket-ping')
@@ -28,7 +24,7 @@ class TicketsCog(commands.Cog, TicketTable, name='tickets'):
         Checks to see if commands are reaching the 'Tickets' module
         """
         embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
-        await ctx.send(embed=embed)
+        await self.ping_channel.send(embed=embed)
 
 
     @commands.command(name='ticket', description='Lists a ticket based on IssueID input')

@@ -15,7 +15,8 @@ class Pretty:
         """
         Returns an embed for pings for a prettier discord format
         """
-        embed = discord.Embed(color=0x333333)
+        embed = discord.Embed(color=0x333333,
+            timestamp=ctx.message.created_at)
         embed.set_footer(text=f"'{name}' ping request by {ctx.message.author}")
         return embed
 
@@ -60,8 +61,8 @@ class Pretty:
         """
         embed = discord.Embed(
             title='Office Keys',
-            color=0x03f8fc
-        )
+            color=0x03f8fc,
+            timestamp=ctx.message.created_at)
         for key in keys:
             id_value = f'{key[0]}' + '\u2800' * 50
             embed.add_field(name='ID', value=id_value, inline=False)
@@ -78,8 +79,8 @@ class Pretty:
         
         embed = discord.Embed(
             title=f'**{name}**',
-            color=0x03f8fc
-        )
+            color=0x03f8fc,
+            timestamp=ctx.message.created_at)
         embed.add_field(
             name=f'{employee[0]}',
             value=f"""
@@ -97,8 +98,8 @@ class Pretty:
         """
         embed = discord.Embed(
             title=f'Company Property',
-            color=0x03f8fc
-        )
+            color=0x03f8fc,
+            timestamp=ctx.message.created_at)
         assets = DB().select_columns('category, brand, model, serial, status', 'asset_table', where=f'WHERE empid={key}')
         for asset in assets:
             category = DB().select_row_by_key(table='category_table', key=asset[0])[0][1]

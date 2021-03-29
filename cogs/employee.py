@@ -15,6 +15,7 @@ class EmployeeCog(commands.Cog, EmployeeTable, name='employee'):
         EmployeeTable.__init__(self)
         self.bot = bot
         self.channel = self.bot.get_channel(config.BOT_CHANNEL)
+        self.ping_channel = self.bot.get_channel(config.WADSWORTH_CHANNEL)
 
 
     # Commands
@@ -24,7 +25,8 @@ class EmployeeCog(commands.Cog, EmployeeTable, name='employee'):
         Checks to see if commands are reaching the 'Employee' module
         """
         embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
-        await ctx.send(embed=embed)
+        await self.ping_channel.send(embed=embed)
+        
 
     @commands.command(name='whois')
     async def employee_records(self, ctx, argument, key):

@@ -13,6 +13,8 @@ BLACKLIST = []
 # Channels
 BOT_CHANNEL = int(os.getenv('BOT_CHANNEL'))
 OFFICE_CHANNEL = int(os.getenv('OFFICE_CHANNEL'))
+WADSWORTH_CHANNEL = int(os.getenv('WADSWORTH_CHANNEL'))
+EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
 
 # Current Modeules
 STARTUP_COGS = [
@@ -59,7 +61,7 @@ if TESTING:
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     BOT_CHANNEL = int(os.getenv('BOT_TEST_CHANNEL'))
     STARTUP_COGS = [
-    'cogs.info', 'cogs.office'
+    'cogs.info', 'cogs.office', 'cogs.password',
     ] 
     def conn():
         POSTGRES_CONN = psycopg2.connect(

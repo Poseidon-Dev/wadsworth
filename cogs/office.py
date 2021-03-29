@@ -18,6 +18,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         self.arguments = ['-a', '-r', '-h', '-d', '-m', '-c', 'add', 'read', 'history', 'delete', 'me', 'count']
         self.boolean_choices = ["y", "n", "yes", "no", "yep", "nope", "yea", "nah"]
         self.timeout = 8
+        self.ping_channel = self.bot.get_channel(config.WADSWORTH_CHANNEL)
         if config.TESTING:
             self.channel = self.bot.get_channel(config.BOT_CHANNEL)
         else:
@@ -31,7 +32,7 @@ class OfficeCog(commands.Cog, OfficeTable, name='office'):
         """
         
         embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
-        await self.channel.send(embed=embed)
+        await self.ping_channel.send(embed=embed)
 
 
     @commands.command(name='key')

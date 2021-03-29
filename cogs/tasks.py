@@ -15,6 +15,8 @@ class Tasks(commands.Cog, name='scheduled tasks'):
         self.bot = bot
         self.check_for_desk_changes.start()
         self.channel = config.BOT_CHANNEL
+        self.ping_channel = self.bot.get_channel(config.WADSWORTH_CHANNEL)
+        
 
     @commands.command(name='task-ping', aliases=['tp'])
     async def task_ping(self, ctx):
@@ -22,7 +24,7 @@ class Tasks(commands.Cog, name='scheduled tasks'):
         Checks to see if commands are reaching the 'Task' module
         """
         embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
-        await ctx.send(embed=embed)
+        await self.ping_channel.send(embed=embed)
 
     def cog_unload(self):
         self.printer.cancel()

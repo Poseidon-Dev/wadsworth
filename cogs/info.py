@@ -13,9 +13,12 @@ class Help(commands.Cog, name='help'):
 
     def __init__(self, bot):
         self.bot = bot
-        self.channel = self.bot.get_channel(config.BOT_CHANNEL)
+        self.ping_channel = self.bot.get_channel(config.WADSWORTH_CHANNEL)
         self.hidden = ['ping', 'futures', '/?']
-
+        if config.TESTING:
+            self.channel = self.bot.get_channel(config.BOT_CHANNEL)
+        else:
+            self.channel = self.bot.get_channel(config.WADSWORTH_CHANNEL)
 
     
     # Events
@@ -32,7 +35,7 @@ class Help(commands.Cog, name='help'):
         Checks to see if commands are reaching the 'Help' module
         """
         embed = Pretty().pretty_ping(ctx, name=self.__class__.__name__)
-        await ctx.send(embed=embed)
+        await self.ping_channel.send(embed=embed)
 
 
     @commands.command(name='help', aliases=['h'])
@@ -55,7 +58,9 @@ class Help(commands.Cog, name='help'):
             help_text = '\n'.join(f'{n} : {h}' for n, h in help_commands)
             embed.add_field(name=f'{cog.qualified_name.capitalize()}', value=help_text, inline=False)
             embed.add_field(name='** **', value=f'** **', inline=False)
-        await ctx.send(embed=embed)
+            embed.set_footer(text=f"'Requested by {ctx.message.author}")
+        await self.channel.send(f'{ctx.author.mention}')
+        await self.channel.send(embed=embed)
 
 
     @commands.command(name='about', aliases=['readme', '-i'])
@@ -66,13 +71,17 @@ class Help(commands.Cog, name='help'):
         embed = discord.Embed(
             title='About Wadsworth',
             desciption='Wadsworth General Information',
-            color=0xE3E3E3
-        )
+            color=0xE3E3E3,
+            timestamp=ctx.message.created_at)
         embed.add_field(name="Owner", value="Poseidon#4021", inline=True)
         embed.add_field(name='Python Version', value=f'{platform.python_version()}', inline=False)
         embed.add_field(name='Wadsworth Version', value=f'{config.VERSION}', inline=False)
         embed.add_field(name='Description', value=f'{config.DESCRIPTION}', inline=False)
-        await ctx.send(embed=embed)
+        embed.set_footer(text=f"'Requested by {ctx.message.author}")
+        await self.channel.send(f'{ctx.author.mention}')
+        await self.channel.send(embed=embed)
+
+        
 
 
     @commands.command(name='futures', aliases=['-f'])
