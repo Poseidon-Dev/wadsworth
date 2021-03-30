@@ -25,7 +25,7 @@ async def on_ready():
             exception = f'Could not load {extension}'
             print(exception)
 
-    # await channel.send(messages.ready)
+    await channel.send(messages.ready)
 
 
 

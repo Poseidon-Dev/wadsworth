@@ -8,5 +8,3 @@ def pretty_ping(ctx, name):
         timestamp=ctx.message.created_at)
     embed.set_footer(text=f"'{name}' ping request by {ctx.message.author}")
     return embed
-
-

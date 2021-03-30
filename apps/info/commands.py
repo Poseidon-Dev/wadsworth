@@ -1,7 +1,7 @@
 import discord, os, platform, asyncio
 from discord.ext import commands
 
-from apps.info.utils import pretty_ping
+from core.shared.utils import pretty_ping
 import core.config
 
 class InfoCommands(commands.Cog, name='Info'):
@@ -20,7 +20,7 @@ class InfoCommands(commands.Cog, name='Info'):
     @commands.command(name='info-ping', aliases=['-ip'])
     async def info_ping(self, ctx):
         """
-        Checks to see if commands are reaching the 'Censor' module
+        Checks to see if commands are reaching the 'Info' module
         """
         embed = pretty_ping(ctx, name=self.__class__.__name__)
         await self.channel.send(embed=embed)
