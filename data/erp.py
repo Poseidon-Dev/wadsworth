@@ -50,6 +50,7 @@ class EmployeeTable(DB):
                     """
         self.erp_cur.execute(command)
         rows = self.erp_cur.fetchall()
+        self.erp_conn.close()
         records = [
             {
             'EmployeID' : int(row[0]),
