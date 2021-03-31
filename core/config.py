@@ -69,6 +69,7 @@ CONFIRMS = ["y", "yes", "yep", "yea",]
 DENIES = ["n", "no", "nope",  "nah"]
 SWEAR_LIST = os.getenv('SWEAR_WORDS').split()
 
+
 if TESTING:
     TOKEN = os.getenv('BOT_TEST_TOKEN')
     BOT_CHANNEL = int(os.getenv('BOT_TEST_CHANNEL'))
@@ -92,4 +93,5 @@ if TESTING:
     ] 
 
     print('=' * 8 + 'TESTING MODE' + '=' * 8 )
+   
 
