@@ -7,24 +7,24 @@ class ErpApi(EmployeeTable):
 
     def __init__(self):
         super(ErpApi, self).__init__()
-        self.conn = pyodbc.connect(f'DSN={core.config.ERP_HOST}; UID={core.config.ERP_UID}; PWD={core.config.ERP_PWD}')
-        self.cur = self.conn.cursor()
+        self.erp_conn = pyodbc.connect(f'DSN={core.config.ERP_HOST}; UID={core.config.ERP_UID}; PWD={core.config.ERP_PWD}')
+        self.erp_cur = self.erp_conn.cursor()
 
     def pull_employees(self):
         command = """SELECT 
                     EMPLOYEENO, FIRSTNAME25, MIDDLENAME1, MIDDLENAME2, LASTNAME25, LVLCODE, 
                         CASE
-                            WHEN LENGTH(DEPTNO) = 1 THEN DEPTNO
-                            WHEN LENGTH(DEPTNO) = 2 THEN LEFT(DEPTNO, 1)
-                            WHEN LENGTH(DEPTNO) = 3 THEN LEFT(DEPTNO, 2)
+                            WHEN LENGTH(TRIM(DEPTNO)) = 1 THEN '98'
+                            WHEN LENGTH(TRIM(DEPTNO)) = 2 THEN LEFT(DEPTNO, 1)
+                            WHEN LENGTH(TRIM(DEPTNO)) = 3 THEN LEFT(DEPTNO, 2)
                             END
                         AS DIVISION, STATUSCODE
                     FROM CMSFIL.HRTEMP
                     WHERE COMPANYNO = 1 AND STATUSCODE = 'A' AND EMPLOYEENO > 0
                     """
-        self.cur.execute(command)
-        rows = self.cur.fetchall()
-        self.conn.close()
+        self.erp_cur.execute(command)
+        rows = self.erp_cur.fetchall()
+        # self.erp_conn.close()
         records = [
             {
             'EmployeID' : int(row[0]),
