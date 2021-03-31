@@ -52,7 +52,7 @@ class ErpApi(EmployeeTable):
             division = str(record['Department']).capitalize()
             status = str(record['Status']).capitalize()
             values = (eid, first, middle1, middle2, last, security, division, status)
-            self.insert_or_replace(values, self.columns)
+            self.upsert_employees(values)
 
     def run(self):
         self.insert_employees()

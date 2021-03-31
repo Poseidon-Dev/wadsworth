@@ -26,6 +26,21 @@ class EmployeeTable(Database):
         """
         self.execute(command)
 
+    def upsert_employees(self, values):
+        command = f"""
+        INSERT INTO {self.table} {self.columns}
+        VALUES {values}
+        ON CONFLICT (id) DO UPDATE SET 
+            first = EXCLUDED.first,
+            middle1 = EXCLUDED.middle1,
+            middle2 = EXCLUDED.middle2,
+            last = EXCLUDED.last,
+            security = EXCLUDED.security,
+            division = EXCLUDED.division,
+            status = EXCLUDED.status
+        """
+        self.execute(command)
+
     def run(self):
         self.create_table()
 
@@ -124,7 +139,7 @@ class DivisionTable(Database):
         self.insert_single_record("10, '10 - Bullhead'")
 
 def employee_tables_setup():
-    CategoryTable().run()
-    StatusTable().run()
-    DivisionTable().run()
+    # CategoryTable().run()
+    # StatusTable().run()
+    # DivisionTable().run()
     EmployeeTable().run()

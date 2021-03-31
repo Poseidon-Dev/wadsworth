@@ -113,3 +113,13 @@ class Database:
     # Misc Queries
     def query(self, command):
         self.execute(command)
+
+    def check_table_exists(self, table):
+        command = f"""
+        SELECT EXISTS (
+            SELECT * FROM information_schema.tables
+            WHERE
+                table_name = {table}
+        )
+        """
+        return self.execute(commands)
