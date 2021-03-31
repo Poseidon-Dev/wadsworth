@@ -10,8 +10,8 @@ def setup(bot):
     TicketCommentTable().run()
     
     # Migrate Data
-    # JitBitTickets().push_tickets()
-    # JitBitTicketComments().push_comments()
+    JitBitTickets().push_tickets()
+    JitBitTicketComments().push_comments()
 
     # Initialize Bot
     bot.add_cog(SupportCommands(bot))
