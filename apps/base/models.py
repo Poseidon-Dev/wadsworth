@@ -28,7 +28,7 @@ class Database:
         command = f"""SELECT * FROM {table} {where}"""
         return self.execute(command)
 
-    def select_all_columns(self, columns=None, table=None, where=''):
+    def select_columns(self, columns=None, table=None, where=''):
         if not table:
             table = self.table
         if not columns:

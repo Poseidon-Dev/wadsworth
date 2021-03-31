@@ -8,7 +8,7 @@ from .utils import clean_html
 class JitBitAPI:
 
     def __init__(self):
-        self.auth = HTTPBasicAuth(config.HELPDESK_USER, config.HELPDESK_PWD)
+        self.auth = HTTPBasicAuth(core.config.HELPDESK_USER, core.config.HELPDESK_PWD)
 
         if not self.test_creds():
             raise ValueError("Authorization failed, please check your credentials")
@@ -26,7 +26,7 @@ class JitBitAPI:
         """
         Default method for JitBit API calls
         """
-        url = f'{config.HELPDESK_URL}/api/{method}'
+        url = f'{core.config.HELPDESK_URL}/api/{method}'
         print(url)
         return requests.get(url, auth=self.auth)
 
@@ -65,6 +65,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
         for ticket in tickets:
             issue_id = ticket['IssueID']
             tech = ticket['TechFirstName'] if ticket['TechFirstName'] else 'None'
+            print(ticket)
             subject = clean_html(ticket['Subject']) if ticket['Subject'] else 'None'
             status = ticket['Status'] if ticket['Status'] else 'None'
             body = self.get_ticket_body(ticket['IssueID']) if ticket['IssueID'] else 'None'
