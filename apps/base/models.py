@@ -114,12 +114,12 @@ class Database:
     def query(self, command):
         self.execute(command)
 
-    def check_table_exists(self, table):
+    def check_table_exists(self):
         command = f"""
         SELECT EXISTS (
             SELECT * FROM information_schema.tables
             WHERE
-                table_name = {table}
+                table_name = '{self.table}'
         )
         """
-        return self.execute(commands)
+        return self.execute(command)

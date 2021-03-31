@@ -25,7 +25,8 @@ class TicketTable(Database):
         self.execute(command)
 
     def run(self):
-        self.create_table()
+        if not self.check_table_exists():
+            self.create_table()
 
 
 class TicketCommentTable(Database):
@@ -53,4 +54,5 @@ class TicketCommentTable(Database):
         self.execute(command)
 
     def run(self):
-        self.create_table()
+        if not self.check_table_exists():
+            self.create_table()
