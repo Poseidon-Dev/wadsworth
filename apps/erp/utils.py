@@ -23,3 +23,7 @@ def pretty_employee(ctx, employee):
         inline=False)
     embed.set_footer(text=f"Requested by {ctx.message.author}")
     return embed
+
+def clean_name(name):
+    name = name.replace("'", '')
+    return name

@@ -2,6 +2,8 @@ import pyodbc, os
 import core.config
 
 from .models import EmployeeTable
+from .utils import clean_name
+
 
 class ErpApi(EmployeeTable):
 
@@ -16,11 +18,12 @@ class ErpApi(EmployeeTable):
                         CASE
                             WHEN LENGTH(TRIM(DEPTNO)) = 1 THEN '98'
                             WHEN LENGTH(TRIM(DEPTNO)) = 2 THEN LEFT(DEPTNO, 1)
+                            WHEN CAST(TRIM(DEPTNO) AS INTEGER) > 150 THEN '99'
                             WHEN LENGTH(TRIM(DEPTNO)) = 3 THEN LEFT(DEPTNO, 2)
                             END
                         AS DIVISION, STATUSCODE
                     FROM CMSFIL.HRTEMP
-                    WHERE COMPANYNO = 1 AND STATUSCODE = 'A' AND EMPLOYEENO > 0
+                    WHERE COMPANYNO = 1 AND EMPLOYEENO > 0
                     """
         self.erp_cur.execute(command)
         rows = self.erp_cur.fetchall()
@@ -43,13 +46,13 @@ class ErpApi(EmployeeTable):
     def insert_employees(self):
         records = self.pull_employees()
         for record in records:
-            eid = str(record['EmployeID']).capitalize() 
-            first = str(record['FirstName']).capitalize() 
-            middle1 = str(record['Middle1']).capitalize() 
-            middle2 = str(record['Middle2']).capitalize() 
-            last = str(record['LastName']).capitalize() 
+            eid = str(record['EmployeID'])
+            first = clean_name(str(record['FirstName']).title())
+            middle1 = clean_name(str(record['Middle1']).title())
+            middle2 = clean_name(str(record['Middle2']).title())
+            last = clean_name(str(record['LastName']).title())
             security = str(record['SecurityLevel'])
-            division = str(record['Department']).capitalize()
+            division = str(record['Department'])
             status = str(record['Status']).capitalize()
             values = (eid, first, middle1, middle2, last, security, division, status)
             self.upsert_employees(values)
