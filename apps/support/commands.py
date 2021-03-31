@@ -36,8 +36,13 @@ class SupportCommands(commands.Cog, TicketTable, name='Support'):
         await ctx.message.delete()
         # await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
         ticket = self.select_by_id(ticket, self.table)
-        embed = pretty_ticket(ctx, ticket[0])
-        await ctx.send(embed=embed)
+        try:
+            embed = pretty_ticket(ctx, ticket[0])
+            await ctx.send(embed=embed)
+        except Exception as e:
+            await ctx.send('Either that ticket is closed or does not exist')
+            print(f'Query returned null value: {e}')
+        
 
 
     @commands.command(name='tickets')
@@ -64,17 +69,19 @@ class SupportCommands(commands.Cog, TicketTable, name='Support'):
         await ctx.message.delete()
         # await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
         ticket_id = extract_ticket_from_url(url)
-        print(ticket_id)
         ticket = self.select_by_id(ticket_id, self.table)
-        embed = pretty_ticket(ctx, ticket[0])
-        await ctx.send(embed=embed)
-
-        if comment_quantity:
-            ticket_comments = self.select_all(table="ticket_comments", where=f"WHERE ticket_id = '{ticket_id}'")
-            i = 0
-            for comment in ticket_comments:
-                embed = pretty_comment(ctx, comment)
-                await ctx.send(embed=embed)
-                i += 1
-                if i == comment_quantity:
-                    break
+        try:
+            embed = pretty_ticket(ctx, ticket[0])
+            await ctx.send(embed=embed)
+            if comment_quantity:
+                ticket_comments = self.select_all(table="ticket_comments", where=f"WHERE ticket_id = '{ticket_id}'")
+                i = 0
+                for comment in ticket_comments:
+                    embed = pretty_comment(ctx, comment)
+                    await ctx.send(embed=embed)
+                    i += 1
+                    if i == comment_quantity:
+                        break
+        except Exception as e:
+            await ctx.send('Either that ticket is closed or does not exist')
+            print(f'Query returned null value: {e}')
