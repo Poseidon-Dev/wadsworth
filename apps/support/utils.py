@@ -29,7 +29,7 @@ def pretty_ticket(ctx, ticket):
         embed.add_field(name='Subject', value=ticket[2], inline=False)
         embed.add_field(name='Body', value=ticket[4], inline=False)
         embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
-        embed.set_footer(text=f"'Requested by {ctx.message.author}")
+        embed.set_footer(text=f"Requested by {ctx.message.author}")
         return embed
 
 
@@ -45,7 +45,7 @@ def pretty_comment(ctx, comment):
     embed.add_field(name='Tech only', value=comment[3], inline=True)
     embed.add_field(name='Message', value=comment[4], inline=False)
     embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
-    embed.set_footer(text=f"'Requested by {ctx.message.author}")
+    embed.set_footer(text=f"Requested by {ctx.message.author}")
     return embed
 
 
