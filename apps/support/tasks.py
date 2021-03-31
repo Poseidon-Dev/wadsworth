@@ -11,7 +11,7 @@ class SupportTasks(commands.Cog, name='support tasks'):
     def __init__(self, bot):
         self.bot = bot
         self.check_for_desk_changes.start()
-        self.channel = core.config.BOT_CHANNEL
+        self.channel = self.bot.get_channel(core.config.BOT_CHANNEL)
         self.ping_channel = self.bot.get_channel(core.config.WADSWORTH_CHANNEL)
         
 

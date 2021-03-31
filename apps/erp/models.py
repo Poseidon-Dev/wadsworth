@@ -42,7 +42,8 @@ class EmployeeTable(Database):
         self.execute(command)
 
     def run(self):
-        self.create_table()
+        if not self.check_table_exists():
+            self.create_table()
 
 class CategoryTable(Database):
 
@@ -66,14 +67,15 @@ class CategoryTable(Database):
         self.execute(command)
 
     def run(self):
-        self.create_table()
-        self.insert_single_record("1, 'iphone'")
-        self.insert_single_record("2, 'ipad'")
-        self.insert_single_record("3, 'Laptop'")
-        self.insert_single_record("4, 'Desktop'")
-        self.insert_single_record("5, 'Misc Device'")
-        self.insert_single_record("6, 'Email'")
-        self.insert_single_record("7, 'Software'")
+        if not self.check_table_exists():
+            self.create_table()
+            self.insert_single_record("1, 'iphone'")
+            self.insert_single_record("2, 'ipad'")
+            self.insert_single_record("3, 'Laptop'")
+            self.insert_single_record("4, 'Desktop'")
+            self.insert_single_record("5, 'Misc Device'")
+            self.insert_single_record("6, 'Email'")
+            self.insert_single_record("7, 'Software'")
 
 
 class StatusTable(Database):
@@ -97,11 +99,12 @@ class StatusTable(Database):
         self.execute(command)
 
     def run(self):
-        self.create_table()
-        self.insert_single_record("1, 'Active'")
-        self.insert_single_record("2, 'Inactive'")
-        self.insert_single_record("3, 'Broken'")
-        self.insert_single_record("4, 'Returned'")
+        if not self.check_table_exists():
+            self.create_table()
+            self.insert_single_record("1, 'Active'")
+            self.insert_single_record("2, 'Inactive'")
+            self.insert_single_record("3, 'Broken'")
+            self.insert_single_record("4, 'Returned'")
 
 
 class DivisionTable(Database):
@@ -125,21 +128,22 @@ class DivisionTable(Database):
         self.execute(command)
 
     def run(self):
-        self.create_table()
-        self.insert_single_record("98, '00 - Corporate'")
-        self.insert_single_record("1, '01 - Tuscon'")
-        self.insert_single_record("2, '02 - Phoenix'")
-        self.insert_single_record("3, '03 - Hesperia'")
-        self.insert_single_record("4, '04 - Corona'")
-        self.insert_single_record("5, '05 - Vegas'")
-        self.insert_single_record("6, '06 - Pipeline'")
-        self.insert_single_record("7, '07 - Reno'")
-        self.insert_single_record("8, '08 - Carson'")
-        self.insert_single_record("9, '09 - Pacific'")
-        self.insert_single_record("10, '10 - Bullhead'")
+        if not self.check_table_exists():
+            self.create_table()
+            self.insert_single_record("98, '00 - Corporate'")
+            self.insert_single_record("1, '01 - Tuscon'")
+            self.insert_single_record("2, '02 - Phoenix'")
+            self.insert_single_record("3, '03 - Hesperia'")
+            self.insert_single_record("4, '04 - Corona'")
+            self.insert_single_record("5, '05 - Vegas'")
+            self.insert_single_record("6, '06 - Pipeline'")
+            self.insert_single_record("7, '07 - Reno'")
+            self.insert_single_record("8, '08 - Carson'")
+            self.insert_single_record("9, '09 - Pacific'")
+            self.insert_single_record("10, '10 - Bullhead'")
 
 def employee_tables_setup():
-    # CategoryTable().run()
-    # StatusTable().run()
-    # DivisionTable().run()
+    CategoryTable().run()
+    StatusTable().run()
+    DivisionTable().run()
     EmployeeTable().run()
