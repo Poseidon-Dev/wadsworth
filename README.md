@@ -20,7 +20,7 @@ An up-to-date list of modules and their current commands
 | Injection <img width=200/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | key -a [KEY]                | Adds the key to the office keys db. Must be 29 characters long              |
-| key -d [KEY]                | Deletes a key from the office keys db based on table ID. Irreversible       |
+| key -d                      | Deletes a key from the office keys db based on table ID. Irreversible       |
 | key -m                      | Prompts for computer and email and delivers an avilable key                 |
 | key -r                      | Lists all available keys                                                    |
 | key -c                      | Count available keys                                                        |
