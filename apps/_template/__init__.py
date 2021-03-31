@@ -1,5 +1,5 @@
 from apps._template.commands import TemplateCommands
-from apps._tempalte.events import TemplateEvents
+from apps._template.events import TemplateEvents
 
 def setup(bot):
     bot.add_cog(TemplateCommands(bot))
