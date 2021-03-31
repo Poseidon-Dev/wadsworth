@@ -7,7 +7,7 @@ class TicketTable(Database):
     
     def __init__(self):
         super(TicketTable, self).__init__()
-        self.columns = '(tech, subject, status, body)'
+        self.columns = '(tech, submitter, subject, status, body)'
         self.table = 'ticket_table'
 
     def create_table(self):
@@ -16,6 +16,7 @@ class TicketTable(Database):
         {self.table}(
             id                  INT             PRIMARY KEY,
             tech                VARCHAR(100),
+            submitter           VARCHAR(100),
             subject             VARCHAR(256),
             status              VARCHAR(30),
             body                TEXT

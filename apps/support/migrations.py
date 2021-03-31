@@ -36,7 +36,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
     def __init__(self):
         JitBitAPI.__init__(self)
         TicketTable.__init__(self)
-        self.columns = '(id, tech, subject, status, body)'
+        self.columns = '(id, tech, submitter, subject, status, body)'
 
     def pull_ticket(self, ticket):
         """
@@ -65,11 +65,12 @@ class JitBitTickets(JitBitAPI, TicketTable):
         for ticket in tickets:
             issue_id = ticket['IssueID']
             tech = ticket['TechFirstName'] if ticket['TechFirstName'] else 'None'
-            print(ticket)
+            submitter = ticket['UserName'] if ticket['UserName'] else 'None'
+            submitter = submitter.replace('@arizonapipeline.com', '')
             subject = clean_html(ticket['Subject']) if ticket['Subject'] else 'None'
             status = ticket['Status'] if ticket['Status'] else 'None'
             body = self.get_ticket_body(ticket['IssueID']) if ticket['IssueID'] else 'None'
-            values = (str(issue_id), str(tech), str(subject), str(status), str(body))
+            values = (str(issue_id), str(tech), str(submitter), str(subject), str(status), str(body))
             self.insert_or_replace(values, self.columns)
 
     def check_ticket_differences(self):

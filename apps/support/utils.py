@@ -16,21 +16,22 @@ def clean_html(raw_html):
     
 
 def pretty_ticket(ctx, ticket):
-        """
-        Returns an embed for tickets for a prettier discord format
-        """
-        embed = discord.Embed(
-            title=f'**{ticket[2]}**',
-            url=f'{core.config.HELPDESK_URL}Ticket/{ticket[0]}',
-            color=0x03f8fc,
-            timestamp=ctx.message.created_at)
-        embed.add_field(name='Tech', value=ticket[1], inline=True)
-        embed.add_field(name='Status', value=ticket[3], inline=True)
-        embed.add_field(name='Subject', value=ticket[2], inline=False)
-        embed.add_field(name='Body', value=ticket[4], inline=False)
-        embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
-        return embed
+    """
+    Returns an embed for tickets for a prettier discord format
+    """
+    embed = discord.Embed(
+        title=f'**{ticket[3]}**',
+        url=f'{core.config.HELPDESK_URL}Ticket/{ticket[0]}',
+        color=0x03f8fc,
+        timestamp=ctx.message.created_at)
+    embed.add_field(name='Tech', value=ticket[1], inline=True)
+    embed.add_field(name='User', value=ticket[2], inline=True)
+    embed.add_field(name='Status', value=ticket[4], inline=True)
+    embed.add_field(name='Subject', value=ticket[3], inline=False)
+    embed.add_field(name='Body', value=ticket[5], inline=False)
+    embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
+    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    return embed
 
 
 def pretty_comment(ctx, comment):
@@ -50,5 +51,5 @@ def pretty_comment(ctx, comment):
 
 
 def extract_ticket_from_url(url_input):
-        ticket_url = f'{core.config.HELPDESK_URL}Ticket/'
-        return re.sub(ticket_url,"", url_input)
+    ticket_url = f'{core.config.HELPDESK_URL}/Ticket/'
+    return re.sub(ticket_url,"", url_input)

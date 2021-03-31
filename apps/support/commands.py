@@ -63,7 +63,8 @@ class SupportCommands(commands.Cog, TicketTable, name='Support'):
         """
         await ctx.message.delete()
         # await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
-        ticket_id = int(extract_ticket_from_url(url))
+        ticket_id = extract_ticket_from_url(url)
+        print(ticket_id)
         ticket = self.select_by_id(ticket_id, self.table)
         embed = pretty_ticket(ctx, ticket[0])
         await ctx.send(embed=embed)
