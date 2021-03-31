@@ -6,7 +6,7 @@ import core.config
 class Database:
 
     def __init__(self):
-        self.conn = core.cofig.conn()
+        self.conn = core.config.conn()
         self.cur = self.conn.cursor()
         self.table = ''
         self.columns = tuple()
@@ -39,7 +39,7 @@ class Database:
         command = f""" SELECT {columns} FROM {table} {where} """
         return self.execute(command)
 
-    def select_by_id(self, table=None, key):
+    def select_by_id(self, key, table=None):
         if not table:
             table = self.table
         command = f"""SELECT * FROM {table} WHERE ID = {key} """

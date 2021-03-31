@@ -22,7 +22,7 @@ async def on_ready():
             extension = extension.replace('apps.', '')
             print(f'{extension} loaded')
         except Exception as e:
-            exception = f'Could not load {extension}'
+            exception = f'Could not load {extension}\n{e}'
             print(exception)
 
     await channel.send(messages.ready)

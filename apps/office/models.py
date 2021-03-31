@@ -1,6 +1,6 @@
-import _base.Database as DB
+from apps.base import Database
 
-class OfficeTable(DB):
+class OfficeTable(Database):
 
     def __init__(self):
         super().__init__()
