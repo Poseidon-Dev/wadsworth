@@ -26,6 +26,31 @@ class EmployeeTable(Database):
         """
         self.execute(command)
 
+    def fetch_like_last(self, lastname):
+        command = f"""
+        SELECT * FROM {self.table}
+        WHERE last LIKE '{lastname}%'
+        AND STATUS = 'A'
+        """
+        return self.execute(command)
+
+    def fetch_like_first(self, firstname):
+        command = f"""
+        SELECT * FROM {self.table}
+        WHERE first LIKE '{firstname}%'
+        AND STATUS = 'A'
+        """
+        return self.execute(command)
+
+    def fetch_like_first_last(self, firstname, lastname):
+        command = f"""
+        SELECT * FROM {self.table}
+        WHERE first LIKE '{firstname}%'
+        AND last LIKE '{lastname}%'
+        AND STATUS = 'A'
+        """
+        return self.execute(command)
+
     def upsert_employees(self, values):
         command = f"""
         INSERT INTO {self.table} {self.columns}

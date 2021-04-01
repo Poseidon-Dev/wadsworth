@@ -24,6 +24,31 @@ def pretty_employee(ctx, employee):
     embed.set_footer(text=f"Requested by {ctx.message.author}")
     return embed
 
+def pretty_employees(ctx, employees):
+    """
+    Returns an embed for a list of employees for a prettier discord format
+    """
+    name = 'Employee Search Results'
+    embed = discord.Embed(
+        title=f'**{name}**',
+        color=0x03f8fc,
+        timestamp=ctx.message.created_at)
+    for employee in employees:
+        name = f'{employee[1]} {employee[2][:1]} {employee[4]}'
+        division = Database().select_by_id(table='division_table', key=employee[6])
+        embed.add_field(
+        name=f'{name}',
+        value=f"""
+        > ID : {employee[0]}\n> 
+        > Division : {division[0][1]}\n> 
+        > Status : {employee[7]}\n> 
+        > Security : {employee[5]}\n> 
+        """ + '\u2800' * 27,
+        inline=False)
+    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    return embed
+
+
 def clean_name(name):
     name = name.replace("'", '')
     return name

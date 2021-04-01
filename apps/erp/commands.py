@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from core.shared.utils import pretty_ping
 import core.config
-from .utils import pretty_employee
+from .utils import pretty_employee, pretty_employees
 from .models import EmployeeTable
 
 class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
@@ -23,13 +23,37 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
         await self.channel.send(embed=embed)
 
     @commands.command(name='whois')
-    async def employee_records(self, ctx, argument, key):
+    async def employee_records(self, ctx, argument, param1, param2=None):
         """
-        [FILTER] [ARG]
+        [FILTER] [PARAM1] [PARAM2]
         \u2800\u2800Returns employee records based on filter
         \u2800\u2800(-id) : Looks up employee based on Employee ID
+        \u2800\u2800(-f) : Looks up employees with first name like [PARAM1] (Active Status)
+        \u2800\u2800(-l) : Looks up employees with last name like [PARAM1] (Active Status)
+        \u2800\u2800(-fl) : Looks up employees with first name like [PARAM1] and last name like [PARAM2] (Active Status)
         """
-        if argument in ['id',]:
-            employee = self.select_by_id(int(key), self.table)
+        if argument in ['id', '-id']:
+            employee = self.select_by_id(int(param1), self.table)
             await ctx.send(embed=pretty_employee(ctx, employee[0]))
             # await ctx.send(embed=pretty_assets(ctx, key))
+
+        if argument in ['l', '-l', 'last', '-last']:
+            employees = self.fetch_like_last(param1.title())
+            try:
+                await ctx.send(embed=pretty_employees(ctx, employees))
+            except Exception as e:
+                await ctx.send(f'Too many search result to display in discord')
+
+        if argument in ['f', '-f', 'first', '-first']:
+            employees = self.fetch_like_first(param1.title())
+            try:
+                await ctx.send(embed=pretty_employees(ctx, employees))
+            except Exception as e:
+                await ctx.send(f'Too many search result to display in discord')
+
+        if argument in ['fl', '-fl', 'firstlast', '-firstlast']:
+            employees = self.fetch_like_first_last(param1.title(), param2.title())
+            try:
+                await ctx.send(embed=pretty_employees(ctx, employees))
+            except Exception as e:
+                await ctx.send(f'Too many search result to display in discord')

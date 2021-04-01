@@ -28,7 +28,10 @@ An up-to-date list of modules and their current commands
 | tickets                     | Retrieves all active tickets                                                |
 | url [URL] [COUNT]           | Retrieves a ticket based on URL, delivers comments based on count           |
 | pass                        | Generates a random password based on a list of 4000 words                   |
-| whois id [ID]               | Retrieves current employee record                                           |
+| whois id [ID]               | Retrieves employee record with ID (Inactive or active)                      |
+| whois f [First]             | Retrieves employe with fname like [First] (active)                          |
+| whois l [Last]              | Retrieves employe with lname like [Last] (active)                           |
+| whois fl [First] [Last]     | Retrieves employe with fname and lname like [First] [Last] (active)         |
 
 ## Current Modules
 
@@ -36,8 +39,10 @@ An up-to-date list of modules and their current commands
 | ----------------------------| ----------------------------------------------------------------------------|
 | JitBit API                  | Creates a request integration into discord to allow for quicker viewing     |
 | Office                      | Stores and logs MS Office keys                                              |
-| Passwords                   | Password generator                                                          |
+| Password                    | Password generator                                                          |
 | Employee                    | ERP Connection                                                              |
+| Censor                      | Very remidial vulgarity censor                                              |
+| Info                        | General information about Wadsworth                                         |
 ## Potential future modules
 
 - [x] Password Generator
