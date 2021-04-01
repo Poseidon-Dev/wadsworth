@@ -58,7 +58,7 @@ class Database:
         self.conn.commit()
         return response
 
-    def count_records(self, where=''):
+    def count_records(self, table=None, where=''):
         if not table:
             table = self.table
         command = f""" SELECT COUNT (*) FROM {table} {where} """

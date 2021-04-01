@@ -2,7 +2,7 @@ import os, psycopg2
 import discord
 from discord.ext import commands
 
-TESTING = False
+TESTING = True
 POSTGRES = True
 
 # BOT INFO
@@ -18,7 +18,7 @@ OFFICE_CHANNEL = int(os.getenv('OFFICE_CHANNEL'))
 WADSWORTH_CHANNEL = int(os.getenv('WADSWORTH_CHANNEL'))
 EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
 
-# SETTING
+# SETTINGS
 BOT_PREFIX = ('!', '-')
 TOKEN = os.getenv('BOT_TOKEN')
 APPLICATION_ID = os.getenv('APPLICATION_ID')
@@ -65,6 +65,13 @@ HELPDESK_URL = os.getenv('JITBIT_SUPPORT_URL')
 HELPDESK_USER = os.getenv('JITBIT_USER')
 HELPDESK_PWD = os.getenv('JITBIT_PASSWORD')
 
+# EMAIL
+EMAIL_UID = os.getenv('EMAIL_UID')
+EMAIL_PWD = os.getenv('EMAIL_PWD')
+EMAIL_SMTP = os.getenv('EMAIL_SMTP')
+EMAIL_SMTP_PORT = int(os.getenv('EMAIL_SMTP_PORT'))
+EMAIL_TO = os.getenv('EMAIL_TO')
+
 # VERIZON API
 
 # GOOGLE API
@@ -92,9 +99,12 @@ if TESTING:
         )
         return POSTGRES_CONN
 
+    # EMAIL
+    EMAIL_TO = os.getenv('EMAIL_TO_TEST')
+
     # CURRENT MODULES
     STARTUP_COGS = [
-    'apps.info',  'apps.erp', 'apps.support'
+    'apps.info',  'apps.office'
     ] 
 
     print('=' * 8 + 'TESTING MODE' + '=' * 8 )

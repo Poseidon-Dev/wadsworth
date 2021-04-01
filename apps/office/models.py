@@ -47,7 +47,7 @@ class OfficeTable(Database):
         """
         Returns a count of available keys 
         """
-        return self.count_records("WHERE available=True")
+        return self.count_records(table='office_table', where="WHERE available=True")
 
     def select_all_active(self):
         """

@@ -15,3 +15,6 @@ def pretty_keys(ctx, keys):
         embed.set_footer(text=f"Requested by {ctx.message.author}")
     return embed
 
+
+
+
