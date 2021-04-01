@@ -7,7 +7,7 @@ from .utils import pretty_keys
 from .models import OfficeTable
 
 
-class OfficeCommands(commands.Cog, OfficeTable, name='Office'):
+class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
 
     def __init__(self, bot):
         OfficeTable.__init__(self)

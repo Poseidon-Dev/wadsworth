@@ -6,7 +6,7 @@ import core.config
 from .utils import pretty_ticket, pretty_comment, extract_ticket_from_url
 from .models import TicketTable, TicketCommentTable
 
-class SupportCommands(commands.Cog, TicketTable, name='Support'):
+class SupportCommands(commands.Cog, TicketTable, name='support_commands'):
 
     def __init__(self, bot):
         TicketTable.__init__(self)

@@ -11,6 +11,10 @@ def clean_html(raw_html):
     cleantext = cleantext.replace('\r', '')
     cleantext = cleantext.replace("'", '')
     cleantext = cleantext.replace("\"", ' ')
+    cleantext = cleantext.replace(":", ' ')
+    cleantext = cleantext.replace("(", ' ')
+    cleantext = cleantext.replace(")", ' ')
+    cleantext = cleantext.replace("#", ' ')
     cleantext = cleantext.replace(u'\xa0', u' ')
     return cleantext
     

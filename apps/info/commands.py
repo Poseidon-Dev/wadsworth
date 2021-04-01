@@ -4,11 +4,11 @@ from discord.ext import commands
 from core.shared.utils import pretty_ping
 import core.config
 
-class InfoCommands(commands.Cog, name='Info'):
+class InfoCommands(commands.Cog, name='info_commands'):
 
     def __init__(self, bot):
         self.bot = bot
-        self.hidden = ['info-ping']
+        self.hidden = []
         if core.config.TESTING:
             self.channel = self.bot.get_channel(core.config.BOT_CHANNEL)
         else:
@@ -17,7 +17,7 @@ class InfoCommands(commands.Cog, name='Info'):
 
 
     # Commands
-    @commands.command(name='info-ping', aliases=['-ip'])
+    @commands.command(name='info-ping', aliases=['-ip'], hidden=True)
     async def info_ping(self, ctx):
         """
         Checks to see if commands are reaching the 'Info' module
@@ -34,19 +34,22 @@ class InfoCommands(commands.Cog, name='Info'):
         embed = discord.Embed(
             title='Wadsworth Help',
             desciption='List of available commands',
-            color=0xE3E3E3) 
-        for cog in self.bot.cogs:
-            cog = self.bot.get_cog(cog)
-            commands = cog.get_commands()
-            help_commands = [
-                (command.name, command.help)
-                for command in commands
-                if command.name not in self.hidden
-                ]
-            help_text = '\n'.join(f'{n} : {h}' for n, h in help_commands)
-            embed.add_field(name=f'{cog.qualified_name}', value=help_text, inline=False)
-            embed.add_field(name='** **', value=f'** **', inline=False)
-            embed.set_footer(text=f"Requested by {ctx.message.author}")
+            color=0xE3E3E3,
+            timestamp=ctx.message.created_at)
+        for cog, commands in self.bot.cogs.items():
+            if cog.split('_')[1].lower() not in ['events', 'tasks']:
+                cog = self.bot.get_cog(cog)
+                commands = cog.get_commands()
+                help_commands = [
+                    (command.name, command.help)
+                    for command in commands
+                    if command.name not in self.hidden
+                    ]
+                help_text = '\n'.join(f'{n} : {h}' for n, h in help_commands)
+                cog_title = cog.qualified_name.split('_')[0].title()
+                embed.add_field(name=cog_title, value=help_text, inline=False)
+                embed.add_field(name='** **', value=f'** **', inline=False)
+                embed.set_footer(text=f"Requested by {ctx.message.author}")
         await self.channel.send(f'{ctx.author.mention}')
         await self.channel.send(embed=embed)
 

@@ -6,7 +6,7 @@ from random import randint
 import core.config
 from core.shared.utils import pretty_ping
 
-class PasswordCommands(commands.Cog, name='Password'):
+class PasswordCommands(commands.Cog, name='password_commands'):
 
     def __init__(self, bot):
         self.bot = bot

@@ -4,7 +4,7 @@ from discord.ext import commands
 from core.shared.utils import pretty_ping
 import core.config
 
-class CensorCommands(commands.Cog, name='Censor'):
+class CensorCommands(commands.Cog, name='censor_commands'):
 
     def __init__(self, bot):
         self.bot = bot

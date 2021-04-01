@@ -5,7 +5,7 @@ import core.config
 
 from .migrations import ErpApi
 
-class EmployeeTasks(commands.Cog, name='employee tasks'):
+class EmployeeTasks(commands.Cog, name='employee_tasks'):
 
     def __init__(self, bot):
         self.bot = bot

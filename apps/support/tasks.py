@@ -6,7 +6,7 @@ import core.config
 from .migrations import JitBitTickets, JitBitTicketComments
 from core.shared.utils import pretty_ping
 
-class SupportTasks(commands.Cog, name='support tasks'):
+class SupportTasks(commands.Cog, name='support_tasks'):
 
     def __init__(self, bot):
         self.bot = bot

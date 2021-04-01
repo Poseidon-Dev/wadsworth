@@ -6,7 +6,7 @@ import core.config
 from .utils import pretty_employee
 from .models import EmployeeTable
 
-class EmployeeCommands(commands.Cog, EmployeeTable, name='Employee'):
+class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
 
     def __init__(self, bot):
         EmployeeTable.__init__(self)
@@ -24,6 +24,11 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='Employee'):
 
     @commands.command(name='whois')
     async def employee_records(self, ctx, argument, key):
+        """
+        [FILTER] [ARG]
+        \u2800\u2800Returns employee records based on filter
+        \u2800\u2800(-id) : Looks up employee based on Employee ID
+        """
         if argument in ['id',]:
             employee = self.select_by_id(int(key), self.table)
             await ctx.send(embed=pretty_employee(ctx, employee[0]))
