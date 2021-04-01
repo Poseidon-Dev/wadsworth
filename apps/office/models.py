@@ -1,4 +1,5 @@
 from apps.base import Database
+from datetime import date
 
 class OfficeTable(Database):
 
@@ -36,12 +37,12 @@ class OfficeTable(Database):
         Retrieves and returns an available key, logs computer and email. Then changes status
         to unavailable with current date
         """
-        row = self.select_top_row(columns='available', values='True')
+        row = self.select_top_row('available','true', order='ORDER BY available DESC')
         try:
-            self.update_record(row[0][0], (0, computer, email, date.today()),('available', 'computer_name', 'email', 'date'))
+            self.update_record(row[0], (0, computer, email, date.today()),('available', 'computer_name', 'email', 'date'))
             return row
         except Exception as e:
-            return f'There are no more keys in the table'
+            return e
     
     def count_keys(self):
         """

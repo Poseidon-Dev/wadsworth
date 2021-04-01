@@ -147,7 +147,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
     def deliver_available_key(self, email_msg, comp_msg, key):
         try:
             key = self.retrieve_and_log_key(comp_msg.content.lower(), email_msg.content.lower())
-            response = '```' + 'Here is your key : ' + key[0][1] + '```'
+            response = '```' + 'Here is your key : ' + key[1] + '```'
         except Exception as e:
-            response = 'No keys available'
+            response = f'No keys available: {e}'
         return response

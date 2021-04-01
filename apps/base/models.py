@@ -45,10 +45,10 @@ class Database:
         command = f"""SELECT * FROM {table} WHERE ID = {key} """
         return self.execute(command)
 
-    def select_top_row(self, table=None, where='', order=''):
+    def select_top_row(self, columns, values, table=None, where='', order=''):
         if not table:
             table = self.table
-        command = f"""SELECT * FROM {table} {where} {order}"""
+        command = f"""SELECT * FROM {table} WHERE {columns} = {values} {order}"""
         print(command)
         self.cur.execute(command)
         try:
@@ -98,15 +98,15 @@ class Database:
 
     # Update Queries
     def update_record(self, key, values, columns=None):
+        print('made it here')
         if not columns:
             columns = self.columns
-    
         detail = ', '.join(f"{c} = '{v}'" for c,v in zip(columns, values))
         command = f"""
         UPDATE {self.table} 
         SET {detail}
         WHERE 
-        ID = {key}
+        id = {key}
         """
         return self.execute(command)
 
