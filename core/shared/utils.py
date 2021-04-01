@@ -23,6 +23,7 @@ def send_email(subject, message, to=core.config.EMAIL_TO):
     msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] = to
+    print(to)
     msg.set_content(message)
 
     context = ssl.create_default_context()

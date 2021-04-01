@@ -32,28 +32,44 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
         \u2800\u2800(-l) : Looks up employees with last name like [PARAM1] (Active Status)
         \u2800\u2800(-fl) : Looks up employees with first name like [PARAM1] and last name like [PARAM2] (Active Status)
         """
+        # Argument ID
         if argument in ['id', '-id']:
-            employee = self.select_by_id(int(param1), self.table)
-            await ctx.send(embed=pretty_employee(ctx, employee[0]))
-            # await ctx.send(embed=pretty_assets(ctx, key))
+            if len(param1) != 5:
+                await ctx.send('That is not a valid employee number')
+            else:
+                employee = self.select_by_id(int(param1), self.table)
+                await ctx.send(embed=pretty_employee(ctx, employee[0]))
+                # await ctx.send(embed=pretty_assets(ctx, key))
 
+        # Argument First Name
         if argument in ['l', '-l', 'last', '-last']:
-            employees = self.fetch_like_last(param1.title())
-            try:
-                await ctx.send(embed=pretty_employees(ctx, employees))
-            except Exception as e:
-                await ctx.send(f'Too many search result to display in discord')
+            if len(param1) <= 2:
+                await ctx.send('Thats too broad of a search, please be more specific')
+            else:
+                employees = self.fetch_like_last(param1.title())
+                try:
+                    await ctx.send(embed=pretty_employees(ctx, employees))
+                except Exception as e:
+                    await ctx.send(f'Too many search results to display in discord')
 
+        # Argument Last Name
         if argument in ['f', '-f', 'first', '-first']:
-            employees = self.fetch_like_first(param1.title())
-            try:
-                await ctx.send(embed=pretty_employees(ctx, employees))
-            except Exception as e:
-                await ctx.send(f'Too many search result to display in discord')
+            if len(param1) <= 2:
+                await ctx.send('Thats too broad of a search, please be more specific')
+            else:
+                employees = self.fetch_like_first(param1.title())
+                try:
+                    await ctx.send(embed=pretty_employees(ctx, employees))
+                except Exception as e:
+                    await ctx.send(f'Too many search results to display in discord')
 
+        # Argument First and Last Name
         if argument in ['fl', '-fl', 'firstlast', '-firstlast']:
-            employees = self.fetch_like_first_last(param1.title(), param2.title())
-            try:
-                await ctx.send(embed=pretty_employees(ctx, employees))
-            except Exception as e:
-                await ctx.send(f'Too many search result to display in discord')
+            if len(param1) + len(param2) <= 4:
+                await ctx.send('Thats too broad of a search, please be more specific')
+            else:
+                employees = self.fetch_like_first_last(param1.title(), param2.title())
+                try:
+                    await ctx.send(embed=pretty_employees(ctx, employees))
+                except Exception as e:
+                    await ctx.send(f'Too many search results to display in discord')

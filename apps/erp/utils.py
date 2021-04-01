@@ -37,11 +37,10 @@ def pretty_employees(ctx, employees):
         name = f'{employee[1]} {employee[2][:1]} {employee[4]}'
         division = Database().select_by_id(table='division_table', key=employee[6])
         embed.add_field(
-        name=f'{name}',
+        name=f'{name}\n',
         value=f"""
         > ID : {employee[0]}\n> 
         > Division : {division[0][1]}\n> 
-        > Status : {employee[7]}\n> 
         > Security : {employee[5]}\n> 
         """ + '\u2800' * 27,
         inline=False)

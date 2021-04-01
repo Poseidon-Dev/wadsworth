@@ -2,7 +2,7 @@ import os, psycopg2
 import discord
 from discord.ext import commands
 
-TESTING = False
+TESTING = True
 POSTGRES = True
 
 # BOT INFO
@@ -105,7 +105,7 @@ if TESTING:
     # CURRENT MODULES
     STARTUP_COGS = [
     'apps.info',
-    'apps.erp',
+    'apps.office',
     ] 
 
     print('=' * 8 + 'TESTING MODE' + '=' * 8 )
