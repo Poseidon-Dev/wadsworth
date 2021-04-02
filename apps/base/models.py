@@ -13,13 +13,19 @@ class Database:
 
     def execute(self, command):
         print(command)
-        self.cur.execute(command)
         try:
-            response = self.cur.fetchall()
-        except:
-            response = ''
-        self.conn.commit()
+            self.cur.execute(command)
+            response = True
+            try:
+                response = self.cur.fetchall()
+            except:
+                response = ''
+            self.conn.commit()
+        except Exception as err:
+            response = err
+            self.execute('rollback;')
         return response
+    
 
     # Select Queries
     def select_all(self, table=None, where=''):
@@ -83,9 +89,9 @@ class Database:
         INSERT INTO {self.table} {columns}
         VALUES {values}
         ON CONFLICT ON CONSTRAINT {self.table}_pkey
-            DO NOTHING
+            DO NOTHING;
         """
-        self.execute(command)
+        return self.execute(command)
 
     def insert_single_record(self, values):
         command = f"""
@@ -94,7 +100,7 @@ class Database:
         ON CONFLICT ON CONSTRAINT {self.table}_pkey
             DO NOTHING
         """
-        self.execute(command)
+        print(self.execute(command))
 
     # Update Queries
     def update_record(self, key, values, columns=None):

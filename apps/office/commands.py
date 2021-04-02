@@ -117,14 +117,18 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
                     # Argument -h
                     if argument in ['-h', 'history']:
                         await self.channel.send('you made it to the dark place of history')
+
     def add_key(self, ctx, key):
             """
             Adds a key to office_table db
             """
             if len(key) != 29:
-                return self.channel.send(f"I do apologize, but I do not believe that '**{key}**' is a valid key") 
-            self.insert_key(key)
-            return self.channel.send(f'I have added key {key} with the others') 
+                return self.channel.send(f"I do apologize, but I do not believe that '**{key}**' is a valid key")
+            response = self.insert_key(key)
+            if response is True or response == '':
+                return self.channel.send(f'I have added key {key} with the others') 
+            else:
+                return self.channel.send('That key already exist')
 
     def del_key(self, ctx, msg, key):
         """

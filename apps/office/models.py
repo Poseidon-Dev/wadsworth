@@ -16,7 +16,7 @@ class OfficeTable(Database):
         CREATE TABLE IF NOT EXISTS
         {self.table}(
             id              SERIAL          PRIMARY KEY ,
-            office_keys     VARCHAR(30),
+            office_keys     VARCHAR(30)     UNIQUE,
             available       BOOLEAN,
             computer_name   VARCHAR(50),
             email           VARCHAR(50),
@@ -29,8 +29,10 @@ class OfficeTable(Database):
         """
         Inserts a new office key into db
         """
-        key = f"('{key}', '1')"
-        self.insert_or_replace(columns='(office_keys, available)', values=key)
+        values = f"('{key}', '1')"
+        return self.insert_or_replace(columns='(office_keys, available)', values=values)
+        
+
 
     def retrieve_and_log_key(self, computer, email):
         """
