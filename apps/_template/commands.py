@@ -4,7 +4,7 @@ from discord.ext import commands
 from core.shared.utils import pretty_ping
 import core.config
 
-class TemplateCommands(commands.Cog, name='Template'):
+class TemplateCommands(commands.Cog, name='template_commands'):
 
     def __init__(self, bot):
         self.bot = bot

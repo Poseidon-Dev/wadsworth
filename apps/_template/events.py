@@ -16,5 +16,4 @@ class TemplateEvents(commands.Cog, name='template_events'):
     # Events
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.content == '/?':
-            await message.channel.send('template events')
+        return True
