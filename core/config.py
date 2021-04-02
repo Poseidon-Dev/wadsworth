@@ -2,7 +2,7 @@ import os, psycopg2
 import discord
 from discord.ext import commands
 
-TESTING = True
+TESTING = False
 POSTGRES = True
 
 # BOT INFO

@@ -91,11 +91,13 @@ class JitBitTickets(JitBitAPI, TicketTable):
                     ticket = self.pull_ticket(key)
                     issue_id = ticket['TicketID']
                     tech = ticket['AssigneeUserInfo']['FirstName'] if ticket['AssigneeUserInfo'] else 'None'
+                    submitter = ticket['UserName'] if ticket['UserName'] else 'None'
+                    submitter = submitter.replace('@arizonapipeline.com', '')
                     subject = clean_html(ticket['Subject']) if ticket['Subject'] else 'None'
                     status = ticket['Status'] if ticket['Status'] else 'None'
                     body = clean_html(ticket['Body']) if ticket['Body'] else 'None'
-                    values = (str(issue_id), str(tech), str(subject), str(status), str(body))
-                    self.insert_or_replace(values) 
+                    values = (str(issue_id), str(tech), str(submitter), str(subject), str(status), str(body))
+                    self.insert_or_replace(values, self.columns)
                 else:
                     return None
         else:
