@@ -67,15 +67,18 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
                                 'message',
                                 timeout=self.timeout,
                                 check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
-                            await self.channel.send(f"Are you positive you'd like to retire key: {msg.content}?")
-                            try:
-                                del_msg = await self.bot.wait_for(
-                                    'message',
-                                    timeout=self.timeout,
-                                    check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
-                                await self.del_key(ctx, del_msg, msg.content)
-                            except asyncio.TimeoutError:
-                                await self.channel.send('I suppose not\nI will be here if you need me')
+                            if self.check_if_id_exists(msg.content):
+                                await self.channel.send(f"Are you positive you'd like to retire key: {msg.content}?")
+                                try:
+                                    del_msg = await self.bot.wait_for(
+                                        'message',
+                                        timeout=self.timeout,
+                                        check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+                                    await self.del_key(ctx, del_msg, msg.content)
+                                except asyncio.TimeoutError:
+                                    await self.channel.send('I suppose not\nI will be here if you need me')
+                            else:
+                                await self.channel.send("That's not a valid key")
                         except asyncio.TimeoutError:
                             await self.channel.send('I suppose that means you would like to keep them all.')
 
@@ -147,6 +150,12 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
         """
         return self.select_all_active()
 
+
+    def check_if_id_exists(self, key):
+        """
+        Checks if the pkey exists
+        """
+        return self.select_by_id(key)
 
     def deliver_available_key(self, email_msg, comp_msg, key):
         try:
