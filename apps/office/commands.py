@@ -60,56 +60,21 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
                     # Argument -d
                     if argument in ['-d', 'delete']:
                         try:
-                            await self.channel.send('Which key would you like to delete?')
-                            keys = self.read_available()
-                            await self.channel.send(embed=pretty_keys(ctx, keys))
-                            msg = await self.bot.wait_for(
-                                'message',
-                                timeout=self.timeout,
-                                check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
-                            if self.check_if_id_exists(msg.content):
-                                await self.channel.send(f"Are you positive you'd like to retire key: {msg.content}?")
-                                try:
-                                    del_msg = await self.bot.wait_for(
-                                        'message',
-                                        timeout=self.timeout,
-                                        check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
-                                    await self.del_key(ctx, del_msg, msg.content)
-                                except asyncio.TimeoutError:
-                                    await self.channel.send('I suppose not\nI will be here if you need me')
-                            else:
-                                await self.channel.send("That's not a valid key")
+                            await self.delete_key_checks(ctx, key)
                         except asyncio.TimeoutError:
                             await self.channel.send('I suppose that means you would like to keep them all.')
 
                     # Argument -r
                     if argument in ['-r', 'read']:
-                        keys = self.read_available()
-                        if keys:
-                            await self.channel.send(embed=pretty_keys(ctx, keys))
-                        else:
-                            await self.channel.send('I apologize, it appears you are all out of keys.')
-                            await asyncio.sleep(1.5)
-                            await self.channel.send('You can add more keys with -key -a [KEY] command.')
+                        try:
+                            await self.read_available()
+                        except Exception as e:
+                            print(e)
 
                     # Argument -m 
                     if argument in ['-m', 'me']:
-                        await self.channel.send('What was the email you used?')
                         try:
-                            email_msg = await self.bot.wait_for(
-                                'message',
-                                timeout=self.timeout,
-                                check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
-                            try:
-                                await self.channel.send('And what was the computer name')
-                                comp_msg = await self.bot.wait_for(
-                                    'message',
-                                    timeout=self.timeout,
-                                    check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
-                                office_key = self.deliver_available_key(email_msg, comp_msg, key)
-                                await self.channel.send(str(office_key))
-                            except asyncio.TimeoutError:
-                                await self.channel.send('I suppose you must have forgotten\nI will be here if you need me')
+                            await self.retrieve_key_check(ctx, key)
                         except asyncio.TimeoutError:
                             await self.channel.send('I suppose you must have forgotten\nI will be here if you need me')
                         
@@ -133,6 +98,28 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
             else:
                 return self.channel.send('That key already exist')
 
+    async def delete_key_checks(self, ctx, key):
+        await self.channel.send('Which key would you like to delete?')
+        keys = self.read_available()
+        await self.channel.send(embed=pretty_keys(ctx, keys))
+        msg = await self.bot.wait_for(
+            'message',
+            timeout=self.timeout,
+            check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+        if self.check_if_id_exists(msg.content):
+            await self.channel.send(f"Are you positive you'd like to retire key: {msg.content}?")
+            try:
+                del_msg = await self.bot.wait_for(
+                    'message',
+                    timeout=self.timeout,
+                    check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+                await self.del_key(ctx, del_msg, msg.content)
+            except asyncio.TimeoutError:
+                await self.channel.send('I suppose not\nI will be here if you need me')
+        else:
+            await self.channel.send("That's not a valid key")
+        
+
     def del_key(self, ctx, msg, key):
         """
         Deletes a key from the office_table db based on ID
@@ -144,11 +131,17 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
             return self.channel.send("I'll put it back with the others then")
         
         
-    def read_available(self):
+    async def read_available(self):
         """
         Reads all currently available keys
         """
-        return self.select_all_active()
+        keys = self.select_all_active()
+        if keys:
+            await self.channel.send(embed=pretty_keys(ctx, keys))
+        else:
+            await self.channel.send('I apologize, it appears you are all out of keys.')
+            await asyncio.sleep(1.5)
+            await self.channel.send('You can add more keys with -key -a [KEY] command.')
 
 
     def check_if_id_exists(self, key):
@@ -156,6 +149,28 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
         Checks if the pkey exists
         """
         return self.select_by_id(key)
+
+
+    async def retrieve_key_check(self, ctx, key):
+        await self.channel.send('What was the email you used?')
+        try:
+            email_msg = await self.bot.wait_for(
+            'message',
+            timeout=self.timeout,
+            check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+            try: 
+                await self.channel.send('And what was the computer name')
+                comp_msg = await self.bot.wait_for(
+                    'message',
+                    timeout=self.timeout,
+                    check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+                office_key = self.deliver_available_key(email_msg, comp_msg, key)
+                await self.channel.send(str(office_key))
+            except asyncio.TimeoutError:
+                await self.channel.send('I suppose you must have forgotten\nI will be here if you need me')
+        except asyncio.TimeoutError:
+            await self.channel.send('I suppose you must have forgotten\nI will be here if you need me')
+
 
     def deliver_available_key(self, email_msg, comp_msg, key):
         try:
