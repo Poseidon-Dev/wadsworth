@@ -37,7 +37,6 @@ STARTUP_COGS = [
     'apps.password',
     'apps.censor',
     'apps.erp',
-    'apps.support'
 ] 
 
 # LOCAL DB

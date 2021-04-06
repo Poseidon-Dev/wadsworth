@@ -67,7 +67,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
                     # Argument -r
                     if argument in ['-r', 'read']:
                         try:
-                            await self.read_available()
+                            await self.read_available(ctx)
                         except Exception as e:
                             print(e)
 
@@ -131,7 +131,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
             return self.channel.send("I'll put it back with the others then")
         
         
-    async def read_available(self):
+    async def read_available(self, ctx):
         """
         Reads all currently available keys
         """
