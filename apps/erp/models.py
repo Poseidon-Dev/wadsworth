@@ -30,7 +30,6 @@ class EmployeeTable(Database):
         command = f"""
         SELECT * FROM {self.table}
         WHERE last LIKE '{lastname}%'
-        AND STATUS = 'A'
         ORDER BY id
         """
         return self.execute(command)
@@ -39,7 +38,6 @@ class EmployeeTable(Database):
         command = f"""
         SELECT * FROM {self.table}
         WHERE first LIKE '{firstname}%'
-        AND STATUS = 'A'
         ORDER BY id
         """
         return self.execute(command)
@@ -49,7 +47,6 @@ class EmployeeTable(Database):
         SELECT * FROM {self.table}
         WHERE first LIKE '{firstname}%'
         AND last LIKE '{lastname}%'
-        AND STATUS = 'A'
         """
         return self.execute(command)
 
