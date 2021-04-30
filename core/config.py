@@ -17,6 +17,7 @@ BOT_CHANNEL = int(os.getenv('BOT_CHANNEL'))
 OFFICE_CHANNEL = int(os.getenv('OFFICE_CHANNEL'))
 WADSWORTH_CHANNEL = int(os.getenv('WADSWORTH_CHANNEL'))
 EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
+INVENTORY_CHANNEL = int(os.getenv('INVENTORY_CHANNEL'))
 
 # SETTINGS
 BOT_PREFIX = ('!', '-')
@@ -37,6 +38,7 @@ STARTUP_COGS = [
     'apps.password',
     'apps.censor',
     'apps.erp',
+    'apps.inventory',
 ] 
 
 # LOCAL DB
@@ -104,7 +106,7 @@ if TESTING:
     # CURRENT MODULES
     STARTUP_COGS = [
     'apps.info',
-    'apps.office',
+    'apps.inventory',
     ] 
 
     print('=' * 8 + 'TESTING MODE' + '=' * 8 )

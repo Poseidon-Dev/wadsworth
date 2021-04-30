@@ -23,6 +23,7 @@ class Database:
             self.conn.commit()
         except Exception as err:
             response = err
+            print(response)
             self.execute('rollback;')
         return response
     
@@ -104,7 +105,6 @@ class Database:
 
     # Update Queries
     def update_record(self, key, values, columns=None):
-        print('made it here')
         if not columns:
             columns = self.columns
         detail = ', '.join(f"{c} = '{v}'" for c,v in zip(columns, values))
