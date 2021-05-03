@@ -26,6 +26,21 @@ class InventoryTable(Database):
         """
         self.execute(command)
 
+    def update_record(self, key, column, mode):
+        where = f'WHERE id = {key}'
+        count = self.select_columns(columns=column, where=where)[0][0]
+        if mode == 'add':
+            count += 1
+        elif mode == 'remove' and count:
+            if count > 0:
+                count -= 1        
+        command = f"""
+        UPDATE {self.table} set {column} = {count}
+        {where}
+        """
+        self.execute(command)
+        
+
     def run(self):
         self.create_table()
     

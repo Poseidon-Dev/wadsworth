@@ -106,7 +106,7 @@ if TESTING:
     # CURRENT MODULES
     STARTUP_COGS = [
     'apps.info',
-    'apps.inventory',
+    'apps.erp',
     ] 
 
     print('=' * 8 + 'TESTING MODE' + '=' * 8 )

@@ -9,6 +9,8 @@ Test/
 env.bak/
 venv.bak/
 
+media/
+
 *.db
 
 volumnes/
