@@ -1,8 +1,9 @@
 import os, psycopg2
 import discord
+import logging
 from discord.ext import commands
 
-TESTING = False
+TESTING = True
 POSTGRES = True
 
 # BOT INFO
@@ -10,6 +11,17 @@ VERSION = os.getenv('VERSION')
 DESCRIPTION = """
 Wadworth was created specifically for the Arizona Pipeline IT department to better handle communications and to streamline many repetitive tasks.
 """
+
+# Logger
+log = logging
+log.basicConfig(
+    filename='wadsworth.log',
+    encoding='utf-8',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%d-%b-%y %H:%M:%S')
+log.info('Started')
+
 
 ## DISCORD
 # CHANNELS
@@ -53,6 +65,11 @@ def conn():
         port=os.getenv('POSTGRES_PORT')
     )
     return POSTGRES_CONN
+PG_HOST = os.getenv('POSTGRES_HOST')
+PG_DB = os.getenv('POSTGRES_DB'),
+PG_USR = os.getenv('POSTGRES_USER'),
+PG_PWD = os.getenv('POSTGRES_PWD'),
+PG_PORT = os.getenv('POSTGRES_PORT')
 
 
 ## API INTEGRATIONS
@@ -89,7 +106,7 @@ if TESTING:
     CHANNEL = BOT.get_channel(BOT_CHANNEL)
 
     # LOCAL DB
-    DB_LOCATION = os.getenv('DB_TEST_LOCATION')
+    PG_DB = os.getenv('POSTGRES_TEST_DB'),
     def conn():
         POSTGRES_CONN = psycopg2.connect(
             host=os.getenv('POSTGRES_HOST'),
@@ -107,6 +124,7 @@ if TESTING:
     STARTUP_COGS = [
     'apps.info',
     'apps.erp',
+    'apps.office',
     ] 
 
     print('=' * 8 + 'TESTING MODE' + '=' * 8 )

@@ -47,6 +47,9 @@ An up-to-date list of modules and their current commands
 
 - [x] Password Generator
 - [x] ERP employee integration
+- [ ] Task Scheduler/Calendar
+- [ ] Email Scrubber
+- [ ] Employee Status change tracker
 - [ ] Employee asset managmenet
 - [ ] Google admin API integration
 - [ ] Verizon API

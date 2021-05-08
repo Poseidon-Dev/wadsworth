@@ -1,5 +1,43 @@
-from apps.base import Database
+from apps.base import Database, Query, TableBuilder
 from datetime import date
+
+class OfficeTableTest(Query):
+    """
+    An Office Keys table modeule that collects and stores office keys
+    and their users based on entry date
+    """
+    def __init__(self):
+        self.table = 'office_table_test'
+        self.columns = [
+            ('id', 'SERIAL PRIMARY KEY'),
+            ('office_keys', 'VARCHAR(30) UNIQUE'),
+            ('available', 'BOOLEAN'),
+            ('computer_name', 'VARCHAR(50)'),
+            ('email' ,'VARCHAR(50)'),
+            ('date' ,'VARCHAR(20)')
+        ]
+        TableBuilder(self.table, self.columns).build()
+        super().__init__(self.table)
+
+    def retrieve_and_log_key(self, update):
+        """ 
+        Retrieves and returns the last-in available key in office table
+        Updates the record with data provide as a list of tuples
+        """
+        record = self.available().select_first().query()
+        if record:
+            update.append(('date', date.today()))
+            command = self.update_record(record, update)
+        return record
+
+    def available(self):
+        """ Returns available keys in office table """
+        return self.filter('available', 1)
+
+    def unavailable(self):
+        """ Return unavailable keys in office table """
+        return self.filter('available', 0)
+
 
 class OfficeTable(Database):
 
@@ -31,8 +69,7 @@ class OfficeTable(Database):
         """
         values = f"('{key}', '1')"
         return self.insert_or_replace(columns='(office_keys, available)', values=values)
-        
-
+       
 
     def retrieve_and_log_key(self, computer, email):
         """

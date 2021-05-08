@@ -1,6 +1,4 @@
 import psycopg2
-from datetime import date
-
 import core.config
 
 class Database:
@@ -18,12 +16,12 @@ class Database:
             response = True
             try:
                 response = self.cur.fetchall()
-            except:
+            except Exception as err:
                 response = ''
+                print(here)
             self.conn.commit()
         except Exception as err:
             response = err
-            print(response)
             self.execute('rollback;')
         return response
     
