@@ -54,3 +54,20 @@ An up-to-date list of modules and their current commands
 - [ ] Google admin API integration
 - [ ] Verizon API
 - [ ] Github API 
+
+## Notes
+- Interactive waddy messages
+- scheduler/calendar
+    Name
+	Description
+	Time and date
+	Accepted(x/x)	declined	tenative
+	
+	created by - 
+	created at - 
+	check, cancel, question, delete
+- send reminders to attendeers via discord
+- set recurring events
+
+
+
