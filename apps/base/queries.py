@@ -147,6 +147,18 @@ class QueryMixin(QueryBase):
         """
         self.execute(command)
 
+    def insert_many(self, cols, vals):
+        """ 
+        Accepts a list of tupes as values and dumps into current table
+        """
+        vals = str(vals).strip('[]')
+        command = f"""
+        INSERT INTO {self.table} ({cols})
+        VALUES {vals}
+        ON CONFLICT ON CONSTRAINT {self.table}_pkey DO NOTHING;
+        """
+        self.execute(command)
+
     def update_record(self, record, updates):
         detail = ', '.join(f"{update[0]} = '{update[1]}'" for update in updates)
         command = f"""

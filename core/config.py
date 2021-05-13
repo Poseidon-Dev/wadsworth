@@ -3,7 +3,7 @@ import discord
 import logging
 from discord.ext import commands
 
-TESTING = True
+TESTING = False
 POSTGRES = True
 
 # BOT INFO
@@ -50,7 +50,7 @@ STARTUP_COGS = [
     'apps.password',
     'apps.censor',
     'apps.erp',
-    'apps.inventory',
+    # 'apps.inventory',
 ] 
 
 # LOCAL DB
