@@ -1,3 +1,5 @@
+from datetime import date
+
 from apps.base import Database, Query, TableBuilder
 from apps.erp.migrations import ErpApiConn
 
@@ -49,15 +51,6 @@ class EmployeeTable(Query, ErpApiConn):
         cols = ('id, first, middle1, middle2, last, security, division, status')
         self.insert_many(cols, records)
 
-    def changes(self, instance):
-        command = f"""
-        SELECT * FROM {instance}
-        EXCEPT
-        SELECT * FROM {self.table};
-        """
-        return self.execute(command)
-
-
 class EmployeeChangesTable(Query, ErpApiConn):
 
     def __init__(self):
@@ -104,6 +97,50 @@ class EmployeeChangesTable(Query, ErpApiConn):
         cols = ('id, first, middle1, middle2, last, security, division, status')
         self.insert_many(cols, records)
 
+class EmployeeLogger(Query):
+
+    def __init__(self):
+        self.table = 'employee_logger'
+        self.columns = [
+            ('id', 'INT PRIMARY KEY'),
+            ('first', 'VARCHAR(30)'),
+            ('middle1', 'VARCHAR(30)'),
+            ('middle2', 'VARCHAR(30)'),
+            ('last', 'VARCHAR(30)'),
+            ('security', 'INT'),
+            ('division', 'INT REFERENCES division_table(id) ON DELETE NO ACTION'),
+            ('status', 'VARCHAR(30)'),
+            ('date', 'VARCHAR(20)'),
+        ]
+        self.cols = ('id, first, middle1, middle2, last, security, division, status')
+        Query.__init__(self, self.table)
+        ErpApiConn.__init__(self)
+        TableBuilder(self.table, self.columns).build()
+
+    def changes(self, t_one='employee_table', t_two='employee_changes_table'):
+        command = f"""
+        SELECT * FROM {t_two}
+        EXCEPT
+        SELECT * FROM {t_one};
+        """
+        data = self.execute(command)
+        return data
+
+    def upsert_employees(self, values):
+        command = f"""
+        INSERT INTO employee_table ({self.cols})
+        VALUES {values}
+        ON CONFLICT (id) DO UPDATE SET 
+            first = EXCLUDED.first,
+            middle1 = EXCLUDED.middle1,
+            middle2 = EXCLUDED.middle2,
+            last = EXCLUDED.last,
+            security = EXCLUDED.security,
+            division = EXCLUDED.division,
+            status = EXCLUDED.status
+        """
+        self.execute(command)
+
 class DivisionTable(Query):
 
     def __init__(self):
@@ -113,7 +150,19 @@ class DivisionTable(Query):
             ('division', 'VARCHAR(30)'),
         ]
         TableBuilder(self.table, self.columns).build()
-        Query(self.table).__init__(self.table)
+        Query.__init__(self, self.table)
+
+class Messages(Query):
+
+    def __init__(self):
+        self.table = 'messages'
+        self.columns = [
+            ('id', 'BIGINT PRIMARY KEY'),
+            ('date', 'VARCHAR(30)'),
+        ]
+        TableBuilder(self.table, self.columns).build()
+        Query.__init__(self, self.table)
+
     
 # class EmployeeTable(Database):
     
@@ -165,20 +214,20 @@ class DivisionTable(Query):
 #         """
 #         return self.execute(command)
 
-#     def upsert_employees(self, values):
-#         command = f"""
-#         INSERT INTO {self.table} {self.columns}
-#         VALUES {values}
-#         ON CONFLICT (id) DO UPDATE SET 
-#             first = EXCLUDED.first,
-#             middle1 = EXCLUDED.middle1,
-#             middle2 = EXCLUDED.middle2,
-#             last = EXCLUDED.last,
-#             security = EXCLUDED.security,
-#             division = EXCLUDED.division,
-#             status = EXCLUDED.status
-#         """
-#         self.execute(command)
+    # def upsert_employees(self, values):
+    #     command = f"""
+    #     INSERT INTO {self.table} {self.columns}
+    #     VALUES {values}
+    #     ON CONFLICT (id) DO UPDATE SET 
+    #         first = EXCLUDED.first,
+    #         middle1 = EXCLUDED.middle1,
+    #         middle2 = EXCLUDED.middle2,
+    #         last = EXCLUDED.last,
+    #         security = EXCLUDED.security,
+    #         division = EXCLUDED.division,
+    #         status = EXCLUDED.status
+    #     """
+    #     self.execute(command)
 
 #     def run(self):
 #         self.create_table()
