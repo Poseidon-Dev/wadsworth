@@ -47,7 +47,7 @@ def pretty_employees(ctx, employees):
     embed.set_footer(text=f"Requested by {ctx.message.author}")
     return embed
 
-def pretty_terms(ctx, data):
+def pretty_terms(data):
     """
     Returns the currently changes records in HR by date
     """
@@ -55,16 +55,15 @@ def pretty_terms(ctx, data):
     name = f'Changes | {str(date.today())}'
     embed = discord.Embed(
         title=f'**{name}**',
-        color=0x03f8fc,
-        timestamp=ctx.message.created_at)
+        color=0x03f8fc,)
     for record in data:
         embed.add_field(
             name=f'Employee',
             value=f"""
-            > ID : {record[0]}\n>
-            > Name: {record[1].capital()} {record[4].capital()}\n>
-            > Division: {record[5]}\n>
-            > Status: {record[7]}'
+            > ID : {record[1]}\n> 
+            > Name: {record[2].capitalize()} {record[5].capitalize()}\n> 
+            > Division: {record[7]}\n> 
+            > Security: {record[6]}\n> 
             """ + '\u2800' * 27,
             inline=False)
     return embed

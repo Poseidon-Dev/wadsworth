@@ -1,5 +1,6 @@
 from datetime import date
 
+from core.shared.utils import Timer
 from apps.base import Database, Query, TableBuilder
 from apps.erp.migrations import ErpApiConn
 
@@ -21,6 +22,8 @@ class EmployeeTable(Query, ErpApiConn):
         ]
         Query.__init__(self, self.table)
         ErpApiConn.__init__(self)
+
+    def build(self):
         TableBuilder(self.table, self.columns).build()
 
     def fetch(self):
@@ -50,6 +53,7 @@ class EmployeeTable(Query, ErpApiConn):
         records = self.fetch()
         cols = ('id, first, middle1, middle2, last, security, division, status')
         self.insert_many(cols, records)
+
 
 class EmployeeChangesTable(Query, ErpApiConn):
 
@@ -67,6 +71,8 @@ class EmployeeChangesTable(Query, ErpApiConn):
         ]
         Query.__init__(self, self.table)
         ErpApiConn.__init__(self)
+
+    def build(self):
         TableBuilder(self.table, self.columns).build()
 
     def fetch(self):
@@ -97,12 +103,21 @@ class EmployeeChangesTable(Query, ErpApiConn):
         cols = ('id, first, middle1, middle2, last, security, division, status')
         self.insert_many(cols, records)
 
+    def db_refresh(self):
+        command = f"""
+        DELETE FROM {self.table}
+        """
+        self.execute(command)
+        self.store()
+        return True
+
 class EmployeeLogger(Query):
 
     def __init__(self):
         self.table = 'employee_logger'
         self.columns = [
-            ('id', 'INT PRIMARY KEY'),
+            ('id', 'SERIAL PRIMARY KEY'),
+            ('empid', 'INT'),
             ('first', 'VARCHAR(30)'),
             ('middle1', 'VARCHAR(30)'),
             ('middle2', 'VARCHAR(30)'),
@@ -111,10 +126,13 @@ class EmployeeLogger(Query):
             ('division', 'INT REFERENCES division_table(id) ON DELETE NO ACTION'),
             ('status', 'VARCHAR(30)'),
             ('date', 'VARCHAR(20)'),
+            ('type', 'VARCHAR(2)' )
         ]
         self.cols = ('id, first, middle1, middle2, last, security, division, status')
         Query.__init__(self, self.table)
         ErpApiConn.__init__(self)
+    
+    def build(self):
         TableBuilder(self.table, self.columns).build()
 
     def changes(self, t_one='employee_table', t_two='employee_changes_table'):
@@ -125,6 +143,21 @@ class EmployeeLogger(Query):
         """
         data = self.execute(command)
         return data
+
+    def upsert_logger(self, cols, vals):
+        command = f"""
+        INSERT INTO {self.table} ({cols})
+        VALUES {vals}
+        ON CONFLICT (idx_id_date) DO UPDATE SET
+            first = EXCLUDED.first,
+            middle1 = EXCLUDED.middle1,
+            middle2 = EXCLUDED.middle2,
+            last = EXCLUDED.last,
+            security = EXCLUDED.security,
+            division = EXCLUDED.division,
+            status = EXCLUDED.status
+        """
+        self.execute(command)
 
     def upsert_employees(self, values):
         command = f"""
@@ -149,8 +182,10 @@ class DivisionTable(Query):
             ('id', 'INT PRIMARY KEY'),
             ('division', 'VARCHAR(30)'),
         ]
-        TableBuilder(self.table, self.columns).build()
         Query.__init__(self, self.table)
+
+    def build(self):
+        TableBuilder(self.table, self.columns).build()
 
 class Messages(Query):
 
@@ -160,8 +195,10 @@ class Messages(Query):
             ('id', 'BIGINT PRIMARY KEY'),
             ('date', 'VARCHAR(30)'),
         ]
-        TableBuilder(self.table, self.columns).build()
         Query.__init__(self, self.table)
+
+    def build(self):
+        TableBuilder(self.table, self.columns).build()
 
     
 # class EmployeeTable(Database):

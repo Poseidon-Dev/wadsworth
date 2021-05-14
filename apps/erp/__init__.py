@@ -10,6 +10,12 @@ def setup(bot):
     EmployeeChangesTable()
     EmployeeLogger()
     Messages()
+
+    DivisionTable().build()
+    EmployeeTable().build()
+    EmployeeChangesTable().build()
+    EmployeeLogger().build()
+    Messages().build()
     # EmployeeFuturesTable().run()
     # ErpApi().run()
     # ErpApiFutures().run()

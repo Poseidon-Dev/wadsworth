@@ -15,7 +15,7 @@ class ExecuteMixin:
         """
         Simple cursor execution
         """
-        log.info(command)
+        log.info(command[:250])
         try:
             response = ''
             self.cur.execute(command)
@@ -105,9 +105,9 @@ class QueryBase(ExecuteMixin):
         
     def query(self, command=''):
         if not command:
-            return self.execute(self.command)
+            return self.execute(self.command + ';')
         else:
-            return self.execute(command)
+            return self.execute(command + ';')
 
     def statement_helper(self, command):
         if not self.command:

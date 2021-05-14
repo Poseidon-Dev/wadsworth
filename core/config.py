@@ -26,6 +26,7 @@ log.info('Started')
 ## DISCORD
 # CHANNELS
 BOT_CHANNEL = int(os.getenv('BOT_CHANNEL'))
+BOT_TERMS_CHANNEL = int(os.getenv('BOT_TERMS_CHANNEL'))
 OFFICE_CHANNEL = int(os.getenv('OFFICE_CHANNEL'))
 WADSWORTH_CHANNEL = int(os.getenv('WADSWORTH_CHANNEL'))
 EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
