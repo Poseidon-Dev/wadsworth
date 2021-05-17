@@ -9,7 +9,7 @@ def pretty_keys(ctx, keys):
         color=0x03f8fc,
         timestamp=ctx.message.created_at)
     for key in keys:
-        id_value = f'{key[0]}' + '\u2800' * 50
+        id_value = f'{key[0]}' + '\u2800' * 45
         embed.add_field(name='ID', value=id_value, inline=False)
         embed.add_field(name='Key', value=key[1], inline=False)
         embed.set_footer(text=f"Requested by {ctx.message.author}")

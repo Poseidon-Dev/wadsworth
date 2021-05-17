@@ -18,7 +18,7 @@ class OfficeTasks(commands.Cog, OfficeTable, name='office_tasks'):
 
     @tasks.loop(hours=5.0)
     async def check_for_key_count(self):
-        count = self.count_keys()[0][0]
+        count = self.count_available()
         if count <= 3:
             subject = 'Office Keys'
             message = f'There are {count} available keys remaining'

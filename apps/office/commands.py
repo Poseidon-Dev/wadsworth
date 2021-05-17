@@ -80,7 +80,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
                         
                     # Arguement -c
                     if argument in ['-c', 'count']:
-                        await self.channel.send(f'```There are {self.count_keys()[0][0]} keys left```')
+                        await self.channel.send(f'```There are {self.count_available()} keys left```')
 
                     # Argument -h
                     if argument in ['-h', 'history']:
@@ -92,7 +92,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
             """
             if len(key) != 29:
                 return self.channel.send(f"I do apologize, but I do not believe that '**{key}**' is a valid key")
-            response = self.insert_key(key)
+            response = self.insert([('office_keys', key), ('available', 1)])
             if response is True or response == '':
                 return self.channel.send(f'I have added key {key} with the others') 
             else:
@@ -100,7 +100,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
 
     async def delete_key_checks(self, ctx, key):
         await self.channel.send('Which key would you like to delete?')
-        keys = self.read_available()
+        keys = self.available().query()
         await self.channel.send(embed=pretty_keys(ctx, keys))
         msg = await self.bot.wait_for(
             'message',
@@ -113,19 +113,20 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
                     'message',
                     timeout=self.timeout,
                     check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
-                await self.del_key(ctx, del_msg, msg.content)
+                await self.del_key(del_msg, msg.content)
             except asyncio.TimeoutError:
                 await self.channel.send('I suppose not\nI will be here if you need me')
         else:
             await self.channel.send("That's not a valid key")
         
 
-    def del_key(self, ctx, msg, key):
+    def del_key(self, msg, key):
         """
         Deletes a key from the office_table db based on ID
         """
         if msg.content.lower() in core.config.CONFIRMS:
-            self.delete_row_by_key(key)
+            command = OfficeTable().filter(col='id', val=key)
+            del_com = command.delete(command)
             return self.channel.send(f'I have set key : {key} in with the other rubbish.')
         if msg.content.lower() in core.config.DENIES:
             return self.channel.send("I'll put it back with the others then")
@@ -135,7 +136,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
         """
         Reads all currently available keys
         """
-        keys = self.select_all_active()
+        keys = self.available().query()
         if keys:
             await self.channel.send(embed=pretty_keys(ctx, keys))
         else:
@@ -148,10 +149,15 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
         """
         Checks if the pkey exists
         """
-        return self.select_by_id(key)
+        return self.filter(key).query()
 
 
     async def retrieve_key_check(self, ctx, key):
+        """
+        CLI command checking for key retrival command inputs
+        If a user stalls, it closes the task otherwise continues
+        to retrieve and collect input
+        """
         await self.channel.send('What was the email you used?')
         try:
             email_msg = await self.bot.wait_for(
@@ -174,8 +180,12 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
 
     def deliver_available_key(self, email_msg, comp_msg, key):
         try:
-            key = self.retrieve_and_log_key(comp_msg.content.lower(), email_msg.content.lower())
-            response = '```' + 'Here is your key : ' + key[1] + '```'
+            update = [
+                ('computer_name', comp_msg.content.lower()),
+                ('email', email_msg.content.lower()),
+                ]
+            key = self.retrieve_and_log_key(update=update)
+            response = '```' + 'Here is your key : ' + key[0][1] + '```'
         except Exception as e:
             response = f'No keys available: {e}'
         return response

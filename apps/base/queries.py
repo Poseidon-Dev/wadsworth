@@ -128,7 +128,7 @@ class QueryMixin(QueryBase):
     def select_first(self): 
         return self.order().limit()
 
-    def count_records(self):
+    def count(self):
         return self.columns(['COUNT (*)',])
 
     def delete(self, records):
@@ -146,6 +146,7 @@ class QueryMixin(QueryBase):
         ON CONFLICT ON CONSTRAINT {self.table}_pkey DO NOTHING;
         """
         self.execute(command)
+        return True
 
     def insert_many(self, cols, vals):
         """ 
