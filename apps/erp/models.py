@@ -1,12 +1,12 @@
 from datetime import date
 
-from core.shared.utils import Timer
+from core.shared.utils import Timer, strip_special
 from apps.base import Database, Query, TableBuilder
 from apps.erp.migrations import ErpApiConn
 
 from .utils import clean_name
 
-class EmployeeTable(Query, ErpApiConn):
+class EmployeeTable(Query):
 
     def __init__(self):
         self.table = 'employee_table'
@@ -19,43 +19,52 @@ class EmployeeTable(Query, ErpApiConn):
             ('security', 'INT'),
             ('division', 'INT REFERENCES division_table(id) ON DELETE NO ACTION'),
             ('status', 'VARCHAR(30)'),
+            ('property_type', 'INT'),
+            ('device_control', 'VARCHAR(50)'),
+            ('device_description', 'VARCHAR'),
         ]
         Query.__init__(self, self.table)
-        ErpApiConn.__init__(self)
 
     def build(self):
         TableBuilder(self.table, self.columns).build()
 
     def fetch(self):
         command = """
-            SELECT 
-            EMPLOYEENO, 
-            REPLACE(TRIM(FIRSTNAME25), '''', ''),
-            REPLACE(TRIM(MIDDLENAME1), '''', ''),
-            REPLACE(TRIM(MIDDLENAME2), '''', ''),
-            REPLACE(TRIM(LASTNAME25), '''', ''),
-            CAST(LVLCODE AS INTEGER), 
-                CASE
-                    WHEN LENGTH(TRIM(DEPTNO)) = 1 THEN '98'
-                    WHEN LENGTH(TRIM(DEPTNO)) = 2 THEN LEFT(DEPTNO, 1)
-                    WHEN CAST(TRIM(DEPTNO) AS INTEGER) > 150 THEN '99'
-                    WHEN LENGTH(TRIM(DEPTNO)) = 3 THEN LEFT(DEPTNO, 2)
-                    END
-                AS DIVISION, STATUSCODE
-            FROM CMSFIL.HRTEMP
-            WHERE COMPANYNO = 1 AND EMPLOYEENO > 0
+        SELECT EMP.EMPLOYEENO, 
+        REPLACE(TRIM(EMP.FIRSTNAME25), '''', ''),
+        REPLACE(TRIM(EMP.MIDDLENAME1), '''', ''),
+        REPLACE(TRIM(EMP.MIDDLENAME2), '''', ''),
+        REPLACE(TRIM(EMP.LASTNAME25), '''', ''),
+        CAST(EMP.LVLCODE AS INTEGER), 
+            CASE WHEN LENGTH(TRIM(EMP.DEPTNO)) = 1 THEN '98'
+            WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 THEN LEFT(EMP.DEPTNO, 1)
+            WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
+            WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 THEN LEFT(EMP.DEPTNO, 2) END
+        AS DIVISION, EMP.STATUSCODE, CAST(CPR.PROPERTYNO AS INTEGER), TRIM(CPR.CONTROLNO),
+        REPLACE(REPLACE(TRIM(CPR.DESCRIPTION), '''', ''), CHAR(92), '')
+        FROM CMSFIL.HRTEMP AS EMP
+        JOIN CMSFIL.HRTCPR AS CPR 
+            ON EMP.HRTEMPID = CPR.HRTEMPID
+        WHERE EMP.COMPANYNO = 1 
+        AND EMP.EMPLOYEENO > 0 
+        AND CPR.PROPERTYNO IN (2,4,5,9)
+        AND CPR.RTNDATE IS NULL 
+        AND CPR.EXPDATE IS NULL
         """
-        self.erp_cur.execute(command)
-        records = self.erp_cur.fetchall()
+        conn = ErpApiConn()
+        conn.erp_cur.execute(command)
+        records = conn.erp_cur.fetchall()
+
+        conn.close()
         return list(records)
 
     def store(self):
         records = self.fetch()
-        cols = ('id, first, middle1, middle2, last, security, division, status')
+        cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description')
         self.insert_many(cols, records)
 
 
-class EmployeeChangesTable(Query, ErpApiConn):
+class EmployeeChangesTable(Query):
 
     def __init__(self):
         self.table = 'employee_changes_table'
@@ -68,39 +77,47 @@ class EmployeeChangesTable(Query, ErpApiConn):
             ('security', 'INT'),
             ('division', 'INT REFERENCES division_table(id) ON DELETE NO ACTION'),
             ('status', 'VARCHAR(30)'),
+            ('property_type', 'INT'),
+            ('device_control', 'VARCHAR(50)'),
+            ('device_description', 'VARCHAR'),
         ]
         Query.__init__(self, self.table)
-        ErpApiConn.__init__(self)
 
     def build(self):
         TableBuilder(self.table, self.columns).build()
 
     def fetch(self):
         command = """
-            SELECT 
-            EMPLOYEENO, 
-            REPLACE(TRIM(FIRSTNAME25), '''', ''),
-            REPLACE(TRIM(MIDDLENAME1), '''', ''),
-            REPLACE(TRIM(MIDDLENAME2), '''', ''),
-            REPLACE(TRIM(LASTNAME25), '''', ''),
-            CAST(LVLCODE AS INTEGER), 
-                CASE
-                    WHEN LENGTH(TRIM(DEPTNO)) = 1 THEN '98'
-                    WHEN LENGTH(TRIM(DEPTNO)) = 2 THEN LEFT(DEPTNO, 1)
-                    WHEN CAST(TRIM(DEPTNO) AS INTEGER) > 150 THEN '99'
-                    WHEN LENGTH(TRIM(DEPTNO)) = 3 THEN LEFT(DEPTNO, 2)
-                    END
-                AS DIVISION, STATUSCODE
-            FROM CMSFIL.HRTEMP
-            WHERE COMPANYNO = 1 AND EMPLOYEENO > 0
+        SELECT EMP.EMPLOYEENO, 
+        REPLACE(TRIM(EMP.FIRSTNAME25), '''', ''),
+        REPLACE(TRIM(EMP.MIDDLENAME1), '''', ''),
+        REPLACE(TRIM(EMP.MIDDLENAME2), '''', ''),
+        REPLACE(TRIM(EMP.LASTNAME25), '''', ''),
+        CAST(EMP.LVLCODE AS INTEGER), 
+            CASE WHEN LENGTH(TRIM(EMP.DEPTNO)) = 1 THEN '98'
+            WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 THEN LEFT(EMP.DEPTNO, 1)
+            WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
+            WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 THEN LEFT(EMP.DEPTNO, 2) END
+        AS DIVISION, EMP.STATUSCODE, CAST(CPR.PROPERTYNO AS INTEGER), TRIM(CPR.CONTROLNO), 
+        REPLACE(REPLACE(TRIM(CPR.DESCRIPTION), '''', ''), CHAR(92), '')
+        FROM CMSFIL.HRTEMP AS EMP
+        JOIN CMSFIL.HRTCPR AS CPR 
+            ON EMP.HRTEMPID = CPR.HRTEMPID
+        WHERE EMP.COMPANYNO = 1 
+        AND EMP.EMPLOYEENO > 0 
+        AND CPR.PROPERTYNO IN (2,4,5,9)
+        AND CPR.RTNDATE IS NULL 
+        AND CPR.EXPDATE IS NULL
         """
-        self.erp_cur.execute(command)
-        records = self.erp_cur.fetchall()
+        conn = ErpApiConn()
+        conn.erp_cur.execute(command)
+        records = conn.erp_cur.fetchall()
+        conn.close()
         return list(records)
 
     def store(self):
         records = self.fetch()
-        cols = ('id, first, middle1, middle2, last, security, division, status')
+        cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description')
         self.insert_many(cols, records)
 
     def db_refresh(self):
@@ -125,10 +142,13 @@ class EmployeeLogger(Query):
             ('security', 'INT'),
             ('division', 'INT REFERENCES division_table(id) ON DELETE NO ACTION'),
             ('status', 'VARCHAR(30)'),
+            ('property_type', 'INT'),
+            ('device_control', 'VARCHAR(50)'),
+            ('device_description', 'VARCHAR'),
             ('date', 'VARCHAR(20)'),
-            ('type', 'VARCHAR(2)' )
+            ('log', 'VARCHAR')
         ]
-        self.cols = ('id, first, middle1, middle2, last, security, division, status')
+        self.cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description')
         Query.__init__(self, self.table)
         ErpApiConn.__init__(self)
     
@@ -155,7 +175,10 @@ class EmployeeLogger(Query):
             last = EXCLUDED.last,
             security = EXCLUDED.security,
             division = EXCLUDED.division,
-            status = EXCLUDED.status
+            status = EXCLUDED.status,
+            property_type = EXCLUDED.property_type,
+            device_control = EXCLUDED.device_control,
+            device_description = EXCLUDED.device_description
         """
         self.execute(command)
 
@@ -170,7 +193,10 @@ class EmployeeLogger(Query):
             last = EXCLUDED.last,
             security = EXCLUDED.security,
             division = EXCLUDED.division,
-            status = EXCLUDED.status
+            status = EXCLUDED.status,
+            property_type = EXCLUDED.property_type,
+            device_control = EXCLUDED.device_control,
+            device_description = EXCLUDED.device_description
         """
         self.execute(command)
 

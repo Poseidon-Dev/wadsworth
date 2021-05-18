@@ -50,3 +50,7 @@ def send_email(subject, message, to=core.config.EMAIL_TO):
     except Exception as e:
         print(f'Email did not send: {e}')
         
+def strip_special(vals):
+    import re
+    return re.sub(r"^a-zA-Z0-9_-,", '', vals).replace('"', '').replace('(', '').replace(')', '')
+        

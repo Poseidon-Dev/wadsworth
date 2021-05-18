@@ -64,6 +64,7 @@ def pretty_terms(data):
             > Name: {record[2].capitalize()} {record[5].capitalize()}\n> 
             > Division: {record[7]}\n> 
             > Security: {record[6]}\n> 
+            > Changes: {record[13]}\n> 
             """ + '\u2800' * 27,
             inline=False)
     return embed

@@ -3,6 +3,7 @@ from datetime import date
 from discord.ext import commands, tasks
 
 import core.config
+from core.config import log
 
 from .utils import pretty_terms
 from .models import EmployeeLogger, Messages, EmployeeChangesTable, EmployeeTable
@@ -12,17 +13,9 @@ class EmployeeTasks(commands.Cog, name='employee_tasks'):
 
     def __init__(self, bot):
         self.bot = bot
-        # self.check_for_employee_changes.start()
         self.updated_records.start()
         self.channel = self.bot.get_channel(core.config.BOT_CHANNEL)
-
-    # @tasks.loop(hours=4.0)
-    # async def check_for_employee_changes(self):
-    #     try:
-    #         ErpApi().insert_employees()
-    #         print('erp update complete')
-    #     except Exception as e:
-    #         print(e)
+        # EmployeeChangesTable().db_refresh()
 
     @tasks.loop(seconds=5.0)
     async def updated_records(self):
@@ -43,16 +36,17 @@ class EmployeeTasks(commands.Cog, name='employee_tasks'):
         emp.db_refresh()
         data = conn.changes()
         if data:
-            print('change found')
-            cols = ('empid, first, middle1, middle2, last, security, division, status, date, type')
+            log.info('employee record differences found...')
+            cols = ('empid, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description, date, log')
+            cols_list = ['empid', 'first', 'middle1', 'middle2', 'last', 'security', 'division', 'status', 'property_type', 'device_control', 'device_description', 'date']
             for line in data:
-                new_line = line + (today, 'U')
-                old_data = EmployeeTable().filter('id', line[0]).query()[0]
-                old_line = old_data + (today, 'H')
-                conn.insert_many(cols, new_line)
-                conn.insert_many(cols, old_line)
+                new = line + (today,)
+                old = EmployeeTable().filter('id', line[0]).query()[0] + (today,)
+                changes = [f'{cols_list[i].upper()} - New: {new[i]} Old: {old[i]}' for i in range(len(cols_list)) if new[i] != old[i]]
+                changes = (new + (str(changes).strip('[]').replace("'", ''),))
+                conn.insert_many(cols, changes)
                 conn.upsert_employees(line)
-        data = conn.filter('date', today).filter('type', 'U').query()
+        data = conn.filter('date', today).query()
         return data
 
                 

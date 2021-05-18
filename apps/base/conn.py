@@ -2,6 +2,8 @@ import psycopg2
 import core.config
 from core.config import log
 
+import apps.base.exceptions as BaseErr
+
 class DBConnection:
 
     def __init__(self):
@@ -26,17 +28,25 @@ class DBConnection:
         log.info(conn)
         return conn
 
+    def close(self):
+        """
+        Closes postgres connections
+        """
+        self.conn.close()
+
 class ExecuteMixin:
 
     def __init__(self):
-        self.conn = DBConnection().conn()
-        self.cur = self.conn.cursor()
+        self.conn = None
+        self.cur = None
         
 
     def execute(self, command):
         """
         Simple cursor execution
         """
+        self.conn = DBConnection().conn()
+        self.cur = self.conn.cursor()
         log.info(command)
         try:
             response = ''
@@ -47,6 +57,7 @@ class ExecuteMixin:
                 log.error(err)
             log.info(f'DATA: {bool(response)}')
             self.conn.commit()
+            self.conn.close()
         except (
             BaseErr.UndefinedTable,
             BaseErr.UndefinedColumn,
@@ -55,6 +66,7 @@ class ExecuteMixin:
             ) as err:
             log.error(err)
             self.conn.rollback()
+            self.conn.close()
             response = ''
             return err
         except Exception as e:

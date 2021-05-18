@@ -9,6 +9,10 @@ class ErpApiConn:
         self.erp_conn = pyodbc.connect(f'DSN={core.config.ERP_HOST}; UID={core.config.ERP_UID}; PWD={core.config.ERP_PWD}')
         self.erp_cur = self.erp_conn.cursor()
 
+    def close(self):
+        self.erp_cur.close()
+        self.erp_conn.close()
+
 # class ErpApi(EmployeeTable):
 
 #     def __init__(self):

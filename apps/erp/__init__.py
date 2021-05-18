@@ -5,20 +5,12 @@ from apps.erp.migrations import ErpApiConn
 from apps.erp.models import DivisionTable, EmployeeTable, EmployeeChangesTable, EmployeeLogger, Messages
 
 def setup(bot):
-    DivisionTable()
-    EmployeeTable()
-    EmployeeChangesTable()
-    EmployeeLogger()
-    Messages()
-
     DivisionTable().build()
     EmployeeTable().build()
+    EmployeeTable().store()
     EmployeeChangesTable().build()
     EmployeeLogger().build()
     Messages().build()
-    # EmployeeFuturesTable().run()
-    # ErpApi().run()
-    # ErpApiFutures().run()
     bot.add_cog(EmployeeCommands(bot))
     bot.add_cog(EmployeeTasks(bot))
     bot.add_cog(ErpEvents(bot))

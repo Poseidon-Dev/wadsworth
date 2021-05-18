@@ -1,14 +1,21 @@
-import psycopg2
+import psycopg2, os
 import core.config
 
 class Database:
 
     def __init__(self):
-        self.conn = core.config.conn()
+        # self.conn = core.config.conn()
+        self.conn = psycopg2.connect(
+            host=os.getenv('POSTGRES_HOST'),
+            database=os.getenv('POSTGRES_DB'),
+            user=os.getenv('POSTGRES_USER'),
+            password=os.getenv('POSTGRES_PWD'),
+            port=os.getenv('POSTGRES_PORT')
+        )
         self.cur = self.conn.cursor()
         self.table = ''
         self.columns = tuple()
-
+        
     def execute(self, command):
         print(command)
         try:
@@ -18,7 +25,6 @@ class Database:
                 response = self.cur.fetchall()
             except Exception as err:
                 response = ''
-                print(here)
             self.conn.commit()
         except Exception as err:
             response = err

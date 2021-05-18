@@ -1,4 +1,5 @@
 from core.config import log
+from core.shared.utils import strip_special
 import apps.base.exceptions as BaseErr
 from apps.base.conn import DBConnection
 
@@ -7,15 +8,16 @@ class ExecuteMixin:
     Establish connection with psqldb and create a standard execute/commit method
     """
     def __init__(self):
-        self.conn = DBConnection().conn()
-        self.cur = self.conn.cursor()
+        self.conn = None
+        self.cur = None
         
-
     def execute(self, command):
         """
         Simple cursor execution
         """
-        log.info(command[:250])
+        self.conn = DBConnection().conn()
+        self.cur = self.conn.cursor()
+        log.info(command[:350])
         try:
             response = ''
             self.cur.execute(command)
@@ -38,6 +40,8 @@ class ExecuteMixin:
         except Exception as e:
             print(f'uncaught exeception: {e}')
         finally:
+            self.conn.close()
+            self.cur.close()
             return response
 
 class QueryBase(ExecuteMixin):
@@ -153,6 +157,7 @@ class QueryMixin(QueryBase):
         Accepts a list of tupes as values and dumps into current table
         """
         vals = str(vals).strip('[]')
+        # vals = strip_special(vals)
         command = f"""
         INSERT INTO {self.table} ({cols})
         VALUES {vals}
