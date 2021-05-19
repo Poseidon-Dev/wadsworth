@@ -1,14 +1,15 @@
 import discord 
 
 from apps.base.models import Database
+from apps.base.queries import Query
 
 def pretty_employee(ctx, employee):
     """
     Returns an embed for an employee for a prettier discord format
     """
-    name = f'{employee[1]} {employee[2][:1]} {employee[4]}'
-    division = Database().select_by_id(table='division_table', key=employee[6])
-    
+    name = f'{employee[1].capitalize()} {employee[2][:1].capitalize()} {employee[4].capitalize()}'
+    division = Query('division_table').filter(val=employee[6]).query()
+    # division = Database().select_by_id(table='division_table', key=employee[6])
     embed = discord.Embed(
         title=f'**{name}**',
         color=0x03f8fc,
@@ -34,8 +35,8 @@ def pretty_employees(ctx, employees):
         color=0x03f8fc,
         timestamp=ctx.message.created_at)
     for employee in employees:
-        name = f'{employee[1]} {employee[2][:1]} {employee[4]}'
-        division = Database().select_by_id(table='division_table', key=employee[6])
+        name = f'{employee[1].capitalize()} {employee[2][:1].capitalize()} {employee[4].capitalize()}'
+        division = Query('division_table').filter(val=employee[6]).query()
         embed.add_field(
         name=f'{name}\n',
         value=f"""
@@ -57,12 +58,13 @@ def pretty_terms(data):
         title=f'**{name}**',
         color=0x03f8fc,)
     for record in data:
+        division = Query('division_table').filter(val=record[7]).query()
         embed.add_field(
             name=f'Employee',
             value=f"""
             > ID : {record[1]}\n> 
             > Name: {record[2].capitalize()} {record[5].capitalize()}\n> 
-            > Division: {record[7]}\n> 
+            > Division: {division[0][1]}\n> 
             > Security: {record[6]}\n> 
             > Changes: {record[13]}\n> 
             """ + '\u2800' * 27,

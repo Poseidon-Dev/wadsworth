@@ -37,38 +37,38 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             if len(param1) != 5:
                 await ctx.send('That is not a valid employee number')
             else:
-                employee = self.select_by_id(int(param1), self.table)
+                employee = self.filter(val=int(param1)).query()
                 await ctx.send(embed=pretty_employee(ctx, employee[0]))
-                # await ctx.send(embed=pretty_assets(ctx, key))
 
         # Argument First Name
-        if argument in ['l', '-l', 'last', '-last']:
+        if argument in ['f', '-f', 'first', '-first']:
             if len(param1) <= 2:
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
-                employees = self.fetch_like_last(param1.title())
+                employees = self.filter_like('first', param1.upper()).query()
                 try:
                     await ctx.send(embed=pretty_employees(ctx, employees))
                 except Exception as e:
                     await ctx.send(f'Too many search results to display in discord')
 
         # Argument Last Name
-        if argument in ['f', '-f', 'first', '-first']:
+        if argument in ['l', '-l', 'last', '-last']:
             if len(param1) <= 2:
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
-                employees = self.fetch_like_first(param1.title())
+                employees = self.filter_like('last', param1.upper()).query()
                 try:
                     await ctx.send(embed=pretty_employees(ctx, employees))
                 except Exception as e:
                     await ctx.send(f'Too many search results to display in discord')
+
 
         # Argument First and Last Name
         if argument in ['fl', '-fl', 'firstlast', '-firstlast']:
             if len(param1) + len(param2) <= 4:
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
-                employees = self.fetch_like_first_last(param1.title(), param2.title())
+                employees = self.filter_like('first', param1.upper()).filter_like('last', param2.upper()).query()
                 try:
                     await ctx.send(embed=pretty_employees(ctx, employees))
                 except Exception as e:

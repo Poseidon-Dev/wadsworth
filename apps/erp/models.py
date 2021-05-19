@@ -7,7 +7,7 @@ from apps.erp.migrations import ErpApiConn
 from .utils import clean_name
 
 class EmployeeTable(Query):
-
+    
     def __init__(self):
         self.table = 'employee_table'
         self.columns = [
@@ -23,10 +23,7 @@ class EmployeeTable(Query):
             ('device_control', 'VARCHAR(50)'),
             ('device_description', 'VARCHAR'),
         ]
-        Query.__init__(self, self.table)
-
-    def build(self):
-        TableBuilder(self.table, self.columns).build()
+        Query.__init__(self, self.table, self.columns)
 
     def fetch(self):
         command = """
@@ -54,7 +51,6 @@ class EmployeeTable(Query):
         conn = ErpApiConn()
         conn.erp_cur.execute(command)
         records = conn.erp_cur.fetchall()
-
         conn.close()
         return list(records)
 
@@ -81,10 +77,7 @@ class EmployeeChangesTable(Query):
             ('device_control', 'VARCHAR(50)'),
             ('device_description', 'VARCHAR'),
         ]
-        Query.__init__(self, self.table)
-
-    def build(self):
-        TableBuilder(self.table, self.columns).build()
+        Query.__init__(self, self.table, self.columns)
 
     def fetch(self):
         command = """
@@ -149,11 +142,8 @@ class EmployeeLogger(Query):
             ('log', 'VARCHAR')
         ]
         self.cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description')
-        Query.__init__(self, self.table)
+        Query.__init__(self, self.table, self.columns)
         ErpApiConn.__init__(self)
-    
-    def build(self):
-        TableBuilder(self.table, self.columns).build()
 
     def changes(self, t_one='employee_table', t_two='employee_changes_table'):
         command = f"""
@@ -208,10 +198,7 @@ class DivisionTable(Query):
             ('id', 'INT PRIMARY KEY'),
             ('division', 'VARCHAR(30)'),
         ]
-        Query.__init__(self, self.table)
-
-    def build(self):
-        TableBuilder(self.table, self.columns).build()
+        Query.__init__(self, self.table, self.columns)
 
 class Messages(Query):
 
@@ -221,12 +208,9 @@ class Messages(Query):
             ('id', 'BIGINT PRIMARY KEY'),
             ('date', 'VARCHAR(30)'),
         ]
-        Query.__init__(self, self.table)
+        Query.__init__(self, self.table, self.columns)
 
-    def build(self):
-        TableBuilder(self.table, self.columns).build()
 
-    
 # class EmployeeTable(Database):
     
 #     def __init__(self):
@@ -295,38 +279,3 @@ class Messages(Query):
 #     def run(self):
 #         self.create_table()
 
-
-# class DivisionTable(Database):
-#     def __init__(self):
-#         super(DivisionTable, self).__init__()
-#         self.table = 'division_table'
-#         self.columns = '(id, division)'
-#         self.key = 'division'
-
-#     def create_table(self):
-#         """
-#         Creates the division_table in the wadsworth db
-#         """
-#         command = f"""
-#         CREATE TABLE IF NOT EXISTS
-#         {self.table}(
-#             id              INT               PRIMARY KEY,
-#             division        VARCHAR(30)
-#         );
-#         """
-#         self.execute(command)
-
-#     def run(self):
-#         self.create_table()
-#         self.insert_single_record("98, '00 - Corporate'")
-#         self.insert_single_record("99, 'MISC'")
-#         self.insert_single_record("1, '01 - Tuscon'")
-#         self.insert_single_record("2, '02 - Phoenix'")
-#         self.insert_single_record("3, '03 - Hesperia'")
-#         self.insert_single_record("4, '04 - Corona'")
-#         self.insert_single_record("5, '05 - Vegas'")
-#         self.insert_single_record("6, '06 - Pipeline'")
-#         self.insert_single_record("7, '07 - Reno'")
-#         self.insert_single_record("8, '08 - Carson'")
-#         self.insert_single_record("9, '09 - Pacific'")
-#         self.insert_single_record("10, '10 - Bullhead'")

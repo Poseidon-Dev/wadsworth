@@ -16,10 +16,7 @@ class OfficeTable(Query):
             ('email' ,'VARCHAR(50)'),
             ('date' ,'VARCHAR(20)')
         ]
-        Query.__init__(self, self.table)
-
-    def build(self):
-        TableBuilder(self.table, self.columns).build()
+        Query.__init__(self, self.table, self.columns)
 
     def retrieve_and_log_key(self, update):
         """ 
