@@ -1,3 +1,4 @@
+import re
 from core.config import log
 from core.shared.utils import strip_special
 import apps.base.exceptions as BaseErr
@@ -231,7 +232,7 @@ class QueryMixin(QueryBase):
         """
         A manualy query execution
         """
-        self.execute(command)
+        return self.execute(command)
 
 
 class Query(QueryMixin):

@@ -13,7 +13,7 @@ class EmployeeTasks(commands.Cog, name='employee_tasks'):
 
     def __init__(self, bot):
         self.bot = bot
-        self.updated_records.start()
+        # self.updated_records.start()
         # self.send_updates.start()
         self.channel = self.bot.get_channel(core.config.BOT_TERMS_CHANNEL)
 

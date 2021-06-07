@@ -50,7 +50,7 @@ STARTUP_COGS = [
     'apps.office',
     'apps.password',
     'apps.censor',
-    'apps.erp',
+    # 'apps.erp',
     # 'apps.inventory',
 ] 
 
