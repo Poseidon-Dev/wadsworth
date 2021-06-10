@@ -1,7 +1,7 @@
 import discord, os, platform, asyncio
 from discord.ext import commands
 
-from core.shared.utils import pretty_ping
+from core.shared.utils import pretty_ping, agreement_reactions
 import core.config
 
 class InfoCommands(commands.Cog, name='info_commands'):
@@ -51,7 +51,12 @@ class InfoCommands(commands.Cog, name='info_commands'):
                 embed.add_field(name='** **', value=f'** **', inline=False)
                 embed.set_footer(text=f"Requested by {ctx.message.author}")
         await self.channel.send(f'{ctx.author.mention}')
-        await self.channel.send(embed=embed)
+        msg = await self.channel.send(embed=embed)
+        reactions = agreement_reactions
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
+
+
 
     @commands.command(name='about')
     async def about(self, ctx):

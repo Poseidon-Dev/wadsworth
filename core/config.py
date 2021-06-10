@@ -3,7 +3,7 @@ import discord
 import logging
 from discord.ext import commands
 
-TESTING = False
+TESTING = True
 POSTGRES = True
 
 # BOT INFO
@@ -50,7 +50,7 @@ STARTUP_COGS = [
     'apps.office',
     'apps.password',
     'apps.censor',
-    # 'apps.erp',
+    'apps.erp',
     # 'apps.inventory',
 ] 
 
@@ -124,7 +124,8 @@ if TESTING:
     # CURRENT MODULES
     STARTUP_COGS = [
     'apps.info',
-    'apps.erp',
+    'apps.scheduler',
+    # 'apps.erp',
     # 'apps.office',
     ] 
 

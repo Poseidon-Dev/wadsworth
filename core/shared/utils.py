@@ -53,4 +53,6 @@ def send_email(subject, message, to=core.config.EMAIL_TO):
 def strip_special(vals):
     import re
     return re.sub(r"^a-zA-Z0-9_-,", '', vals).replace('"', '').replace('(', '').replace(')', '')
+
+agreement_reactions = ['🇾', '🇳', '🇲'] 
         

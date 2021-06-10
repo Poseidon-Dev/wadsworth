@@ -21,7 +21,6 @@ class EmployeeTable(Query):
             ('status', 'VARCHAR(30)'),
             ('property_type', 'INT'),
             ('device_control', 'VARCHAR(50)'),
-            ('device_description', 'VARCHAR'),
         ]
         Query.__init__(self, self.table, self.columns)
 
@@ -37,8 +36,7 @@ class EmployeeTable(Query):
             WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 THEN LEFT(EMP.DEPTNO, 1)
             WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
             WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 THEN LEFT(EMP.DEPTNO, 2) END
-        AS DIVISION, EMP.STATUSCODE, CAST(CPR.PROPERTYNO AS INTEGER), TRIM(CPR.CONTROLNO),
-        REPLACE(REPLACE(TRIM(CPR.DESCRIPTION), '''', ''), CHAR(92), '')
+        AS DIVISION, EMP.STATUSCODE, CAST(CPR.PROPERTYNO AS INTEGER), TRIM(CPR.CONTROLNO)
         FROM CMSFIL.HRTEMP AS EMP
         JOIN CMSFIL.HRTCPR AS CPR 
             ON EMP.HRTEMPID = CPR.HRTEMPID
@@ -56,7 +54,7 @@ class EmployeeTable(Query):
 
     def store(self):
         records = self.fetch()
-        cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description')
+        cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control')
         self.insert_many(cols, records)
 
 
@@ -75,7 +73,6 @@ class EmployeeChangesTable(Query):
             ('status', 'VARCHAR(30)'),
             ('property_type', 'INT'),
             ('device_control', 'VARCHAR(50)'),
-            ('device_description', 'VARCHAR'),
         ]
         Query.__init__(self, self.table, self.columns)
 
@@ -91,8 +88,7 @@ class EmployeeChangesTable(Query):
             WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 THEN LEFT(EMP.DEPTNO, 1)
             WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
             WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 THEN LEFT(EMP.DEPTNO, 2) END
-        AS DIVISION, EMP.STATUSCODE, CAST(CPR.PROPERTYNO AS INTEGER), TRIM(CPR.CONTROLNO), 
-        REPLACE(REPLACE(TRIM(CPR.DESCRIPTION), '''', ''), CHAR(92), '')
+        AS DIVISION, EMP.STATUSCODE, CAST(CPR.PROPERTYNO AS INTEGER), TRIM(CPR.CONTROLNO)
         FROM CMSFIL.HRTEMP AS EMP
         JOIN CMSFIL.HRTCPR AS CPR 
             ON EMP.HRTEMPID = CPR.HRTEMPID
@@ -110,7 +106,7 @@ class EmployeeChangesTable(Query):
 
     def store(self):
         records = self.fetch()
-        cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description')
+        cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control')
         self.insert_many(cols, records)
 
     def db_refresh(self):
@@ -137,11 +133,10 @@ class EmployeeLogger(Query):
             ('status', 'VARCHAR(30)'),
             ('property_type', 'INT'),
             ('device_control', 'VARCHAR(50)'),
-            ('device_description', 'VARCHAR'),
             ('date', 'VARCHAR(20)'),
             ('log', 'VARCHAR')
         ]
-        self.cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description')
+        self.cols = ('id, first, middle1, middle2, last, security, division, status, property_type, device_control')
         Query.__init__(self, self.table, self.columns)
         ErpApiConn.__init__(self)
 
@@ -168,7 +163,6 @@ class EmployeeLogger(Query):
             status = EXCLUDED.status,
             property_type = EXCLUDED.property_type,
             device_control = EXCLUDED.device_control,
-            device_description = EXCLUDED.device_description
         """
         self.execute(command)
 
@@ -186,7 +180,6 @@ class EmployeeLogger(Query):
             status = EXCLUDED.status,
             property_type = EXCLUDED.property_type,
             device_control = EXCLUDED.device_control,
-            device_description = EXCLUDED.device_description
         """
         self.execute(command)
 

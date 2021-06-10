@@ -13,7 +13,7 @@ class EmployeeTasks(commands.Cog, name='employee_tasks'):
 
     def __init__(self, bot):
         self.bot = bot
-        # self.updated_records.start()
+        self.updated_records.start()
         # self.send_updates.start()
         self.channel = self.bot.get_channel(core.config.BOT_TERMS_CHANNEL)
 
@@ -42,8 +42,8 @@ class EmployeeTasks(commands.Cog, name='employee_tasks'):
         data = conn.changes()
         if data:
             log.info('employee record differences found...')
-            cols = ('empid, first, middle1, middle2, last, security, division, status, property_type, device_control, device_description, date, log')
-            cols_list = ['empid', 'first', 'middle1', 'middle2', 'last', 'security', 'division', 'status', 'property_type', 'device_control', 'device_description', 'date']
+            cols = ('empid, first, middle1, middle2, last, security, division, status, property_type, device_control, date, log')
+            cols_list = ['empid', 'first', 'middle1', 'middle2', 'last', 'security', 'division', 'status', 'property_type', 'device_control', 'date']
             for line in data:
                 new = line + (today,)
                 old = EmployeeTable().filter('id', line[0]).query()[0] + (today,)
