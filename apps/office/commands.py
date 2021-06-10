@@ -184,7 +184,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
                 ('computer_name', comp_msg.content.lower()),
                 ('email', email_msg.content.lower()),
                 ]
-            key = self.retrieve_and_log_key(update=update)
+            key = OfficeTable().retrieve_and_log_key(update=update)
             response = '```' + 'Here is your key : ' + key[0][1] + '```'
         except Exception as e:
             response = f'No keys available: {e}'

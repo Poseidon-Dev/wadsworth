@@ -123,7 +123,7 @@ class QueryBase(ExecuteMixin):
         Adds a 'LIMIT' clause to the base statement
         defaults to 1
         """
-        command = f' LIMIT {amount}'
+        command = f' LIMIT {amount};'
         if self.command:
             self.command += command
         else:
