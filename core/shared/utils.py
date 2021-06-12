@@ -54,5 +54,6 @@ def strip_special(vals):
     import re
     return re.sub(r"^a-zA-Z0-9_-,", '', vals).replace('"', '').replace('(', '').replace(')', '')
 
-agreement_reactions = ['🇾', '🇳', '🇲'] 
+
+agreement_reactions = ['<:yes:852980400589766697>','<:no:852980480512229427>', '<:maybe:852980766643060746>'] 
         

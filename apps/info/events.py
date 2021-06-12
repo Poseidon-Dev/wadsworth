@@ -18,18 +18,3 @@ class InfoEvents(commands.Cog, name='info_events'):
     async def on_message(self, message):
         if message.content == '/?':
             await message.channel.send('info events')
-
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload):
-        print('Hello')
-        print(payload.__dir__())
-        print(payload.event_type)
-        print(payload.emoji)
-        print(payload.channel_id)
-        print(payload.message_id)
-        print(payload.member)
-
-
-    @commands.Cog.listener()
-    async def on_raw_reaction_remove(self, payload):
-        print('Goodbye')
