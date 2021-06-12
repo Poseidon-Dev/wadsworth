@@ -11,6 +11,7 @@ class SchedulerTable(Query):
             ('title', 'VARCHAR'),
             ('body', 'VARCHAR'),
             ('datetime', 'VARCHAR'),
+            ('status', 'BOOLEAN'),
             ]
         Query.__init__(self, self.table, self.columns)
 

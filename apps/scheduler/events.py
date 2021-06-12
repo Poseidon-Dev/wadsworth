@@ -1,7 +1,7 @@
 import discord, os, platform, asyncio
 from discord.ext import commands
 
-from core.shared.utils import agreement_reactions
+from core.shared.utils import agreement_reactions, reaction_list
 
 import core.config
 
@@ -22,7 +22,7 @@ class SchedulerEvents(commands.Cog, name='scheduler_events'):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        if payload.emoji in agreement_reactions:
+        if payload.emoji.id in reaction_list:
             print('Hello')
 
     # check the message database for a scheulde, if the message that received a reaction is within the database and the reaction is within parameters

@@ -55,5 +55,11 @@ def strip_special(vals):
     return re.sub(r"^a-zA-Z0-9_-,", '', vals).replace('"', '').replace('(', '').replace(')', '')
 
 
+yes = 852980400589766697
+no = 852980480512229427
+maybe = 852980766643060746
+
+reaction_list = [yes, no, maybe]
+
 agreement_reactions = ['<:yes:852980400589766697>','<:no:852980480512229427>', '<:maybe:852980766643060746>'] 
         

@@ -5,7 +5,7 @@ from discord.ext import commands
 from core.shared.utils import pretty_ping, agreement_reactions
 import core.config
 
-from apps.scheduler.utils import pretty_scheduler
+from apps.scheduler.utils import pretty_scheduler, pretty_scheduler_from_db
 from apps.scheduler.models import SchedulerTable
 
 class SchedulerCommands(commands.Cog, name='scheduler_commands'):
@@ -51,8 +51,6 @@ class SchedulerCommands(commands.Cog, name='scheduler_commands'):
             data = [title.content.upper(), body.content.capitalize(), date_output]
             await self.channel.send(embed=pretty_scheduler(ctx, data))
             data = [
-                ('channel_id', ctx.channel.id),
-                ('message_id', ctx.message.id),
                 ('type', 'Task'),
                 ('title', title.content),
                 ('body', body.content),
@@ -61,4 +59,12 @@ class SchedulerCommands(commands.Cog, name='scheduler_commands'):
             scheduler.insert(data)
         else:
             await self.channel.send(f"I'm sorry, it seems that that is in the past")
-            
+
+    @commands.command(name='schedule-upcoming', aliases=['su'])
+    async def schedule(self, ctx):
+        """
+        Prints current schedules
+        """
+        scheduler = SchedulerTable()
+        data = scheduler.select_first().query()
+        await self.channel.send(embed=pretty_scheduler_from_db(data))

@@ -3,7 +3,7 @@ import discord
 import logging
 from discord.ext import commands
 
-TESTING = True
+TESTING = False
 POSTGRES = True
 
 # BOT INFO
@@ -31,6 +31,7 @@ OFFICE_CHANNEL = int(os.getenv('OFFICE_CHANNEL'))
 WADSWORTH_CHANNEL = int(os.getenv('WADSWORTH_CHANNEL'))
 EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
 INVENTORY_CHANNEL = int(os.getenv('INVENTORY_CHANNEL'))
+SCHEDULER_CHANNEL = int(os.getenv('SCHEDULER_CHANNEL'))
 
 # SETTINGS
 BOT_PREFIX = ('!', '-')

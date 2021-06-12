@@ -42,6 +42,7 @@ An up-to-date list of modules and their current commands
 | Password                    | Password generator                                                          |
 | Employee                    | ERP Connection                                                              |
 | Censor                      | Very remidial vulgarity censor                                              |
+| Scheduler                   | Task Scheduler and reminder                                                 |
 | Info                        | General information about Wadsworth                                         |
 ## Potential future modules
 
@@ -49,25 +50,8 @@ An up-to-date list of modules and their current commands
 - [x] ERP employee integration
 - [ ] Task Scheduler/Calendar
 - [ ] Email Scrubber
-- [ ] Employee Status change tracker
+- [x] Employee Status change tracker
 - [ ] Employee asset managmenet
 - [ ] Google admin API integration
 - [ ] Verizon API
 - [ ] Github API 
-
-## Notes
-- Interactive waddy messages
-- scheduler/calendar
-    Name
-	Description
-	Time and date
-	Accepted(x/x)	declined	tenative
-	
-	created by - 
-	created at - 
-	check, cancel, question, delete
-- send reminders to attendeers via discord
-- set recurring events
-
-
-
