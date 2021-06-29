@@ -25,5 +25,4 @@ class JitBitAPI:
         Default method for JitBit API calls
         """
         url = f'{core.config.HELPDESK_URL}/api/{method}'
-        print(url)
         return requests.get(url, auth=self.auth)

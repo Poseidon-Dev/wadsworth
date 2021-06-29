@@ -7,19 +7,22 @@ from core.config import log
 from core.shared.utils import send_email
 
 from .utils import pretty_terms
-from .models import EmployeeLogger, Messages, EmployeeChangesTable, EmployeeTable
+from .models import EmployeeTable, EmployeeUpdatesTable, EmployeeLoggerTable, EmployeeDivisionTable, EmployeeMessagesTable
+from .migrations import EmployeeMasterMigration, EmployeeUpdatesMigration, EmployeeLoggerMigrations, EmployeeDivisionMigration
 
 class EmployeeTasks(commands.Cog, name='employee_tasks'):
 
     def __init__(self, bot):
         self.bot = bot
-        # self.updated_records.start()
+        self.updated_records.start()
         # self.send_updates.start()
         self.channel = self.bot.get_channel(core.config.BOT_TERMS_CHANNEL)
+        EmployeeMasterMigration().store()
+        EmployeeDivisionMigration().insert_divisions()
 
     @tasks.loop(seconds=5.0)
     async def updated_records(self):
-        msg = Messages()
+        msg = EmployeeMessagesTable()
         today = str(date.today())
         records = self.check_data(today)
         try:
@@ -36,21 +39,20 @@ class EmployeeTasks(commands.Cog, name='employee_tasks'):
         send_email('Updated Employees', str(records), 'jwhitworth@arizonapipeline.com')
 
     def check_data(self, today):
-        conn = EmployeeLogger()
-        emp = EmployeeChangesTable()
-        emp.db_refresh()
-        data = conn.changes()
+        conn = EmployeeLoggerMigrations()
+        emp = EmployeeUpdatesMigration()
+        emp.refresh()
+        data = conn.collect_changes()
         if data:
-            log.info('employee record differences found...')
-            cols = ('empid, first, middle1, middle2, last, security, division, status, property_type, device_control, date, log')
-            cols_list = ['empid', 'first', 'middle1', 'middle2', 'last', 'security', 'division', 'status', 'property_type', 'device_control', 'date']
+            cols = conn.column_names_to_string()
+            cols_list = cols.split(',')
             for line in data:
                 new = line + (today,)
                 old = EmployeeTable().filter('id', line[0]).query()[0] + (today,)
-                changes = [f'{cols_list[i].upper()} - NEW: {new[i]} OLD: {old[i]}' for i in range(len(cols_list)) if new[i] != old[i]]
+                changes = [f'{cols_list[i-1].upper()}: NEW - {new[i-1]} | OLD - {old[i-1]}' for i in range(len(cols_list)) if new[i-1] != old[i-1]]
                 changes = (new + (str(changes).strip('[]').replace("'", ''),))
-                conn.insert_many(cols, changes)
-                conn.upsert_employees(line)
+                conn.upsert_logger(changes)
+                EmployeeMasterMigration().upsert_records(line)
         data = conn.filter('date', today).query()
         return data
 

@@ -25,7 +25,6 @@ class DBConnection:
             password=self.pwd,
             port=self.port
         )
-        log.info(conn)
         return conn
 
     def close(self):
@@ -90,5 +89,4 @@ class TableBuilder(ExecuteMixin):
             {columns}
         );
         """
-        log.info(command)
         self.execute(command)

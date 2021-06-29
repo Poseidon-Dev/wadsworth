@@ -126,9 +126,9 @@ if TESTING:
     # CURRENT MODULES
     STARTUP_COGS = [
     'apps.info',
-    'apps.support',
+    # 'apps.support',
     # 'apps.scheduler',
-    # 'apps.erp',
+    'apps.erp',
     # 'apps.office',
     ] 
 

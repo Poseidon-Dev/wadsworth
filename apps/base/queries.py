@@ -234,6 +234,32 @@ class QueryMixin(QueryBase):
         """
         return self.execute(command)
 
+    def column_names(self):
+        """
+        Returns the column names of self.table
+        """
+        command = f"""
+        SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_NAME = '{self.table}'
+        ORDER BY ordinal_position;
+        """
+        return self.execute(command)
+
+    def column_names_to_string(self):
+        """
+        Returns the column names of self.columns_names into a string
+        """
+        results = ' '.join([f'{idx},' for tup in self.column_names() for idx in tup])
+        return results[:-1]
+
+    def delete_table(self):
+        command = f"""
+        DELETE FROM {self.table}
+        """
+        self.execute(command)
+        
+
+
 
 class Query(QueryMixin):
 

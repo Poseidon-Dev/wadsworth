@@ -17,7 +17,6 @@ class Database:
         self.columns = tuple()
         
     def execute(self, command):
-        print(command)
         try:
             self.cur.execute(command)
             response = True
@@ -60,7 +59,6 @@ class Database:
         if not table:
             table = self.table
         command = f"""SELECT * FROM {table} WHERE {columns} = {values} {order}"""
-        print(command)
         self.cur.execute(command)
         try:
             response = self.cur.fetchone()
@@ -105,7 +103,6 @@ class Database:
         ON CONFLICT ON CONSTRAINT {self.table}_pkey
             DO NOTHING
         """
-        print(self.execute(command))
 
     # Update Queries
     def update_record(self, key, values, columns=None):

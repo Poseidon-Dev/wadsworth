@@ -58,18 +58,17 @@ def pretty_terms(data):
         title=f'**{name}**',
         color=0x03f8fc,)
     for record in data:
-        division = Query('division_table').filter(val=record[7]).query()
+        division = Query('division_table').filter(val=record[6]).query()
         embed.add_field(
             name=f'Employee',
             value=f"""
-            > ID : {record[1]}\n> 
-            > Name: {record[2].capitalize()} {record[5].capitalize()}\n> 
+            > ID : {record[0]}\n> 
+            > Name: {record[1].capitalize()} {record[4].capitalize()}\n> 
             > Division: {division[0][1]}\n> 
-            > Security: {record[6]}\n> 
-            > Changes: {record[12]}\n> 
+            > Security: {record[5]}\n> 
+            > Changes: {record[11]}\n> 
             """ + '\u2800' * 27,
             inline=False)
-        print(record)
     return embed
         
 
