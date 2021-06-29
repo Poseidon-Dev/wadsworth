@@ -22,7 +22,7 @@ def pretty_employee(ctx, employee):
         > Security : {employee[5]}\n> 
         """ + '\u2800' * 27,
         inline=False)
-    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
     return embed
 
 def pretty_employees(ctx, employees):
@@ -45,7 +45,7 @@ def pretty_employees(ctx, employees):
         > Security : {employee[5]}\n> 
         """ + '\u2800' * 27,
         inline=False)
-    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
     return embed
 
 def pretty_terms(data):

@@ -17,7 +17,7 @@ def pretty_inventory_list(ctx, division):
     embed.add_field(name='Phones', value=division[6], inline=True)
     embed.add_field(name='iPads', value=division[7], inline=True)
     embed.add_field(name='\u2800', value='\u2800', inline=False)
-    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
     return embed
 
 def pretty_division_invetory(ctx, division):
@@ -37,5 +37,5 @@ def pretty_division_invetory(ctx, division):
     embed.add_field(name='Phones', value=division[6], inline=True)
     embed.add_field(name='iPads', value=division[7], inline=True)
     embed.add_field(name='\u2800', value='\u2800', inline=False)
-    embed.set_footer(text=f"Requested by {ctx.message.author}")
+    embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
     return embed

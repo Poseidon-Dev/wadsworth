@@ -49,7 +49,7 @@ class InfoCommands(commands.Cog, name='info_commands'):
                 cog_title = cog.qualified_name.split('_')[0].title()
                 embed.add_field(name=cog_title, value=help_text, inline=False)
                 embed.add_field(name='** **', value=f'** **', inline=False)
-                embed.set_footer(text=f"Requested by {ctx.message.author}")
+                embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
         await self.channel.send(f'{ctx.author.mention}')
         msg = await self.channel.send(embed=embed)
         reactions = agreement_reactions
@@ -72,7 +72,7 @@ class InfoCommands(commands.Cog, name='info_commands'):
         embed.add_field(name='Python Version', value=f'{platform.python_version()}', inline=False)
         embed.add_field(name='Wadsworth Version', value=f'{core.config.VERSION}', inline=False)
         embed.add_field(name='Description', value=f'{core.config.DESCRIPTION}', inline=False)
-        embed.set_footer(text=f"Requested by {ctx.message.author}")
+        embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
         await self.channel.send(f'{ctx.author.mention}')
         await self.channel.send(embed=embed)
 

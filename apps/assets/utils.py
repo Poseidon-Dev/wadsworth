@@ -25,6 +25,6 @@ def pretty_assets(ctx, key):
             """ + '\u2800' * 27,
             inline=False
         )
-    embed.set_footer(text="Requested by {ctx.message.author}")
+    embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
 
     return embed
