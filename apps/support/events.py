@@ -1,7 +1,9 @@
-import discord, os, platform, asyncio
+import re
 from discord.ext import commands
 
 import core.config
+from apps.support.migrations import JitBitTickets
+from apps.support.utils import pretty_ticket
 
 class SupportEvents(commands.Cog, name='support_events'):
 
@@ -16,5 +18,8 @@ class SupportEvents(commands.Cog, name='support_events'):
     # Events
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.content == '/?':
-            await message.channel.send('support events')
+        if message.author != self.bot.user:
+            if core.config.HELPDESK_URL in message.content:
+                ticket_id = re.findall(r'[0-9]+', message.content)
+                ticket_detail = JitBitTickets().pull_ticket(str(ticket_id[0]))
+                await message.channel.send(embed=pretty_ticket(message, ticket_detail))

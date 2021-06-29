@@ -52,6 +52,7 @@ STARTUP_COGS = [
     'apps.password',
     'apps.censor',
     'apps.erp',
+    'apps.support',
     # 'apps.inventory',
 ] 
 
@@ -125,7 +126,8 @@ if TESTING:
     # CURRENT MODULES
     STARTUP_COGS = [
     'apps.info',
-    'apps.scheduler',
+    'apps.support',
+    # 'apps.scheduler',
     # 'apps.erp',
     # 'apps.office',
     ] 

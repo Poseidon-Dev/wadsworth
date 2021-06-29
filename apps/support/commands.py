@@ -3,8 +3,7 @@ from discord.ext import commands
 
 from core.shared.utils import pretty_ping
 import core.config
-from .utils import pretty_ticket, pretty_comment, extract_ticket_from_url
-from .models import TicketTable, TicketCommentTable
+from .models import TicketTable
 
 class SupportCommands(commands.Cog, TicketTable, name='support_commands'):
 
@@ -27,61 +26,4 @@ class SupportCommands(commands.Cog, TicketTable, name='support_commands'):
         await self.ping_channel.send(embed=embed)
 
 
-    @commands.command(name='ticket', description='Lists a ticket based on IssueID input')
-    async def list_ticket_detail(self, ctx, ticket):
-        """
-        [TICKETID]
-            \u2800\u2800Returns a ticket base on TicketID input
-        """
-        await ctx.message.delete()
-        # await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
-        ticket = self.select_by_id(ticket, self.table)
-        try:
-            embed = pretty_ticket(ctx, ticket[0])
-            await ctx.send(embed=embed)
-        except Exception as e:
-            await ctx.send('Either that ticket is closed or does not exist')
-            print(f'Query returned null value: {e}')
-        
-
-
-    @commands.command(name='tickets')
-    async def list_current_tickets(self, ctx):
-        """
-        Returns all current tickets stored in local db in pretty format 
-        """
-        await ctx.message.delete()
-        # await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
-        tickets = self.select_all()
-        for ticket in tickets:
-            embed = pretty_ticket(ctx, ticket)
-            await ctx.send(embed=embed)
-        await ctx.send(f"That is all. There are currently {len(tickets)} open tickets")
-
-
-    @commands.command(name='url')
-    async def list_ticket_from_url(self, ctx, url, comment_quantity: int=None):
-        """
-        [URL] [COUNT]
-            \u2800\u2800Returns a ticket base on URL input
-            \u2800\u2800Returns [COUNT] of recent comments (op)
-        """
-        await ctx.message.delete()
-        # await ctx.send(WadsworthMsg().debanair_messages(ctx.message.author.display_name))
-        ticket_id = extract_ticket_from_url(url)
-        try:
-            ticket = self.select_by_id(ticket_id, self.table)
-            embed = pretty_ticket(ctx, ticket[0])
-            await ctx.send(embed=embed)
-            if comment_quantity:
-                ticket_comments = self.select_all(table="ticket_comments", where=f"WHERE ticket_id = '{ticket_id}'")
-                i = 0
-                for comment in ticket_comments:
-                    embed = pretty_comment(ctx, comment)
-                    await ctx.send(embed=embed)
-                    i += 1
-                    if i == comment_quantity:
-                        break
-        except Exception as e:
-            await ctx.send('Either that ticket is closed or does not exist')
-            print(f'Query returned null value: {e}')
+    

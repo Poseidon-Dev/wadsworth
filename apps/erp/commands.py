@@ -37,7 +37,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             if len(param1) != 5:
                 await ctx.send('That is not a valid employee number')
             else:
-                employee = self.filter(val=int(param1)).query()
+                employee = EmployeeTable().filter(val=int(param1)).query()
                 await ctx.send(embed=pretty_employee(ctx, employee[0]))
 
         # Argument First Name
@@ -45,7 +45,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             if len(param1) <= 2:
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
-                employees = self.filter_like('first', param1.upper()).query()
+                employees = EmployeeTable().filter_like('first', param1.upper()).query()
                 try:
                     await ctx.send(embed=pretty_employees(ctx, employees))
                 except Exception as e:
@@ -56,7 +56,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             if len(param1) <= 2:
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
-                employees = self.filter_like('last', param1.upper()).query()
+                employees = EmployeeTable().filter_like('last', param1.upper()).query()
                 try:
                     await ctx.send(embed=pretty_employees(ctx, employees))
                 except Exception as e:
@@ -68,7 +68,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             if len(param1) + len(param2) <= 4:
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
-                employees = self.filter_like('first', param1.upper()).filter_like('last', param2.upper()).query()
+                employees = EmployeeTable().filter_like('first', param1.upper()).filter_like('last', param2.upper()).query()
                 try:
                     await ctx.send(embed=pretty_employees(ctx, employees))
                 except Exception as e:
