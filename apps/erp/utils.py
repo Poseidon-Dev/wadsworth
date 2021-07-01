@@ -3,6 +3,8 @@ import discord
 from apps.base.models import Database
 from apps.base.queries import Query
 
+from core.shared.messages import property_dict
+
 def pretty_employee(ctx, employee):
     """
     Returns an embed for an employee for a prettier discord format
@@ -71,6 +73,21 @@ def pretty_terms(data):
             inline=False)
     return embed
         
+def pretty_property(property):
+    from apps.erp.models import EmployeeTable
+    prop = property_dict.get(property[3])
+    name = EmployeeTable().filter(val=property[1]).query()[0][0]
+    embed = discord.Embed(
+        title=f'**{name}**',
+        color=0x7AE80C,)
+    embed.add_field(
+        name=f'{prop}',
+        value=f"""
+        > Description : {property[4]}\n> 
+        > Control: {property[2]}\n 
+        """ + '\u2800' * 27,
+        inline=False)
+    return embed
 
 def clean_name(name):
     name = name.replace("'", '')

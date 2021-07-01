@@ -2,7 +2,13 @@ from apps.erp.commands import EmployeeCommands
 from apps.erp.events import ErpEvents
 from apps.erp.tasks import EmployeeTasks
 from apps.erp.conn import ErpApiConn
-from apps.erp.models import EmployeeTable, EmployeeUpdatesTable, EmployeeLoggerTable, EmployeeDivisionTable, EmployeeMessagesTable
+from apps.erp.models import (
+    EmployeeTable,
+    EmployeeUpdatesTable,
+    EmployeeLoggerTable, 
+    EmployeeDivisionTable, 
+    EmployeeMessagesTable,
+    EmployeePropertyTable)
 
 def setup(bot):
     EmployeeTable().build()
@@ -10,6 +16,7 @@ def setup(bot):
     EmployeeLoggerTable().build()
     EmployeeDivisionTable().build()
     EmployeeMessagesTable().build()
+    EmployeePropertyTable().build()
     # DivisionTable().build()
     # EmployeeTable().build()
     # EmployeeTable().store()

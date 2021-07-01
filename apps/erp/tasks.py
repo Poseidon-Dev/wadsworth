@@ -8,17 +8,23 @@ from core.shared.utils import send_email
 
 from .utils import pretty_terms
 from .models import EmployeeTable, EmployeeUpdatesTable, EmployeeLoggerTable, EmployeeDivisionTable, EmployeeMessagesTable
-from .migrations import EmployeeMasterMigration, EmployeeUpdatesMigration, EmployeeLoggerMigrations, EmployeeDivisionMigration
+from .migrations import EmployeeMasterMigration, EmployeeUpdatesMigration, EmployeeLoggerMigrations, EmployeeDivisionMigration, EmployeePropertyMigrations
 
 class EmployeeTasks(commands.Cog, name='employee_tasks'):
 
     def __init__(self, bot):
         self.bot = bot
-        self.updated_records.start()
+        # self.updated_records.start()
+        self.update_company_property.start()
         # self.send_updates.start()
         self.channel = self.bot.get_channel(core.config.BOT_TERMS_CHANNEL)
         EmployeeMasterMigration().store()
         EmployeeDivisionMigration().insert_divisions()
+
+    @tasks.loop(seconds=600)
+    async def update_company_property(self):
+        migrations = EmployeePropertyMigrations()
+        migrations.refresh()
 
     @tasks.loop(seconds=5.0)
     async def updated_records(self):

@@ -1,13 +1,18 @@
 import discord, os, platform, asyncio, csv
 from discord.ext import commands
+import re
 
-from .models import EmployeeTable
+from .models import EmployeeTable, EmployeePropertyTable
+from .migrations import EmployeePropertyMigrations
+from .utils import pretty_property
 import core.config
+from core.shared.messages import property_dict
 
 class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
 
     def __init__(self, bot):
         EmployeeTable.__init__(self)
+        EmployeePropertyMigrations().store()
         self.bot = bot
         if core.config.TESTING:
             self.channel = self.bot.get_channel(core.config.BOT_CHANNEL)
@@ -41,4 +46,18 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
                     await self.channel.send(file=discord.File(f'{filepath}export_{filename}'))
             else:
                 return
-            
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+        if payload.user_id != self.bot.user.id and payload.emoji.name in property_dict.values():
+            channel = self.bot.get_channel(payload.channel_id)
+            msg = await channel.fetch_message(payload.message_id)
+            for embed in msg.embeds:
+                embeds = embed.to_dict()['fields']
+                employee_ids = [re.findall('(\d+)', val['value'])[0] for val in embeds]
+                for employee in employee_ids:
+                    for idx, emoji in property_dict.items():
+                        if payload.emoji.name == emoji:
+                            record = EmployeePropertyTable().filter('employeeid', employee)
+                            record = record.filter('property_type', idx).query()[0]
+                            await channel.send(embed=pretty_property(record))

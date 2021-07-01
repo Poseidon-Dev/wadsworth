@@ -1,9 +1,11 @@
+import re
 from apps.base.queries import Query
+from datetime import date
 import pyodbc, os 
 import core.config
 
 from .utils import clean_name
-from .models import EmployeeLoggerTable, EmployeeTable, EmployeeUpdatesTable, EmployeeDivisionTable
+from .models import EmployeeLoggerTable, EmployeeTable, EmployeeUpdatesTable, EmployeeDivisionTable, EmployeePropertyTable
 from .conn import ErpApiConn
 
 class EmployeeFetch:
@@ -26,10 +28,10 @@ class EmployeeFetch:
                 ON EMP.HRTEMPID = CPR.HRTEMPID
             WHERE EMP.COMPANYNO = 1 
             AND EMP.EMPLOYEENO > 0 
-            AND CPR.PROPERTYNO IN (2,4,5,9)
-            AND CPR.RTNDATE IS NULL 
-            AND CPR.EXPDATE IS NULL
             """
+            # AND CPR.PROPERTYNO IN (2,4,5,9,70,75)
+            # AND CPR.RTNDATE IS NULL 
+            # AND CPR.EXPDATE IS NULL
         return ErpApiConn().erp_commmand(command)
 
 class EmployeeMasterMigration(EmployeeTable):
@@ -135,5 +137,45 @@ class EmployeeLoggerMigrations(EmployeeLoggerTable):
         """
         self.execute(command)
 
+class EmployeePropertyMigrations(EmployeePropertyTable):
+    
+    def fetch(self):
+        command = """
+        SELECT EMP.EMPLOYEENO, TRIM(CPR.CONTROLNO), CAST(CPR.PROPERTYNO AS INTEGER),
+        TRIM(CPR.DESCRIPTION), CPR.ASGDATE
+        FROM CMSFIL.HRTCPR AS CPR
+        JOIN CMSFIL.HRTEMP AS EMP 
+            ON EMP.HRTEMPID = CPR.HRTEMPID
+        WHERE EMP.COMPANYNO = 1 
+        AND EMP.EMPLOYEENO > 0 
+        AND CPR.PROPERTYNO IN (2,4,5,9,10,70,75)
+        AND CPR.RTNDATE IS NULL 
+        AND CPR.EXPDATE IS NULL
+        """
+        return ErpApiConn().erp_commmand(command)
+
+    def flatten_data(self):
+        records = list(self.fetch())
+        for record in records:
+            if not record[1]:
+                record[1] = 'None'
+            record[3] = record[3].replace("'", '')
+            if record[4]:
+                record[4]= date.strftime(record[4], '%Y-%m-%d')
+            else:
+                record[4] = date.strftime(date(2010, 1, 1),'%Y-%m-%d')
+        return records
+        
+    def store(self):
+        records = self.flatten_data()
+        self.insert_many(self.column_names_to_string()[4:], records)
+
+    def refresh(self):
+        try:
+            self.delete_table()
+            self.store()
+        except Exception as e:
+            return False
+        return True
 
     

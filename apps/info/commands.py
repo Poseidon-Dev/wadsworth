@@ -1,7 +1,8 @@
 import discord, os, platform, asyncio
 from discord.ext import commands
 
-from core.shared.utils import pretty_ping, agreement_reactions
+from core.shared.utils import pretty_ping
+from core.shared.messages import  agreement_reactions
 import core.config
 
 class InfoCommands(commands.Cog, name='info_commands'):

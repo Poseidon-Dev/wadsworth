@@ -2,9 +2,10 @@ import discord, os
 from discord.ext import commands
 
 from core.shared.utils import pretty_ping
+from core.shared.messages import property_dict
 import core.config
 from .utils import pretty_employee, pretty_employees
-from .models import EmployeeTable
+from .models import EmployeeTable, EmployeePropertyTable
 
 class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
 
@@ -37,8 +38,8 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             if len(param1) != 5:
                 await ctx.send('That is not a valid employee number')
             else:
-                employee = EmployeeTable().filter(val=int(param1)).query()
-                await ctx.send(embed=pretty_employee(ctx, employee[0]))
+                employee = EmployeeTable().filter('id', param1).query()
+                await ctx.send(embed=pretty_employee(ctx, employee))
 
         # Argument First Name
         if argument in ['f', '-f', 'first', '-first']:
@@ -70,6 +71,18 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             else:
                 employees = EmployeeTable().filter_like('first', param1.upper()).filter_like('last', param2.upper()).query()
                 try:
-                    await ctx.send(embed=pretty_employees(ctx, employees))
+                    for employee in employees:
+                        employee_emojis = self.employee_property_to_emoji(employee)
+                    msg = await ctx.send(embed=pretty_employees(ctx, employees))
+                    for emoji in employee_emojis:
+                        await msg.add_reaction(emoji)
                 except Exception as e:
-                    await ctx.send(f'Too many search results to display in discord')
+                    await ctx.send(f'Too many search results to display in discord: {e}')
+
+    def employee_property_to_emoji(self, employee):
+        employee_property = EmployeePropertyTable().filter('employeeid', employee[0]).query()
+        property_type = [prop[3] for prop in employee_property]
+        flattened_property = sorted(list(set(property_type)))
+        emojis = [property_dict.get(prop) for prop in flattened_property]
+        return emojis
+
