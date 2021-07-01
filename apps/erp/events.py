@@ -49,7 +49,7 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        if payload.user_id != self.bot.user.id and payload.emoji.name in property_dict.values():
+        if payload.user_id != self.bot.user.id and payload.emoji.is_custom_emoji():
             channel = self.bot.get_channel(payload.channel_id)
             msg = await channel.fetch_message(payload.message_id)
             for embed in msg.embeds:
@@ -57,7 +57,7 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
                 employee_ids = [re.findall('(\d+)', val['value'])[0] for val in embeds]
                 for employee in employee_ids:
                     for idx, emoji in property_dict.items():
-                        if payload.emoji.name == emoji:
+                        if payload.emoji.name == emoji.split(':')[1]:
                             record = EmployeePropertyTable().filter('employeeid', employee)
                             record = record.filter('property_type', idx).query()[0]
                             await channel.send(embed=pretty_property(record))

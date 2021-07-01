@@ -38,8 +38,8 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             if len(param1) != 5:
                 await ctx.send('That is not a valid employee number')
             else:
-                employee = EmployeeTable().filter('id', param1).query()
-                await ctx.send(embed=pretty_employee(ctx, employee))
+                employees = EmployeeTable().filter('id', param1).query()
+                await self.employee_out(ctx, employees)
 
         # Argument First Name
         if argument in ['f', '-f', 'first', '-first']:
@@ -47,10 +47,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
                 employees = EmployeeTable().filter_like('first', param1.upper()).query()
-                try:
-                    await ctx.send(embed=pretty_employees(ctx, employees))
-                except Exception as e:
-                    await ctx.send(f'Too many search results to display in discord')
+                await self.employee_out(ctx, employees)
 
         # Argument Last Name
         if argument in ['l', '-l', 'last', '-last']:
@@ -58,10 +55,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
                 employees = EmployeeTable().filter_like('last', param1.upper()).query()
-                try:
-                    await ctx.send(embed=pretty_employees(ctx, employees))
-                except Exception as e:
-                    await ctx.send(f'Too many search results to display in discord')
+                await self.employee_out(ctx, employees)
 
 
         # Argument First and Last Name
@@ -70,19 +64,27 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
                 await ctx.send('Thats too broad of a search, please be more specific')
             else:
                 employees = EmployeeTable().filter_like('first', param1.upper()).filter_like('last', param2.upper()).query()
-                try:
-                    for employee in employees:
-                        employee_emojis = self.employee_property_to_emoji(employee)
-                    msg = await ctx.send(embed=pretty_employees(ctx, employees))
-                    for emoji in employee_emojis:
-                        await msg.add_reaction(emoji)
-                except Exception as e:
-                    await ctx.send(f'Too many search results to display in discord: {e}')
+                await self.employee_out(ctx, employees)
 
-    def employee_property_to_emoji(self, employee):
-        employee_property = EmployeePropertyTable().filter('employeeid', employee[0]).query()
+
+    async def employee_out(self, ctx, employees):
+        try:
+            msg = await ctx.send(embed=pretty_employees(ctx, employees))
+            for emoji in self.employee_property_to_emoji(employees):
+                await msg.add_reaction(emoji)
+        except Exception as e:
+            await ctx.send(f'There was an error with your request')
+
+    def employee_property(self, employee):
+        employee_property = EmployeePropertyTable().filter('employeeid', employee[0][0]).query()
         property_type = [prop[3] for prop in employee_property]
-        flattened_property = sorted(list(set(property_type)))
-        emojis = [property_dict.get(prop) for prop in flattened_property]
+        return sorted(list(set(property_type)))
+
+
+    def employee_property_to_emoji(self, employees):
+        emojis = [property_dict.get(prop) for prop in self.employee_property(employees)]
         return emojis
+
+    
+            
 
