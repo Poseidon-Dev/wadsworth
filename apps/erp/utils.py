@@ -10,8 +10,7 @@ def pretty_employee(ctx, employee):
     Returns an embed for an employee for a prettier discord format
     """
     name = f'{employee[1].capitalize()} {employee[2][:1].capitalize()} {employee[4].capitalize()}'
-    division = Query('division_table').filter(val=employee[6]).query()
-    # division = Database().select_by_id(table='division_table', key=employee[6])
+    division = Query('ee_division').filter(val=employee[6]).query()
     embed = discord.Embed(
         title=f'**{name}**',
         color=0x03f8fc,
@@ -75,18 +74,21 @@ def pretty_terms(data):
         
 def pretty_property(property):
     from apps.erp.models import EmployeeTable
-    prop = property_dict.get(property[3])
-    name = EmployeeTable().filter(val=property[1]).query()[0][0]
+    prop = property_dict.get(property[3]).split(':')[1]
+    name = f'{EmployeeTable().filter(val=property[1]).query()[0][1].capitalize()} | {prop.capitalize()}'
     embed = discord.Embed(
         title=f'**{name}**',
         color=0x7AE80C,)
     embed.add_field(
-        name=f'{prop}',
-        value=f"""
-        > Description : {property[4]}\n> 
-        > Control: {property[2]}\n 
-        """ + '\u2800' * 27,
-        inline=False)
+        name='Control',
+        value=f'{property[2]}',
+        inline=False
+    )
+    embed.add_field(
+        name='Description',
+        value=f'{property[4]}' + '\u2800' * (43 - len(property[4])),
+        inline=False,
+    )
     return embed
 
 def clean_name(name):
