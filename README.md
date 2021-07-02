@@ -38,12 +38,12 @@ An up-to-date list of modules and their current commands
 | key -m                      | Prompts for computer and email and delivers an avilable key                 |
 | key -r                      | Lists all available keys                                                    |
 | key -c                      | Count available keys                                                        |
-
+\
 
 | Password <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | pass                        | Generates a random password based on a list of 4000 words                   |
-
+\
 
 | ERP <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
@@ -52,7 +52,7 @@ An up-to-date list of modules and their current commands
 | whois l [Last]              | Retrieves employe with lname like [Last] (active)                           |
 | whois fl [First] [Last]     | Retrieves employe with fname and lname like [First] [Last] (active)         |
 | (AFTER LOOKUP) Property Reactions  | Retreived active company property based on user reactions after lookup|
-
+\
 
 | Support Desk <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
