@@ -54,9 +54,8 @@ An up-to-date list of modules and their current commands
 | (AFTER LOOKUP) Property Reactions  | Retreived active company property based on user reactions after lookup|
 
   
-| <img width=170/>    | <img width=500/>                                                 |
+| Support <img width=170/>    | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
-| Support                     |                                                                             |
 | URL EVENT LISTENER          | Retreives ticket information as an event listener on all messages           |
 
 ## Potential future modules
