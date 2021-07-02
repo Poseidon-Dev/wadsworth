@@ -39,12 +39,12 @@ An up-to-date list of modules and their current commands
 | key -r                      | Lists all available keys                                                    |
 | key -c                      | Count available keys                                                        |
 
-\
+  
 | Password <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | pass                        | Generates a random password based on a list of 4000 words                   |
 
-\
+  
 | ERP <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | whois id [ID]               | Retrieves employee record with ID (Inactive or active)                      |
@@ -53,7 +53,7 @@ An up-to-date list of modules and their current commands
 | whois fl [First] [Last]     | Retrieves employe with fname and lname like [First] [Last] (active)         |
 | (AFTER LOOKUP) Property Reactions  | Retreived active company property based on user reactions after lookup|
 
-\
+  
 | Support Desk <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | URL EVENT LISTENER          | Retreives ticket information as an event listener on all messages           |
