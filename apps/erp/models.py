@@ -11,10 +11,8 @@ class EmployeeTable(Query):
             ('middle2', 'VARCHAR(30)'),
             ('last', 'VARCHAR(30)'),
             ('security', 'INT'),
-            ('division', 'INT REFERENCES division_table(id) ON DELETE NO ACTION'),
+            ('division', 'INT REFERENCES ee_divisions(id) ON DELETE NO ACTION'),
             ('status', 'VARCHAR(30)'),
-            ('property_type', 'INT'),
-            ('device_control', 'VARCHAR(50)'),
         ]
         Query.__init__(self, self.table, self.columns)
 

@@ -73,16 +73,16 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
             for emoji in self.employee_property_to_emoji(employees):
                 await msg.add_reaction(emoji)
         except Exception as e:
-            await ctx.send(f'There was an error with your request')
+            await ctx.send(f'There was an error with your request: {e}')
 
-    def employee_property(self, employee):
+    def employee_property_type(self, employee):
         employee_property = EmployeePropertyTable().filter('employeeid', employee[0][0]).query()
         property_type = [prop[3] for prop in employee_property]
         return sorted(list(set(property_type)))
 
 
     def employee_property_to_emoji(self, employees):
-        emojis = [property_dict.get(prop) for prop in self.employee_property(employees)]
+        emojis = [property_dict.get(prop) for prop in self.employee_property_type(employees)]
         return emojis
 
     

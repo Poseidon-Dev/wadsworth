@@ -10,7 +10,7 @@ def pretty_employee(ctx, employee):
     Returns an embed for an employee for a prettier discord format
     """
     name = f'{employee[1].capitalize()} {employee[2][:1].capitalize()} {employee[4].capitalize()}'
-    division = Query('ee_division').filter(val=employee[6]).query()
+    division = Query('ee_divisions').filter(val=employee[6]).query()
     embed = discord.Embed(
         title=f'**{name}**',
         color=0x03f8fc,
@@ -32,12 +32,12 @@ def pretty_employees(ctx, employees):
     """
     name = 'Employee Search Results'
     embed = discord.Embed(
-        title=f'**{name}**',
+        title=f'**{name}**' + '\u2800' * (35 - len(name)),
         color=0x03f8fc,
         timestamp=ctx.message.created_at)
     for employee in employees:
         name = f'{employee[1].capitalize()} {employee[2][:1].capitalize()} {employee[4].capitalize()}'
-        division = Query('division_table').filter(val=employee[6]).query()
+        division = Query('ee_divisions').filter(val=employee[6]).query()
         embed.add_field(
         name=f'{name}\n',
         value=f"""
@@ -59,7 +59,7 @@ def pretty_terms(data):
         title=f'**{name}**',
         color=0x03f8fc,)
     for record in data:
-        division = Query('division_table').filter(val=record[6]).query()
+        division = Query('ee_divisions').filter(val=record[6]).query()
         embed.add_field(
             name=f'Employee',
             value=f"""
@@ -77,8 +77,9 @@ def pretty_property(property):
     prop = property_dict.get(property[3]).split(':')[1]
     name = f'{EmployeeTable().filter(val=property[1]).query()[0][1].capitalize()} | {prop.capitalize()}'
     embed = discord.Embed(
-        title=f'**{name}**',
-        color=0x7AE80C,)
+        title=f'**{name}**' + '\u2800' * (35 - len(name)),
+        color=colors_dict.get(prop.lower())
+        )
     embed.add_field(
         name='Control',
         value=f'{property[2]}',
@@ -86,7 +87,7 @@ def pretty_property(property):
     )
     embed.add_field(
         name='Description',
-        value=f'{property[4]}' + '\u2800' * (43 - len(property[4])),
+        value=property[4],
         inline=False,
     )
     return embed
@@ -94,3 +95,23 @@ def pretty_property(property):
 def clean_name(name):
     name = name.replace("'", '')
     return name
+
+property_dict = {
+    2: '<:iphone:860220718440251454>',
+    4: '<:laptop:860213753312575519>',
+    5: '<:ipad:860220923827585074>',
+    9: '<:mail:860220741966233630>',
+    10: '<:cards:860220653654376459>',
+    70: '<:docuware:860216636120629298>',
+    75: '<:concur:860220678748635177>'
+}
+
+colors_dict = {
+    'iphone': 0x00dc9e,
+    'laptop': 0x00a3ec,
+    'ipad': 0xf400ed,
+    'mail': 0xff0909,
+    'cards': 0x29e629,
+    'docuware': 0x404dff,
+    'concur': 0xfdb400,
+}

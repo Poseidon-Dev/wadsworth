@@ -22,16 +22,11 @@ class EmployeeFetch:
                 WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 THEN LEFT(EMP.DEPTNO, 1)
                 WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
                 WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 THEN LEFT(EMP.DEPTNO, 2) END
-            AS DIVISION, EMP.STATUSCODE, CAST(CPR.PROPERTYNO AS INTEGER), TRIM(CPR.CONTROLNO)
+            AS DIVISION, EMP.STATUSCODE
             FROM CMSFIL.HRTEMP AS EMP
-            JOIN CMSFIL.HRTCPR AS CPR 
-                ON EMP.HRTEMPID = CPR.HRTEMPID
             WHERE EMP.COMPANYNO = 1 
             AND EMP.EMPLOYEENO > 0 
             """
-            # AND CPR.PROPERTYNO IN (2,4,5,9,70,75)
-            # AND CPR.RTNDATE IS NULL 
-            # AND CPR.EXPDATE IS NULL
         return ErpApiConn().erp_commmand(command)
 
 class EmployeeMasterMigration(EmployeeTable):
@@ -63,8 +58,6 @@ class EmployeeMasterMigration(EmployeeTable):
             security = EXCLUDED.security,
             division = EXCLUDED.division,
             status = EXCLUDED.status,
-            property_type = EXCLUDED.property_type,
-            device_control = EXCLUDED.device_control;
         """
         self.execute(command)
 
@@ -132,8 +125,6 @@ class EmployeeLoggerMigrations(EmployeeLoggerTable):
             security = EXCLUDED.security,
             division = EXCLUDED.division,
             status = EXCLUDED.status,
-            property_type = EXCLUDED.property_type,
-            device_control = EXCLUDED.device_control;
         """
         self.execute(command)
 
@@ -149,7 +140,7 @@ class EmployeePropertyMigrations(EmployeePropertyTable):
         WHERE EMP.COMPANYNO = 1 
         AND EMP.EMPLOYEENO > 0 
         AND CPR.PROPERTYNO IN (2,4,5,9,10,70,75)
-        AND CPR.RTNDATE IS NULL 
+        AND CPR.RETIREDDATE IS NULL 
         AND CPR.EXPDATE IS NULL
         """
         return ErpApiConn().erp_commmand(command)

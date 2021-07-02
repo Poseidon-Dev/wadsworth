@@ -59,5 +59,6 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
                     for idx, emoji in property_dict.items():
                         if payload.emoji.name == emoji.split(':')[1]:
                             record = EmployeePropertyTable().filter('employeeid', employee)
-                            record = record.filter('property_type', idx).query()[0]
-                            await channel.send(embed=pretty_property(record))
+                            records = record.filter('property_type', idx).query()
+                            for record in records:
+                                await channel.send(embed=pretty_property(record))
