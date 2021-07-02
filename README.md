@@ -30,7 +30,8 @@ If you need some help for something, please reach out to me directly or submit a
 An up-to-date list of modules and their current commands
 
 
-| Office <img width=200/>  | What it is <img width=500/>                                                 |
+
+| Office <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | key -a [KEY]                | Adds the key to the office keys db. Must be 29 characters long              |
 | key -d                      | Deletes a key from the office keys db based on table ID. Irreversible       |
@@ -38,11 +39,13 @@ An up-to-date list of modules and their current commands
 | key -r                      | Lists all available keys                                                    |
 | key -c                      | Count available keys                                                        |
 
-| Password <img width=200/>  | What it is <img width=500/>                                                 |
+
+| Password <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | pass                        | Generates a random password based on a list of 4000 words                   |
 
-| ERP <img width=200/>  | What it is <img width=500/>                                                 |
+
+| ERP <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | whois id [ID]               | Retrieves employee record with ID (Inactive or active)                      |
 | whois f [First]             | Retrieves employe with fname like [First] (active)                          |
@@ -50,9 +53,11 @@ An up-to-date list of modules and their current commands
 | whois fl [First] [Last]     | Retrieves employe with fname and lname like [First] [Last] (active)         |
 | (AFTER LOOKUP) Property Reactions  | Retreived active company property based on user reactions after lookup|
 
-| Support Desk <img width=200/>  | What it is <img width=500/>                                                 |
+
+| Support Desk <img width=170/>  | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | URL EVENT LISTENER          | Retreives ticket information as an event listener on all messages           |
+
 ## Potential future modules
 
 - [x] Password Generator
