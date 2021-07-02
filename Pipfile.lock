@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cf89d2339a7eceeb66d77968209f92f1a142699cbea4f170f1c290619b73cb62"
+            "sha256": "0437a9abf1b1f0e5c6d33e81872be2ced1c7ab182513efea28d9e0ccc3cc8665"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -189,6 +189,14 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.10"
+        },
+        "imap-tools": {
+            "hashes": [
+                "sha256:5e177820a4e7a7219e3a323aefb9241a6cd327f004b22b9260ff40626d07b9a0",
+                "sha256:afec987215051f683fb653ffda5ec4aff35613fd368ccfdae98de6a1575442c8"
+            ],
+            "index": "pypi",
+            "version": "==0.42.0"
         },
         "multidict": {
             "hashes": [

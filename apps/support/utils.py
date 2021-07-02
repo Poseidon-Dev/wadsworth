@@ -21,7 +21,7 @@ def clean_html(raw_html):
     return cleantext
     
 
-def pretty_ticket(message, ticket):
+def pretty_ticket(ticket):
     """
     Returns an embed for tickets for a prettier discord format
     """
@@ -45,7 +45,6 @@ def pretty_ticket(message, ticket):
         """,
         inline=False)
     embed.add_field(name='Body', value=clean_html(ticket.get('Body')), inline=False)
-    embed.set_footer(text=f"Requested by {message.author.display_name}")
     return embed
 
     # {'SubmitterUserInfo': {

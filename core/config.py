@@ -32,6 +32,7 @@ WADSWORTH_CHANNEL = int(os.getenv('WADSWORTH_CHANNEL'))
 EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
 INVENTORY_CHANNEL = int(os.getenv('INVENTORY_CHANNEL'))
 SCHEDULER_CHANNEL = int(os.getenv('SCHEDULER_CHANNEL'))
+TICKET_CHANNEL = int(os.getenv('TICKET_CHANNEL'))
 
 # SETTINGS
 BOT_PREFIX = ('!', '-')
@@ -48,10 +49,10 @@ CHANNEL = BOT.get_channel(BOT_CHANNEL)
 # CURRENT MODULES
 STARTUP_COGS = [
     'apps.info',
-    'apps.office',
-    'apps.password',
-    'apps.censor',
-    'apps.erp',
+    # 'apps.office',
+    # 'apps.password',
+    # 'apps.censor',
+    # 'apps.erp',
     'apps.support',
     # 'apps.inventory',
 ] 
@@ -91,6 +92,8 @@ EMAIL_UID = os.getenv('EMAIL_UID')
 EMAIL_PWD = os.getenv('EMAIL_PWD')
 EMAIL_SMTP = os.getenv('EMAIL_SMTP')
 EMAIL_SMTP_PORT = int(os.getenv('EMAIL_SMTP_PORT'))
+EMAIL_IMAP = os.getenv('EMAIL_IMAP')
+EMAIL_IMAP_PORT = int(os.getenv('EMAIL_IMAP_PORT'))
 EMAIL_TO = os.getenv('EMAIL_TO')
 
 # VERIZON API

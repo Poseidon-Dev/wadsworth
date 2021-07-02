@@ -36,10 +36,14 @@ def pretty_employees(ctx, employees):
         color=0x03f8fc,
         timestamp=ctx.message.created_at)
     for employee in employees:
+        if employee[7] == 'I':
+            status = ' - TERMED'
+        else:
+            status = ''
         name = f'{employee[1].capitalize()} {employee[2][:1].capitalize()} {employee[4].capitalize()}'
         division = Query('ee_divisions').filter(val=employee[6]).query()
         embed.add_field(
-        name=f'{name}\n',
+        name=f'{name}' + status + '\n' ,
         value=f"""
         > ID : {employee[0]}\n> 
         > Division : {division[0][1]}\n> 

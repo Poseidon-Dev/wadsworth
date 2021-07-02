@@ -15,6 +15,7 @@ class SupportEvents(commands.Cog, name='support_events'):
             self.channel = self.bot.get_channel(core.config.WADSWORTH_CHANNEL)
         self.ping_channel = self.channel
 
+
     # Events
     @commands.Cog.listener()
     async def on_message(self, message):

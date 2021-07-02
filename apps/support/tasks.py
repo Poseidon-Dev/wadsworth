@@ -3,15 +3,19 @@ from discord.ext import commands, tasks
 
 import core.config
 
-from .migrations import JitBitTickets, JitBitTicketComments
+from .migrations import JitBitTickets
+from apps.support.email import SupportEmail
+from apps.support.utils import pretty_ticket
+
 from core.shared.utils import pretty_ping
+
 
 class SupportTasks(commands.Cog, name='support_tasks'):
 
     def __init__(self, bot):
         self.bot = bot
-        self.check_for_desk_changes.start()
-        self.channel = self.bot.get_channel(core.config.BOT_CHANNEL)
+        self.check_tickets.start()
+        self.channel = self.bot.get_channel(core.config.TICKET_CHANNEL)
         self.ping_channel = self.bot.get_channel(core.config.WADSWORTH_CHANNEL)
         
 
@@ -24,11 +28,12 @@ class SupportTasks(commands.Cog, name='support_tasks'):
         await self.ping_channel.send(embed=embed)
 
 
-    @tasks.loop(seconds=10.0)
-    async def check_for_desk_changes(self):
-        try:
-            ticket = JitBitTickets().check_ticket_differences()
-            if ticket:
-                JitBitTicketComments().push_comment(ticket)
-        except Exception as e:
-            print(e)
+    @tasks.loop(seconds=30)
+    async def check_tickets(self):
+        tickets = SupportEmail().gather_tickets()
+        for ticket_id in tickets:
+            try:
+                ticket_detail = JitBitTickets().pull_ticket(str(ticket_id[0]))
+                await self.channel.send(embed=pretty_ticket(ticket_detail))
+            except Exception as e:
+                print(e)

@@ -85,9 +85,9 @@ class EmployeeDivisionMigration(EmployeeDivisionTable):
 
     def insert_divisions(self):
         values = (
-            """(1, '01-Tuc'), (2, '02-Phx'), (3, '03-Hes'), (4, '04-Cor'), 
-            (5, '05-Vgs'), (6, '06-Pip'), (7, '07-Nnv'), (8, '08-Car'), 
-            (9, '09-Nhs'), (10, '10-bhc'), (98, '00-Corp'), (99, 'Misc')
+            """(1, '01-TUC'), (2, '02-PHX'), (3, '03-HES'), (4, '04-COR'), 
+            (5, '05-VGS'), (6, '06-PIP'), (7, '07-NNV'), (8, '08-CAR'), 
+            (9, '09-NHS'), (10, '10-BHC'), (98, '00-CRP'), (99, 'MISC')
             """
         )
         command = f"""
