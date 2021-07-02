@@ -18,7 +18,6 @@ class ExecuteMixin:
         """
         self.conn = DBConnection().conn()
         self.cur = self.conn.cursor()
-        log.info(command[:350])
         try:
             response = ''
             self.cur.execute(command)
@@ -26,7 +25,6 @@ class ExecuteMixin:
                 response = self.cur.fetchall()
             except Exception as err:
                 log.error(err)
-            log.info(f'DATA: {bool(response)}')
             self.conn.commit()
         except (
             BaseErr.UndefinedTable,
