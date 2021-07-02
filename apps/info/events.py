@@ -16,5 +16,5 @@ class InfoEvents(commands.Cog, name='info_events'):
     # Events
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.content == '/?':
-            await message.channel.send('info events')
+        if '/?' in message.content and message.author.id == 816733794878750793 :
+            await message.channel.send('Go jump off a fuking cliff, brion')

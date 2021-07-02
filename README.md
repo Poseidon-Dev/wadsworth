@@ -13,26 +13,6 @@ Each module is a seperate application with discord running as the user interface
 
 If you need some help for something, please reach out to me directly or submit an issue and I'll get to it as soon as I can
 
-## How to use
-
-An up-to-date list of modules and their current commands
-
-| Injection <img width=200/>  | What it is <img width=500/>                                                 |
-| ----------------------------| ----------------------------------------------------------------------------|
-| key -a [KEY]                | Adds the key to the office keys db. Must be 29 characters long              |
-| key -d                      | Deletes a key from the office keys db based on table ID. Irreversible       |
-| key -m                      | Prompts for computer and email and delivers an avilable key                 |
-| key -r                      | Lists all available keys                                                    |
-| key -c                      | Count available keys                                                        |
-| ticket [TICKETID]           | Retrieves a ticket based on ticket ID                                       |
-| tickets                     | Retrieves all active tickets                                                |
-| url [URL] [COUNT]           | Retrieves a ticket based on URL, delivers comments based on count           |
-| pass                        | Generates a random password based on a list of 4000 words                   |
-| whois id [ID]               | Retrieves employee record with ID (Inactive or active)                      |
-| whois f [First]             | Retrieves employe with fname like [First] (active)                          |
-| whois l [Last]              | Retrieves employe with lname like [Last] (active)                           |
-| whois fl [First] [Last]     | Retrieves employe with fname and lname like [First] [Last] (active)         |
-
 ## Current Modules
 
 | Module <img width=200/>     | Description <img width=500/>                                                |
@@ -42,8 +22,37 @@ An up-to-date list of modules and their current commands
 | Password                    | Password generator                                                          |
 | Employee                    | ERP Connection                                                              |
 | Censor                      | Very remidial vulgarity censor                                              |
-| Scheduler                   | Task Scheduler and reminder                                                 |
+| Support                     | Outputs ticket on the helpdesk                                              |
 | Info                        | General information about Wadsworth                                         |
+
+## How to use
+
+An up-to-date list of modules and their current commands
+
+
+| Office <img width=200/>  | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| key -a [KEY]                | Adds the key to the office keys db. Must be 29 characters long              |
+| key -d                      | Deletes a key from the office keys db based on table ID. Irreversible       |
+| key -m                      | Prompts for computer and email and delivers an avilable key                 |
+| key -r                      | Lists all available keys                                                    |
+| key -c                      | Count available keys                                                        |
+
+| Password <img width=200/>  | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| pass                        | Generates a random password based on a list of 4000 words                   |
+
+| ERP <img width=200/>  | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| whois id [ID]               | Retrieves employee record with ID (Inactive or active)                      |
+| whois f [First]             | Retrieves employe with fname like [First] (active)                          |
+| whois l [Last]              | Retrieves employe with lname like [Last] (active)                           |
+| whois fl [First] [Last]     | Retrieves employe with fname and lname like [First] [Last] (active)         |
+| (AFTER LOOKUP) Property Reactions  | Retreived active company property based on user reactions after lookup|
+
+| Support Desk <img width=200/>  | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| URL EVENT LISTENER          | Retreives ticket information as an event listener on all messages           |
 ## Potential future modules
 
 - [x] Password Generator
