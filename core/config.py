@@ -49,12 +49,12 @@ CHANNEL = BOT.get_channel(BOT_CHANNEL)
 # CURRENT MODULES
 STARTUP_COGS = [
     'apps.info',
-    # 'apps.office',
-    # 'apps.password',
-    # 'apps.censor',
-    # 'apps.erp',
+    'apps.office',
+    'apps.password',
+    'apps.censor',
+    'apps.erp',
     'apps.support',
-    # 'apps.inventory',
+    'apps.inventory',
 ] 
 
 # LOCAL DB
