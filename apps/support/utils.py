@@ -39,7 +39,6 @@ def pretty_ticket(ticket):
     embed.add_field(
         name=f'Employee',
         value=f"""
-        > Status: {ticket.get("Status")}\n> 
         > Category : {ticket.get("CategoryName")[:35]}\n> 
         > User : {ticket.get("SubmitterUserInfo").get("FullName")}\n> 
         > Tech: {tech}\n 
@@ -47,6 +46,34 @@ def pretty_ticket(ticket):
         inline=False)
     embed.add_field(name='Body', value=clean_html(ticket.get('Body')), inline=False)
     return embed
+
+support_dict = {
+    'yes': '<:yes:852980400589766697>',
+}
+support_emoji_list = [k for k, v in support_dict.items()]
+
+
+property_dict = {
+    2: ['<:iphone:860220718440251454>', 'iphone'],
+    4: ['<:laptop:860213753312575519>', 'laptop'],
+    5: ['<:ipad:860220923827585074>', 'ipad'],
+    9: ['<:mail:860220741966233630>', 'mail'],
+    10: ['<:cards:860220653654376459>', 'cards'],
+    70: ['<:docuware:860216636120629298>', 'docuware'],
+    75: ['<:concur:860220678748635177>', 'concur']
+}
+
+property_emoji_names = [val[1] for k, val in property_dict.items()]
+
+colors_dict = {
+    'iphone': 0x00dc9e,
+    'laptop': 0x00a3ec,
+    'ipad': 0xf400ed,
+    'mail': 0xff0909,
+    'cards': 0x29e629,
+    'docuware': 0x404dff,
+    'concur': 0xfdb400,
+}
 
     # {'SubmitterUserInfo': {
     #     'UserID': 5842245,
@@ -120,22 +147,3 @@ def pretty_ticket(ticket):
     # }
 
 
-def pretty_comment(ctx, comment):
-    """
-    Returns an embed for ticket comments for a prettier discord format
-    """
-    embed = discord.Embed(
-    author=comment[2],
-    color=discord.Color.green()
-    )
-    embed.add_field(name='User', value=comment[2], inline=True)
-    embed.add_field(name='Tech only', value=comment[3], inline=True)
-    embed.add_field(name='Message', value=comment[4], inline=False)
-    embed.add_field(name='\u2800', value=('\u2800' * 65), inline=False)
-    embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
-    return embed
-
-
-def extract_ticket_from_url(url_input):
-    ticket_url = f'{core.config.HELPDESK_URL}/Ticket/'
-    return re.sub(ticket_url,"", url_input)

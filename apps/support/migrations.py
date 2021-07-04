@@ -38,16 +38,26 @@ class JitBitTickets(JitBitAPI, TicketTable):
         body = clean_html(ticket['Body'])
         return body
 
-    def post_ticket_comment(self, ticket_id, comment):
+    def post_ticket_comment(self, ticket_id, comment, tech=False):
         """
         POST a ticket comment to a specified ticket
         """
-        method = f"comment?id={ticket_id}&body={str(comment)}&forTechsOnly=true"
+        method = f"comment?id={ticket_id}&body={str(comment)}&forTechsOnly={str(tech).lower()}"
         try:
-
             self._post_request(method)
         except Exception as e:
             print(e)
+
+    def update_ticket(self, ticket_id, update):
+        """
+        Updates ticket status
+        """
+        method = f"UpdateTicket?id={ticket_id}&statusId={update}"
+        try:
+            self._post_request(method)
+        except Exception as e:
+            print(e)
+
 
 
     # def push_tickets(self, tickets=None):
