@@ -15,7 +15,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
         Retrieves individual ticket information
         """
         method = f'ticket?id={ticket}'
-        response = self._make_request(method)
+        response = self._get_request(method)
         ticket = json.loads(response.content)
         return ticket
 
@@ -24,7 +24,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
         Retrieves all unclosed tickets from JitBit API
         """
         method = 'Tickets/?mode=unclosed&count=50'
-        response = self._make_request(method)
+        response = self._get_request(method)
         tickets = json.loads(response.content)
         return tickets
 
@@ -33,10 +33,22 @@ class JitBitTickets(JitBitAPI, TicketTable):
         Retrieves Body from ticket API
         """
         method = f'ticket?id={id}'
-        response = self._make_request(method)
+        response = self._get_request(method)
         ticket = json.loads(response.content)
         body = clean_html(ticket['Body'])
         return body
+
+    def post_ticket_comment(self, ticket_id, comment):
+        """
+        POST a ticket comment to a specified ticket
+        """
+        method = f"comment?id={ticket_id}&body={str(comment)}&forTechsOnly=true"
+        try:
+
+            self._post_request(method)
+        except Exception as e:
+            print(e)
+
 
     # def push_tickets(self, tickets=None):
     #     """
@@ -99,7 +111,7 @@ class JitBitTickets(JitBitAPI, TicketTable):
 #         Pull comments for a select ticket
 #         """
 #         method = f'comments?id={ticket}'
-#         response = self._make_request(method)
+#         response = self._get_request(method)
 #         comments = json.loads(response.content)
 #         return comments
 

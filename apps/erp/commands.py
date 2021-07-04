@@ -2,9 +2,8 @@ import discord, os
 from discord.ext import commands
 
 from core.shared.utils import pretty_ping
-from core.shared.messages import property_dict
 import core.config
-from .utils import pretty_employee, pretty_employees
+from .utils import pretty_employee, pretty_employees, property_dict
 from .models import EmployeeTable, EmployeePropertyTable
 
 class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
@@ -82,7 +81,8 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
 
 
     def employee_property_to_emoji(self, employees):
-        emojis = [property_dict.get(prop) for prop in self.employee_property_type(employees)]
+        emojis = [property_dict.get(prop)[0] for prop in self.employee_property_type(employees)]
+        print(emojis)
         return emojis
 
     

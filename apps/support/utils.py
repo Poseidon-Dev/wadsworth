@@ -40,6 +40,7 @@ def pretty_ticket(ticket):
         name=f'Employee',
         value=f"""
         > Status: {ticket.get("Status")}\n> 
+        > Category : {ticket.get("CategoryName")[:35]}\n> 
         > User : {ticket.get("SubmitterUserInfo").get("FullName")}\n> 
         > Tech: {tech}\n 
         """,

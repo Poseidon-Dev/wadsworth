@@ -6,7 +6,8 @@ from .models import EmployeeTable, EmployeePropertyTable
 from .migrations import EmployeePropertyMigrations
 from .utils import pretty_property
 import core.config
-from core.shared.messages import property_dict
+from apps.erp.utils import property_dict, property_emoji_names
+
 
 class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
 
@@ -49,7 +50,7 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        if payload.user_id != self.bot.user.id and payload.emoji.is_custom_emoji():
+        if payload.user_id != self.bot.user.id and payload.emoji.name in property_emoji_names:
             channel = self.bot.get_channel(payload.channel_id)
             msg = await channel.fetch_message(payload.message_id)
             for embed in msg.embeds:
@@ -57,7 +58,7 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
                 employee_ids = [re.findall('(\d+)', val['value'])[0] for val in embeds]
                 for employee in employee_ids:
                     for idx, emoji in property_dict.items():
-                        if payload.emoji.name == emoji.split(':')[1]:
+                        if payload.emoji.name == emoji[1]:
                             record = EmployeePropertyTable().filter('employeeid', employee)
                             records = record.filter('property_type', idx).query()
                             for record in records:

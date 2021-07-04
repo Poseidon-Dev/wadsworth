@@ -3,8 +3,6 @@ import discord
 from apps.base.models import Database
 from apps.base.queries import Query
 
-from core.shared.messages import property_dict
-
 def pretty_employee(ctx, employee):
     """
     Returns an embed for an employee for a prettier discord format
@@ -78,7 +76,7 @@ def pretty_terms(data):
         
 def pretty_property(property):
     from apps.erp.models import EmployeeTable
-    prop = property_dict.get(property[3]).split(':')[1]
+    prop = property_dict.get(property[3])[1]
     name = f'{EmployeeTable().filter(val=property[1]).query()[0][1].capitalize()} | {prop.capitalize()}'
     embed = discord.Embed(
         title=f'**{name}**' + '\u2800' * (35 - len(name)),
@@ -101,14 +99,16 @@ def clean_name(name):
     return name
 
 property_dict = {
-    2: '<:iphone:860220718440251454>',
-    4: '<:laptop:860213753312575519>',
-    5: '<:ipad:860220923827585074>',
-    9: '<:mail:860220741966233630>',
-    10: '<:cards:860220653654376459>',
-    70: '<:docuware:860216636120629298>',
-    75: '<:concur:860220678748635177>'
+    2: ['<:iphone:860220718440251454>', 'iphone'],
+    4: ['<:laptop:860213753312575519>', 'laptop'],
+    5: ['<:ipad:860220923827585074>', 'ipad'],
+    9: ['<:mail:860220741966233630>', 'mail'],
+    10: ['<:cards:860220653654376459>', 'cards'],
+    70: ['<:docuware:860216636120629298>', 'docuware'],
+    75: ['<:concur:860220678748635177>', 'concur']
 }
+
+property_emoji_names = [val[1] for k, val in property_dict.items()]
 
 colors_dict = {
     'iphone': 0x00dc9e,

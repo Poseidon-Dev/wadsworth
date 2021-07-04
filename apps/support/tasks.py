@@ -1,4 +1,5 @@
 import discord
+import re
 from discord.ext import commands, tasks
 
 import core.config
@@ -6,6 +7,7 @@ import core.config
 from .migrations import JitBitTickets
 from apps.support.email import SupportEmail
 from apps.support.utils import pretty_ticket
+from apps.erp.models import EmployeePropertyTable
 
 from core.shared.utils import pretty_ping
 
@@ -34,6 +36,15 @@ class SupportTasks(commands.Cog, name='support_tasks'):
         for ticket_id in tickets:
             try:
                 ticket_detail = JitBitTickets().pull_ticket(str(ticket_id[0]))
-                await self.channel.send(embed=pretty_ticket(ticket_detail))
+                if ticket_detail.get("CategoryID") == 467249:
+                    employee_id = re.findall('\d+', ticket_detail.get("Subject"))
+                    email_pwd = EmployeePropertyTable().filter('employeeid', employee_id[0]).filter('property_type', 9).query()
+                    if email_pwd:
+                        pwd_rtn = ''
+                        for pwd in email_pwd:
+                            email_pwd_print = f'Account: {pwd[4]}\nPassword: {pwd[2]}\n\n'
+                            pwd_rtn += email_pwd_print
+                        JitBitTickets().post_ticket_comment(str(ticket_id[0]), pwd_rtn)
+                        # await self.channel.send(embed=pretty_ticket(ticket_detail))
             except Exception as e:
                 print(e)

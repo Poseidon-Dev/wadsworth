@@ -17,12 +17,19 @@ class JitBitAPI:
         """
         Ensure a connection to the JitBit API
         """
-        response = self._make_request("Authorization")
+        response = self._get_request("Authorization")
         return response.status_code == 200
 
-    def _make_request(self, method):
+    def _get_request(self, method):
         """
         Default method for JitBit API calls
         """
         url = f'{core.config.HELPDESK_URL}/api/{method}'
         return requests.get(url, auth=self.auth)
+
+    def _post_request(self, method):
+        """
+        Default method for JitBit API POSTS
+        """
+        url = f'{core.config.HELPDESK_URL}/api/{method}'
+        return requests.post(url, auth=self.auth)
