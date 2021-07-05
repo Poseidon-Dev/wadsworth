@@ -51,11 +51,11 @@ STARTUP_COGS = [
     'apps.info',
     # 'apps.directory'
     'apps.office',
-    # 'apps.password',
-    # 'apps.censor',
-    # 'apps.erp',
-    # 'apps.support',
-    # 'apps.inventory',
+    'apps.password',
+    'apps.censor',
+    'apps.erp',
+    'apps.support',
+    'apps.inventory',
 ] 
 
 # LOCAL DB
