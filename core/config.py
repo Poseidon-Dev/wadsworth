@@ -49,12 +49,13 @@ CHANNEL = BOT.get_channel(BOT_CHANNEL)
 # CURRENT MODULES
 STARTUP_COGS = [
     'apps.info',
-    'apps.office',
-    'apps.password',
-    'apps.censor',
-    'apps.erp',
-    'apps.support',
-    'apps.inventory',
+    'apps.directory'
+    # 'apps.office',
+    # 'apps.password',
+    # 'apps.censor',
+    # 'apps.erp',
+    # 'apps.support',
+    # 'apps.inventory',
 ] 
 
 # LOCAL DB
@@ -95,6 +96,11 @@ EMAIL_SMTP_PORT = int(os.getenv('EMAIL_SMTP_PORT'))
 EMAIL_IMAP = os.getenv('EMAIL_IMAP')
 EMAIL_IMAP_PORT = int(os.getenv('EMAIL_IMAP_PORT'))
 EMAIL_TO = os.getenv('EMAIL_TO')
+
+# DIRECTORY API
+DIRECTORY_DOMAIN = os.getenv('DIRECTORY_DOMAIN')
+DIRECTORY_UID = os.getenv('DIRECTORY_UID')
+DIRECTORY_PWD = os.getenv('DIRECTORY_PWD')
 
 # VERIZON API
 
