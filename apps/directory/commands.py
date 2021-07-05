@@ -3,7 +3,7 @@ from discord.ext import commands
 from core.shared.utils import pretty_ping
 import core.config
 
-class TemplateCommands(commands.Cog, name='template_commands'):
+class DirectoryCommands(commands.Cog, name='directory_commands'):
 
     def __init__(self, bot):
         self.bot = bot
@@ -14,10 +14,10 @@ class TemplateCommands(commands.Cog, name='template_commands'):
         self.ping_channel = self.channel
 
     # Commands
-    @commands.command(name='template-ping', aliases=['-tp'])
-    async def template_ping(self, ctx):
+    @commands.command(name='directory-ping', aliases=['-dp'])
+    async def directory_ping(self, ctx):
         """
-        Checks to see if commands are reaching the 'Template' module
+        Checks to see if commands are reaching the 'Directory' module
         """
         embed = pretty_ping(ctx, name=self.__class__.__name__)
         await self.ping_channel.send(embed=embed)

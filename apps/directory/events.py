@@ -2,7 +2,7 @@ from discord.ext import commands
 
 import core.config
 
-class TemplateEvents(commands.Cog, name='template_events'):
+class DirectoryEvents(commands.Cog, name='directory_events'):
 
     def __init__(self, bot):
         self.bot = bot
