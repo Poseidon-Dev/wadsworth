@@ -23,6 +23,7 @@ If you need some help for something, please reach out to me directly or submit a
 | Employee                    | ERP Connection                                                              |
 | Censor                      | Very remidial vulgarity censor                                              |
 | Support                     | Outputs ticket on the helpdesk                                              |
+| Directory                   | Connection to the AD to make quick manipulations                            |
 | Info                        | General information about Wadsworth                                         |
 
 ## How to use
@@ -57,6 +58,13 @@ An up-to-date list of modules and their current commands
 | Support <img width=170/>    | What it is <img width=500/>                                                 |
 | ----------------------------| ----------------------------------------------------------------------------|
 | URL EVENT LISTENER          | Retreives ticket information as an event listener on all messages           |
+
+
+  
+| Directory <img width=170/>  | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| Scrubs email for LOA emails | Returns employee AD account after scrubbing email                           |
+
 
 ## Potential future modules
 
