@@ -26,6 +26,5 @@ class Email:
                     'body': msg.text} 
                     for msg in mailbox.fetch(
                         AND(seen=False), 
-                        mark_seen=False)]
-
+                        mark_seen=True)]
             return mail

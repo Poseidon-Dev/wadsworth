@@ -12,7 +12,7 @@ class DirectoryTasks(commands.Cog, name='directory_tasks'):
         self.directory_task.start()
         self.channel = self.bot.get_channel(core.config.BOT_CHANNEL)
 
-    @tasks.loop(hours=4.0)
+    @tasks.loop(seconds=60.0)
     async def directory_task(self):
         people = DirectoryEmail().gather_employees()
         for emp in people:

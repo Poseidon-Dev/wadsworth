@@ -30,7 +30,8 @@ class ExecuteMixin:
             BaseErr.UndefinedTable,
             BaseErr.UndefinedColumn,
             BaseErr.UndefinedFunction,
-            BaseErr.PsqlSyntaxError
+            BaseErr.PsqlSyntaxError,
+            BaseErr.NonUniqueError
             ) as err:
             log.error(err)
             self.conn.rollback()
@@ -201,7 +202,10 @@ class QueryMixin(QueryBase):
         INSERT INTO {self.table} ({cols}) VALUES ({vals})
         ON CONFLICT ON CONSTRAINT {self.table}_pkey DO NOTHING;
         """
-        self.execute(command)
+        try:
+            self.execute(command)
+        except Exception as e:
+            print(e)
         return True
 
     def insert_many(self, cols, vals):

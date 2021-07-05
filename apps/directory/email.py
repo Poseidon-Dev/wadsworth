@@ -1,4 +1,3 @@
-from imap_tools import mailbox
 from core.shared.email import Email
 import re
 
