@@ -56,6 +56,7 @@ STARTUP_COGS = [
     'apps.erp',
     'apps.support',
     'apps.inventory',
+    'apps.emailtest'
 ] 
 
 # LOCAL DB
