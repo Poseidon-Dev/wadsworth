@@ -33,6 +33,7 @@ EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
 INVENTORY_CHANNEL = int(os.getenv('INVENTORY_CHANNEL'))
 SCHEDULER_CHANNEL = int(os.getenv('SCHEDULER_CHANNEL'))
 TICKET_CHANNEL = int(os.getenv('TICKET_CHANNEL'))
+LOA_CHANNEL = int(os.getenv('LOA_CHANNEL'))
 
 # SETTINGS
 BOT_PREFIX = ('!', '-')
@@ -49,7 +50,7 @@ CHANNEL = BOT.get_channel(BOT_CHANNEL)
 # CURRENT MODULES
 STARTUP_COGS = [
     'apps.info',
-    # 'apps.directory'
+    'apps.directory'
     'apps.office',
     'apps.password',
     'apps.censor',

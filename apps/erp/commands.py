@@ -65,6 +65,22 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
                 employees = EmployeeTable().filter_like('first', param1.upper()).filter_like('last', param2.upper()).query()
                 await self.employee_out(ctx, employees)
 
+        # Argument First and Last Name
+        if argument in ['s']:
+            if len(param1) + len(param2) <= 4:
+                await ctx.send('Thats too broad of a search, please be more specific')
+            else:
+                employees = EmployeeTable().filter_like('first', param1.upper()).filter_like('last', param2.upper()).query()
+                await ctx.send(embed=pretty_employees(ctx, employees))
+                for employee in employees:
+                    phones = EmployeePropertyTable().filter('employeeid', employee[0]).filter('property_type', 2).query()
+                    for phone in phones:
+                        await ctx.send(f'{phone[2]} {phone[4]}: ')
+                    emails = EmployeePropertyTable().filter('employeeid', employee[0]).filter('property_type', 9).query()
+                    for email in emails:
+                        await ctx.send(f'{email[4]}')
+                
+
 
     async def employee_out(self, ctx, employees):
         try:
@@ -82,7 +98,6 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
 
     def employee_property_to_emoji(self, employees):
         emojis = [property_dict.get(prop)[0] for prop in self.employee_property_type(employees)]
-        print(emojis)
         return emojis
 
     

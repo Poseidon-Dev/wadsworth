@@ -23,7 +23,7 @@ class SupportEvents(commands.Cog, name='support_events'):
             if core.config.HELPDESK_URL in message.content:
                 ticket_id = re.findall(r'[0-9]+', message.content)
                 ticket_detail = JitBitTickets().pull_ticket(str(ticket_id[0]))
-                await message.channel.send(embed=pretty_ticket(message, ticket_detail))
+                await message.channel.send(embed=pretty_ticket(ticket_detail))
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
