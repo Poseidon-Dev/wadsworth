@@ -29,8 +29,8 @@ class DirectoryEvents(commands.Cog, name='directory_events'):
                 embeds = embed.to_dict()['title']
                 ad_account = ad_query_by_cn(embeds)
                 if payload.emoji.name == 'returning':
-                    # enable_ad(ad_account)
+                    enable_ad(ad_account)
                     await channel.send(f'{embeds} enabled')
                 if payload.emoji.name == 'exiting':
-                    # disable_ad(ad_account)
+                    disable_ad(ad_account)
                     await channel.send(f'{embeds} disabled')
