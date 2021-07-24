@@ -1,8 +1,9 @@
+from apps.base.queries import Query
 from discord.ext import commands, tasks
 
 import core.config
-from apps.emailtest.email import TestEmail
 from apps.emailtest.utils import pretty_emailtest
+from pickle import loads
 
 class EmailtestTasks(commands.Cog, name='emailtest_tasks'):
 
@@ -13,7 +14,8 @@ class EmailtestTasks(commands.Cog, name='emailtest_tasks'):
 
     @tasks.loop(seconds=5.0)
     async def emailtest_task(self):
-        email_from = TestEmail().gather_email()
-        if email_from:
-            await self.channel.send(embed=pretty_emailtest(email_from))
-
+        test_ping_email = Query('email_table').filter('local_read', '0').filter_like('recipient', 't').query()
+        if test_ping_email:
+            for e in test_ping_email:
+                Query('email_table').update_by_key(e[0], [('local_read', 1)])
+                await self.channel.send(embed=pretty_emailtest(loads(e[1])))

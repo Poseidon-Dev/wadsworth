@@ -230,6 +230,13 @@ class QueryMixin(QueryBase):
         """
         return command
 
+    def update_by_key(self, key, updates):
+        detail = ', '.join(f"{update[0]} = '{update[1]}'" for update in updates)
+        command = f"""
+        UPDATE {self.table} SET {detail} WHERE id = {key}; 
+        """
+        self.execute(command)
+
     def manual(self, command):
         """
         A manualy query execution
