@@ -10,7 +10,7 @@ class EmailtestTasks(commands.Cog, name='emailtest_tasks'):
     def __init__(self, bot):
         self.bot = bot
         self.emailtest_task.start()
-        self.channel = self.bot.get_channel(core.config.EMAIL_CHANNEL)
+        self.channel = self.bot.get_channel(core.config.EMAIL_TEST_CHANNEL)
 
     @tasks.loop(seconds=5.0)
     async def emailtest_task(self):
