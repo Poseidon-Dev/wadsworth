@@ -2,6 +2,7 @@ import discord, os
 from discord.ext import commands
 
 from core.shared.utils import pretty_ping
+from apps.erp.models import Employee
 import core.config
 from .utils import pretty_employee, pretty_employees, property_dict
 from .models import EmployeeTable, EmployeePropertyTable
@@ -81,12 +82,13 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
                         await ctx.send(f'{email[4]}')
                 
 
-
     async def employee_out(self, ctx, employees):
         try:
-            msg = await ctx.send(embed=pretty_employees(ctx, employees))
-            for emoji in self.employee_property_to_emoji(employees):
-                await msg.add_reaction(emoji)
+            for employee in employees:
+                employee = Employee(employee[0])
+                msg = await ctx.send(embed=pretty_employee(ctx, employee))
+                for emoji in self.employee_property_to_emoji(employee.company_property()):
+                    await msg.add_reaction(emoji[0])
         except Exception as e:
             await ctx.send(f'There was an error with your request: {e}')
 
@@ -95,10 +97,8 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
         property_type = [prop[3] for prop in employee_property]
         return sorted(list(set(property_type)))
 
-
-    def employee_property_to_emoji(self, employees):
-        emojis = [property_dict.get(prop)[0] for prop in self.employee_property_type(employees)]
-        return emojis
+    def employee_property_to_emoji(self, company_property):
+        return [property_dict.get(prop[3]) for prop in company_property]
 
     
             

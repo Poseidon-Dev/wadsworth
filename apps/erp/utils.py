@@ -2,25 +2,49 @@ import discord
 
 from apps.base.models import Database
 from apps.base.queries import Query
+from apps.erp.models import Employee
+
+# def pretty_employee(ctx, employee):
+#     """
+#     Returns an embed for an employee for a prettier discord format
+#     """
+#     embed = discord.Embed(
+#         title=f'**{employee.full_name()}**',
+#         color=0x03f8fc,
+#         timestamp=ctx.message.created_at)
+#     embed.add_field(
+#         name=f'{employee[0]}',
+#         value=f"""
+#         > Division : {division[0][1]}\n> 
+#         > Status : {employee[7]}\n> 
+#         > Security : {employee[5]}\n> 
+#         """ + '\u2800' * 27,
+#         inline=False)
+#     embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
+#     return embed
 
 def pretty_employee(ctx, employee):
     """
-    Returns an embed for an employee for a prettier discord format
+    Returns an embed for a list of employees for a prettier discord format
     """
-    name = f'{employee[1].capitalize()} {employee[2][:1].capitalize()} {employee[4].capitalize()}'
-    division = Query('ee_divisions').filter(val=employee[6]).query()
+    name = 'Employee Search Results'
     embed = discord.Embed(
-        title=f'**{name}**',
+        title=f'**{name}**' + '\u2800' * (35 - len(name)),
         color=0x03f8fc,
         timestamp=ctx.message.created_at)
+    if employee.status == 'I':
+        status = ' - TERMED'
+    else:
+        status = ''
+    name = f'{employee.full_name()}'
     embed.add_field(
-        name=f'{employee[0]}',
-        value=f"""
-        > Division : {division[0][1]}\n> 
-        > Status : {employee[7]}\n> 
-        > Security : {employee[5]}\n> 
-        """ + '\u2800' * 27,
-        inline=False)
+    name=f'{name}' + status + '\n' ,
+    value=f"""
+    > ID : {employee.id}\n> 
+    > Division : {employee.division()}\n> 
+    > Security : {employee.security}\n> 
+    """ + '\u2800' * 27,
+    inline=False)
     embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
     return embed
 
@@ -34,18 +58,18 @@ def pretty_employees(ctx, employees):
         color=0x03f8fc,
         timestamp=ctx.message.created_at)
     for employee in employees:
-        if employee[7] == 'I':
+        employee = Employee(employee[0])
+        if employee.status == 'I':
             status = ' - TERMED'
         else:
             status = ''
-        name = f'{employee[1].capitalize()} {employee[2][:1].capitalize()} {employee[4].capitalize()}'
-        division = Query('ee_divisions').filter(val=employee[6]).query()
+        name = f'{employee.full_name()}'
         embed.add_field(
         name=f'{name}' + status + '\n' ,
         value=f"""
-        > ID : {employee[0]}\n> 
-        > Division : {division[0][1]}\n> 
-        > Security : {employee[5]}\n> 
+        > ID : {employee.id}\n> 
+        > Division : {employee.division}\n> 
+        > Security : {employee.security}\n> 
         """ + '\u2800' * 27,
         inline=False)
     embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
