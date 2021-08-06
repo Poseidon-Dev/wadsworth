@@ -28,5 +28,5 @@ async def on_ready():
     await channel.send(messages.ready)
 
 
-
-config.BOT.run(config.TOKEN)
+if __name__ == "__main__":
+    config.BOT.run(config.TOKEN)

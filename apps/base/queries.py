@@ -20,6 +20,7 @@ class ExecuteMixin:
         self.cur = self.conn.cursor()
         try:
             response = ''
+            print(command)
             self.cur.execute(command)
             try:
                 response = self.cur.fetchall()
@@ -203,6 +204,7 @@ class QueryMixin(QueryBase):
         ON CONFLICT ON CONSTRAINT {self.table}_pkey DO NOTHING;
         """
         try:
+            print(command)
             self.execute(command)
         except Exception as e:
             print(e)

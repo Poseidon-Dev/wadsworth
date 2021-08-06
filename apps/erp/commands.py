@@ -23,7 +23,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
         embed = pretty_ping(ctx, name=self.__class__.__name__)
         await self.channel.send(embed=embed)
 
-    @commands.command(name='whois')
+    @commands.command(name='whois', aliases=['-w'])
     async def employee_records(self, ctx, argument, param1, param2=None):
         """
         [FILTER] [PARAM1] [PARAM2]

@@ -12,7 +12,7 @@ class SchedulerTasks(commands.Cog, name='scheduler_tasks'):
 
     def __init__(self, bot):
         self.bot = bot
-        self.check_active_tasks.start()
+        # self.check_active_tasks.start()
         self.channel = self.bot.get_channel(core.config.SCHEDULER_CHANNEL)
 
     @tasks.loop(seconds=10.0)

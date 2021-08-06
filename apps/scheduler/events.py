@@ -1,8 +1,6 @@
 import discord, os, platform, asyncio
 from discord.ext import commands
 
-from core.shared.utils import agreement_reactions, reaction_list
-
 import core.config
 
 class SchedulerEvents(commands.Cog, name='scheduler_events'):
@@ -20,10 +18,10 @@ class SchedulerEvents(commands.Cog, name='scheduler_events'):
     async def on_message(self, message):
         return True
 
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload):
-        if payload.emoji.id in reaction_list:
-            print('Hello')
+    # @commands.Cog.listener()
+    # async def on_raw_reaction_add(self, payload):
+    #     if payload.emoji.id in reaction_list:
+    #         print('Hello')
 
     # check the message database for a scheulde, if the message that received a reaction is within the database and the reaction is within parameters
     # then process changes to the scheduled task
