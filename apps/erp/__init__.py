@@ -8,7 +8,9 @@ from apps.erp.models import (
     EmployeeLoggerTable, 
     EmployeeDivisionTable, 
     EmployeeMessagesTable,
-    EmployeePropertyTable)
+    EmployeePropertyTable,
+    Employee,
+    )
 
 def setup(bot):
     EmployeeTable().build()

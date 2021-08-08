@@ -85,9 +85,9 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
     async def employee_out(self, ctx, employees):
         try:
             for employee in employees:
-                employee = Employee(employee[0])
+                employee = Employee(record=employee)
                 msg = await ctx.send(embed=pretty_employee(ctx, employee))
-                for emoji in self.employee_property_to_emoji(employee.company_property()):
+                for emoji in self.employee_property_to_emoji(employee.company_property):
                     await msg.add_reaction(emoji[0])
         except Exception as e:
             await ctx.send(f'There was an error with your request: {e}')

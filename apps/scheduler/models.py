@@ -112,4 +112,3 @@ class Schedule:
     @property
     def unanswered_participants(self):
         return [participant for participant in self.participants() if participant[3] == None ]
-    

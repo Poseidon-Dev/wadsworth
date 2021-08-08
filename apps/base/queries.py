@@ -20,7 +20,7 @@ class ExecuteMixin:
         self.cur = self.conn.cursor()
         try:
             response = ''
-            print(command)
+            # print(command)
             self.cur.execute(command)
             try:
                 response = self.cur.fetchall()

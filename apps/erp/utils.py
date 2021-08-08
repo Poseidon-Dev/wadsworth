@@ -27,6 +27,7 @@ def pretty_employee(ctx, employee):
     """
     Returns an embed for a list of employees for a prettier discord format
     """
+    print(employee)
     name = 'Employee Search Results'
     embed = discord.Embed(
         title=f'**{name}**' + '\u2800' * (35 - len(name)),
@@ -36,12 +37,12 @@ def pretty_employee(ctx, employee):
         status = ' - TERMED'
     else:
         status = ''
-    name = f'{employee.full_name()}'
+    name = f'{employee.full_name}'
     embed.add_field(
     name=f'{name}' + status + '\n' ,
     value=f"""
     > ID : {employee.id}\n> 
-    > Division : {employee.division()}\n> 
+    > Division : {employee.division}\n> 
     > Security : {employee.security}\n> 
     """ + '\u2800' * 27,
     inline=False)
