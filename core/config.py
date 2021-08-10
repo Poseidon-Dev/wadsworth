@@ -26,7 +26,7 @@ log.info('Started')
 ## DISCORD
 # CHANNELS
 BOT_CHANNEL = int(os.getenv('BOT_CHANNEL'))
-BOT_TERMS_CHANNEL = int(os.getenv('BOT_TERMS_CHANNEL'))
+BOT_EMPLOYEE_CHANGES = int(os.getenv('BOT_EMPLOYEE_CHANGES'))
 OFFICE_CHANNEL = int(os.getenv('OFFICE_CHANNEL'))
 WADSWORTH_CHANNEL = int(os.getenv('WADSWORTH_CHANNEL'))
 EMAIL_CHANNEL = int(os.getenv('EMAIL_CHANNEL'))
@@ -35,6 +35,7 @@ SCHEDULER_CHANNEL = int(os.getenv('SCHEDULER_CHANNEL'))
 TICKET_CHANNEL = int(os.getenv('TICKET_CHANNEL'))
 LOA_CHANNEL = int(os.getenv('LOA_CHANNEL'))
 EMAIL_TEST_CHANNEL = int(os.getenv('EMAIL_TEST_CHANNEL'))
+COMDATA_CHANNEL = int(os.getenv('COMDATA_CHANNEL'))
 
 # SETTINGS
 BOT_PREFIX = ('!', '-')
@@ -51,15 +52,16 @@ CHANNEL = BOT.get_channel(BOT_CHANNEL)
 # CURRENT MODULES
 STARTUP_COGS = [
     'apps.info',
-    'apps.directory',
-    'apps.office',
-    'apps.password',
-    'apps.censor',
+    # 'apps.directory',
+    # 'apps.office',
+    # 'apps.password',
+    # 'apps.censor',
     'apps.erp',
-    'apps.support',
-    'apps.inventory',
-    'apps.emailtest',
+    # 'apps.support',
+    # 'apps.inventory',
+    # 'apps.emailtest',
     # 'apps.scheduler'
+    'apps.transfers',
 ] 
 
 # LOCAL DB

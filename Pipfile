@@ -17,6 +17,7 @@ urllib3 = "*"
 imap-tools = "*"
 pywin32 = "*"
 pyad = "*"
+pdfminer = "*"
 
 [requires]
 python_version = "*"

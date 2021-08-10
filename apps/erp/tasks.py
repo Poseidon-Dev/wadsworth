@@ -17,7 +17,7 @@ class EmployeeTasks(commands.Cog, name='employee_tasks'):
         # self.updated_records.start()
         self.update_company_property.start()
         # self.send_updates.start()
-        self.channel = self.bot.get_channel(core.config.BOT_TERMS_CHANNEL)
+        self.channel = self.bot.get_channel(core.config.BOT_EMPLOYEE_CHANGES)
         EmployeeMasterMigration().store()
         EmployeeDivisionMigration().insert_divisions()
 

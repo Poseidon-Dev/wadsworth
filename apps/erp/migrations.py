@@ -139,7 +139,7 @@ class EmployeePropertyMigrations(EmployeePropertyTable):
             ON EMP.HRTEMPID = CPR.HRTEMPID
         WHERE EMP.COMPANYNO = 1 
         AND EMP.EMPLOYEENO > 0 
-        AND CPR.PROPERTYNO IN (2,4,5,9,10,70,75)
+        AND CPR.PROPERTYNO IN (1,2,4,5,9,10,70,75)
         AND CPR.RETIREDDATE IS NULL 
         AND CPR.EXPDATE IS NULL
         """

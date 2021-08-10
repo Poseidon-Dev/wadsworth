@@ -124,6 +124,7 @@ def clean_name(name):
     return name
 
 property_dict = {
+    1: ['<:flipphone:874737840892821505', 'flipphone'],
     2: ['<:iphone:860220718440251454>', 'iphone'],
     4: ['<:laptop:860213753312575519>', 'laptop'],
     5: ['<:ipad:860220923827585074>', 'ipad'],
