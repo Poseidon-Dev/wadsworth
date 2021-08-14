@@ -1,6 +1,7 @@
 from numpy import ALLOW_THREADS
 import pandas as pd 
 import re
+from csv import writer
 
 file = 'media/verizon/verizon.csv'
 
@@ -40,7 +41,12 @@ def verizon_csv():
 
     for div, df in seperate_divivions.items():
         df = df.append(df.sum(numeric_only=True), ignore_index=True)
-        print(df.tail())
+        df.to_csv(f'media/verizon/{div}.csv', sep=',', encoding='utf-8', index=False)
+
+        with open(f'media/verizon/{div}.csv', 'a+') as f:
+            csv_writer = writer(f)
+            csv_writer.writerow(verizon_header_df.head())
+
 
 
        
