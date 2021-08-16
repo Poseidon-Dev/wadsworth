@@ -3,10 +3,7 @@ from discord.ext import commands
 import re
 
 import core.config
-from apps.verizon.utils import verizon_csv
-
-verizon_csv()
-
+from apps.verizon.utils import verizon_csv, ALLOWED_DIVISIONS, OUT_REPORTS
 class VerizonEvents(commands.Cog, name='verizon_events'):
 
     def __init__(self, bot):
@@ -28,21 +25,13 @@ class VerizonEvents(commands.Cog, name='verizon_events'):
             if filename.lower().startswith('verizon') and filename.endswith('.csv'):
                 await message.attachments[0].save(fp=f"{filepath}{filename}")
                 await self.channel.send('Got the csv')
-                comment = f'''
-                with open(f'{filepath}{filename}', 'r') as csv_file:
-                    csv_reader = csv.reader(csv_file, delimiter=',')
-                    next(csv_reader)
-                    output = []
-                    for row in csv_reader:
-                        employees = self.fetch_like_first_last(row[0].title(), row[1].title())
-                        for employee in employees:
-                            output.append(employee)
-                    with open(f'{filepath}export_{filename}', 'w') as out:
-                        csv_out = csv.writer(out)
-                        item_length = len(output[0])
-                        for row in output:
-                            csv_out.writerow(row)
-                    await self.channel.send(file=discord.File(f'{filepath}export_{filename}'))
-                    '''
+                files = verizon_csv()
+                if files == 'COMPLETE':
+                    for div in OUT_REPORTS:
+                        await self.channel.send(file=discord.File(f'{filepath}{div}.csv'))
+                else:
+                    await self.channel.send(files[1])
+                    for div in files[0]:
+                        await self.channel.send(div)
             else:
                 return

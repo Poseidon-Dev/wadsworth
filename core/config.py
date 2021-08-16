@@ -36,6 +36,7 @@ TICKET_CHANNEL = int(os.getenv('TICKET_CHANNEL'))
 LOA_CHANNEL = int(os.getenv('LOA_CHANNEL'))
 EMAIL_TEST_CHANNEL = int(os.getenv('EMAIL_TEST_CHANNEL'))
 COMDATA_CHANNEL = int(os.getenv('COMDATA_CHANNEL'))
+VERIZON_CHANNEL = int(os.getenv('VERIZON_CHANNEL'))
 
 # SETTINGS
 BOT_PREFIX = ('!', '-')

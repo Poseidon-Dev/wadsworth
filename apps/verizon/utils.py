@@ -30,9 +30,9 @@ def verizon_csv():
     divisions = verizon_data_df[['Account']].drop_duplicates()
     extra_divivions = divisions[~divisions['Account'].isin(ALLOWED_DIVISIONS)]
 
-    if not extra_divivions.empty and True == 0:
-        print("please correct your data")
-        print(extra_divivions)
+    if not extra_divivions.empty:
+        divs = extra_divivions['Account'].tolist()
+        return (divs, "Please correct your data, incorrect or missing cost centers found: ")
     else:
         # Split Number and UserName
         verizon_data_df['Number'] = verizon_data_df['Number-User'].apply(lambda x: x.split('/')[0]).str.strip()
@@ -49,10 +49,19 @@ def verizon_csv():
         }
         
         # Add header and total information
+        corporate_df = pd.DataFrame(columns=columns)
         for div, df in seperate_divivions.items():
-            verizon_header_df.to_csv(f'media/verizon/{div}.csv', sep=',', encoding='utf-8', index=False)
-            df = df.append(df.sum(numeric_only=True), ignore_index=True)
-            df.to_csv(f'media/verizon/{div}.csv', mode='a', sep=',', encoding='utf-8', index=False)
+            if div not in ['CORPORATE', 'SHOP', 'AVAILABLE']:
+                verizon_header_df.to_csv(f'media/verizon/{div}.csv', sep=',', encoding='utf-8', index=False, header=False)
+                df = df.append(df.sum(numeric_only=True), ignore_index=True)
+                df.to_csv(f'media/verizon/{div}.csv', mode='a', sep=',', encoding='utf-8', index=False)
+            else:
+                corporate_df = corporate_df.append(df)
+        if not corporate_df.empty:
+            verizon_header_df.to_csv(f'media/verizon/CORP.csv', sep=',', encoding='utf-8', index=False, header=False)
+            corporate_df = corporate_df.append(corporate_df.sum(numeric_only=True), ignore_index=True)
+            corporate_df.to_csv(f'media/verizon/CORP.csv', mode='a', sep=',', encoding='utf-8', index=False)
+        return 'COMPLETE'
             
 
 ALLOWED_DIVISIONS = [
@@ -68,6 +77,20 @@ ALLOWED_DIVISIONS = [
     'PHOENIX',
     'PIPELINE',
     'SHOP',
+    'TUCSON',
+    ]
+
+OUT_REPORTS = [
+    'BULLHEAD',
+    'CARSON CITY',
+    'CORONA',
+    'CORP',
+    'HESPERIA',
+    'LAS VEGAS',
+    'N NEVADA',
+    'PACIFIC',
+    'PHOENIX',
+    'PIPELINE',
     'TUCSON',
     ]
     
