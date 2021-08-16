@@ -12,7 +12,7 @@ def verizon_csv():
     verizon_header_df = pd.read_csv(file, nrows=2, header=None)
 
     # Collect Verison Data
-    columns = ['Account', 'Number', 'Charges', 'Monthly', 'Usage', 'Equipment', 'Surcharges', 'Taxes', 'ThirdParty', 'Total']
+    columns = ['Account', 'Number-User', 'Charges', 'Monthly', 'Usage', 'Equipment', 'Surcharges', 'Taxes', 'ThirdParty', 'Total']
     verizon_data_df = pd.read_csv(file, skiprows=7, header=None)
     verizon_data_df.columns = columns
 
@@ -26,31 +26,34 @@ def verizon_csv():
     verizon_data_df['Account'] = verizon_data_df['Account'].apply(lambda x: re.match('="(.*)"', x) if x else '')
     verizon_data_df['Account'] = verizon_data_df['Account'].apply(lambda x: x.group(1) if x else '')
 
-    # Veriify No Extra Cost Centers
+    # Verify No Extra Cost Centers
     divisions = verizon_data_df[['Account']].drop_duplicates()
     extra_divivions = divisions[~divisions['Account'].isin(ALLOWED_DIVISIONS)]
 
-    print("please correct your data")
-    print(extra_divivions)
+    if not extra_divivions.empty and True == 0:
+        print("please correct your data")
+        print(extra_divivions)
+    else:
+        # Split Number and UserName
+        verizon_data_df['Number'] = verizon_data_df['Number-User'].apply(lambda x: x.split('/')[0]).str.strip()
+        verizon_data_df['User'] = verizon_data_df['Number-User'].apply(lambda x: x.split('/')[1]).str.strip()
 
-    # Seperate dataframes
-    seperate_divivions = {
-        divivions: verizon_data_df[verizon_data_df['Account'].isin([divivions])]
-        for divivions in ALLOWED_DIVISIONS
-    }
+        # Reorder Sheet
+        columns = ['Account', 'Number', 'User', 'Charges', 'Monthly', 'Usage', 'Equipment', 'Surcharges', 'Taxes', 'ThirdParty', 'Total']
+        verizon_data_df = verizon_data_df[columns]
 
-    for div, df in seperate_divivions.items():
-        df = df.append(df.sum(numeric_only=True), ignore_index=True)
-        df.to_csv(f'media/verizon/{div}.csv', sep=',', encoding='utf-8', index=False)
-
-        with open(f'media/verizon/{div}.csv', 'a+') as f:
-            csv_writer = writer(f)
-            csv_writer.writerow(verizon_header_df.head())
-
-
-
-       
-
+        # Seperate dataframes
+        seperate_divivions = {
+            divivions: verizon_data_df[verizon_data_df['Account'].isin([divivions])]
+            for divivions in ALLOWED_DIVISIONS
+        }
+        
+        # Add header and total information
+        for div, df in seperate_divivions.items():
+            verizon_header_df.to_csv(f'media/verizon/{div}.csv', sep=',', encoding='utf-8', index=False)
+            df = df.append(df.sum(numeric_only=True), ignore_index=True)
+            df.to_csv(f'media/verizon/{div}.csv', mode='a', sep=',', encoding='utf-8', index=False)
+            
 
 ALLOWED_DIVISIONS = [
     'AVAILABLE',
