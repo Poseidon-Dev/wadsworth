@@ -1,36 +1,89 @@
-## Welcome to GitHub Pages
+## Wadsworth
 
 You can use the [editor on GitHub](https://github.com/Poseidon-Dev/wadsworth/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+# Wadsworth | IT Assistant
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
+Wadsworth is a multi-modular application designed to streamline repetitive processes into a single discord command interface.
 
-# Header 1
-## Header 2
-### Header 3
+Each module is a seperate application with discord running as the user interface. 
 
-- Bulleted
-- List
+## Authors
 
-1. Numbered
-2. List
+* **[Johnny Whitworth (@Poseidon-dev)](https://github.com/poseidon-dev)** 
 
-**Bold** and _Italic_ and `Code` text
+## Support
 
-[Link](url) and ![Image](src)
-```
+If you need some help for something, please reach out to me directly or submit an issue and I'll get to it as soon as I can
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Current Modules
 
-### Jekyll Themes
+| Module <img width=170/>     | Description <img width=500/>                                                |
+| ----------------------------| ----------------------------------------------------------------------------|
+| JitBit API                  | Creates a request integration into discord to allow for quicker viewing     |
+| Office                      | Stores and logs MS Office keys                                              |
+| Password                    | Password generator                                                          |
+| Employee                    | ERP Connection                                                              |
+| Censor                      | Very remidial vulgarity censor                                              |
+| Support                     | Outputs ticket on the helpdesk                                              |
+| Directory                   | Connection to the AD to make quick manipulations                            |
+| Info                        | General information about Wadsworth                                         |
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Poseidon-Dev/wadsworth/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## How to use
+
+An up-to-date list of modules and their current commands
+
+
+
+| Office <img width=170/>  | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| key -a [KEY]                | Adds the key to the office keys db. Must be 29 characters long              |
+| key -d                      | Deletes a key from the office keys db based on table ID. Irreversible       |
+| key -m                      | Prompts for computer and email and delivers an avilable key                 |
+| key -r                      | Lists all available keys                                                    |
+| key -c                      | Count available keys                                                        |
+
+  
+| Password <img width=170/>  | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| pass                        | Generates a random password based on a list of 4000 words                   |
+
+  
+| ERP <img width=170/>        | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| whois id [ID]               | Retrieves employee record with ID (Inactive or active)                      |
+| whois f [First]             | Retrieves employe with fname like [First] (active)                          |
+| whois l [Last]              | Retrieves employe with lname like [Last] (active)                           |
+| whois fl [First] [Last]     | Retrieves employe with fname and lname like [First] [Last] (active)         |
+| (AFTER LOOKUP) Property Reactions  | Retreived active company property based on user reactions after lookup|
+
+  
+| Support <img width=170/>    | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| URL EVENT LISTENER          | Retreives ticket information as an event listener on all messages           |
+
+
+  
+| Directory <img width=170/>  | What it is <img width=500/>                                                 |
+| ----------------------------| ----------------------------------------------------------------------------|
+| Scrubs email for LOA emails | Returns employee AD account after scrubbing email                           |
+
+
+## Potential future modules
+
+- [x] Password Generator
+- [x] ERP employee integration
+- [ ] Task Scheduler/Calendar
+- [ ] Email Scrubber
+- [x] Employee Status change tracker
+- [ ] Employee asset managmenet
+- [ ] Google admin API integration
+- [ ] Verizon API
+- [ ] Github API 
+
 
 ### Support or Contact
 
