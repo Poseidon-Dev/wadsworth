@@ -8,10 +8,13 @@ class ErpApiConn:
         self.erp_cur = self.erp_conn.cursor()
 
     def erp_commmand(self, command):
-        self.erp_cur.execute(command)
-        records = self.erp_cur.fetchall()
-        self.close()
-        return list(records)
+        try:
+            self.erp_cur.execute(command)
+            records = self.erp_cur.fetchall()
+            self.close()
+            return list(records)
+        except Exception as e:
+            print(e)
 
     def close(self):
         self.erp_cur.close()

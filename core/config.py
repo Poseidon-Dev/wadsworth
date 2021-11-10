@@ -59,11 +59,11 @@ STARTUP_COGS = [
     'apps.censor',
     'apps.erp',
     'apps.support',
-    'apps.inventory',
+    # 'apps.inventory',
     'apps.emailtest',
     # 'apps.scheduler'
-    'apps.transfers',
-    'apps.verizon',
+    # 'apps.transfers',
+    # 'apps.verizon',
 ] 
 
 # LOCAL DB

@@ -8,7 +8,7 @@ from core.shared.utils import send_email
 
 from .utils import pretty_terms
 from .models import EmployeeTable, EmployeeUpdatesTable, EmployeeLoggerTable, EmployeeDivisionTable, EmployeeMessagesTable
-from .migrations import EmployeeMasterMigration, EmployeeUpdatesMigration, EmployeeLoggerMigrations, EmployeeDivisionMigration, EmployeePropertyMigrations
+from .migrations import EmployeeMasterMigration, EmployeeUpdatesMigration, EmployeeLoggerMigrations, EmployeeDivisionMigration, EmployeePropertyMigrations, ErpApiConn
 
 class EmployeeTasks(commands.Cog, name='employee_tasks'):
 
@@ -20,6 +20,25 @@ class EmployeeTasks(commands.Cog, name='employee_tasks'):
         self.channel = self.bot.get_channel(core.config.BOT_EMPLOYEE_CHANGES)
         EmployeeMasterMigration().store()
         EmployeeDivisionMigration().insert_divisions()
+
+        # Tests
+        # equipment = EmployeePropertyMigrations()
+        # insert_property = [
+        #     ('STATUSCODE', 'A'),
+        #     ('SRCCNCID', 5),
+        #     ('COMPANYNO', 1),
+        #     ('DIVISIONNO', 0),
+        #     ('HRTEMPID', 11767),
+        #     ('CONTROLNO', 'WADSWORTH ENTRY'),
+        #     ('PROPERTYNO', 2),
+        #     ('DESCRIPTION', 'WADSWORTH TEST DESC'),
+        #     ]
+        # command = equipment.insert_command("CMSFIL.HRTCPR", insert_property)
+        # print(command)
+        # try:
+        #     ErpApiConn().erp_commmand(command)
+        # except Exception as e:
+        #     print(e)
 
     @tasks.loop(seconds=600)
     async def update_company_property(self):

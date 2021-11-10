@@ -210,6 +210,22 @@ class QueryMixin(QueryBase):
             print(e)
         return True
 
+    def insert_command(self, table, records):
+        """
+        Accepts a list of tuples and inserts returns the respective command
+        """
+        if not table:
+            table = self.table
+        cols = [str(record[0]) for record in records]
+        cols = ', '.join(cols)
+        vals = [record[1] for record in records]
+        vals = ', '.join(map(lambda x: f"'{x}'" if type(x) == str else f'{x}', vals))
+        command = f"""
+        INSERT INTO {table} ({cols}) VALUES ({vals})
+        """
+        return command
+        
+
     def insert_many(self, cols, vals):
         """ 
         Accepts a list of tupes as values and dumps into current table

@@ -35,8 +35,9 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
                     csv_reader = csv.reader(csv_file, delimiter=',')
                     next(csv_reader)
                     output = []
+                    output.append(['EEID','FIRST','MIDDLE1','MIDDLE2','LAST','SECURITY','DIVISION','STATUS'])
                     for row in csv_reader:
-                        employees = self.fetch_like_first_last(row[0].title(), row[1].title())
+                        employees = EmployeeTable().filter('first', row[0].upper() ).filter('last', row[1].upper()).query()
                         for employee in employees:
                             output.append(employee)
                     with open(f'{filepath}export_{filename}', 'w') as out:
@@ -44,7 +45,7 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
                         item_length = len(output[0])
                         for row in output:
                             csv_out.writerow(row)
-                    await self.channel.send(file=discord.File(f'{filepath}export_{filename}'))
+                    await message.channel.send(file=discord.File(f'{filepath}export_{filename}'))
             else:
                 return
 
