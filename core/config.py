@@ -63,7 +63,7 @@ STARTUP_COGS = [
     'apps.emailtest',
     # 'apps.scheduler'
     # 'apps.transfers',
-    # 'apps.verizon',
+    'apps.verizon',
 ] 
 
 # LOCAL DB

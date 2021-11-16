@@ -14,6 +14,11 @@ def verizon_csv():
     # Collect Verison Data
     columns = ['Account', 'Number-User', 'Charges', 'Monthly', 'Usage', 'Equipment', 'Surcharges', 'Taxes', 'ThirdParty', 'Total']
     verizon_data_df = pd.read_csv(file, skiprows=7, header=None)
+
+    # Remove trailing columns
+    while len(verizon_data_df.columns) != 10:
+        verizon_data_df = verizon_data_df.iloc[:, :-1]
+
     verizon_data_df.columns = columns
 
     # Clean Data
@@ -78,6 +83,7 @@ ALLOWED_DIVISIONS = [
     'PIPELINE',
     'SHOP',
     'TUCSON',
+    'INLAND'
     ]
 
 OUT_REPORTS = [
@@ -92,6 +98,7 @@ OUT_REPORTS = [
     'PHOENIX',
     'PIPELINE',
     'TUCSON',
+    'INLAND'
     ]
     
 
