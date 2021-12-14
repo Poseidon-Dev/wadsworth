@@ -16,7 +16,12 @@ class CensorEvents(commands.Cog, name='censor_events'):
     # Events
     @commands.Cog.listener()
     async def on_message(self, message):
-        for word in message.content.split():
-            if word.lower() in core.config.SWEAR_LIST:
-                await message.delete()
-                await message.channel.send("Please don't speak that way in this server.")
+        if message.channel.id not in [893611895876112445, 819731985780965376]:
+            for word in message.content.split():
+                if word.lower() in core.config.SWEAR_LIST:
+                    await message.delete()
+                    await message.channel.send("Please don't speak that way in this server.")
+        else:
+            for word in message.content.split():
+                if word.lower() in core.config.SWEAR_LIST:
+                    await message.channel.send(f'{word.upper()}!')

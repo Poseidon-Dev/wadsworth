@@ -117,6 +117,11 @@ def pretty_property(property):
         value=property[4],
         inline=False,
     )
+    embed.add_field(
+        name='Issued',
+        value=property[5],
+        inline=False,
+    )
     return embed
 
 def clean_name(name):

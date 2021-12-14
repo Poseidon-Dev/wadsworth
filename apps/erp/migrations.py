@@ -18,13 +18,15 @@ class EmployeeFetch:
             REPLACE(TRIM(EMP.MIDDLENAME2), '''', ''),
             REPLACE(TRIM(EMP.LASTNAME25), '''', ''),
             CAST(EMP.LVLCODE AS INTEGER), 
-                CASE WHEN LENGTH(TRIM(EMP.DEPTNO)) = 1 THEN '98'
-                WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 THEN LEFT(EMP.DEPTNO, 1)
+                CASE WHEN LENGTH(TRIM(EMP.DEPTNO)) = 1 AND COMPANYNO = 1 THEN '98'
+                WHEN EMP.COMPANYNO = 30 THEN '30'
+                WHEN EMP.COMPANYNO = 40 THEN '40'
+                WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 AND COMPANYNO = 1 THEN LEFT(EMP.DEPTNO, 1)
                 WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
-                WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 THEN LEFT(EMP.DEPTNO, 2) END
+                WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 AND EMP.COMPANYNO = 1 THEN LEFT(EMP.DEPTNO, 2) END
             AS DIVISION, EMP.STATUSCODE
             FROM CMSFIL.HRTEMP AS EMP
-            WHERE EMP.COMPANYNO = 1 
+            WHERE EMP.COMPANYNO in (1, 30, 40)
             AND EMP.EMPLOYEENO > 0 
             """
         return ErpApiConn().erp_commmand(command)
@@ -87,7 +89,7 @@ class EmployeeDivisionMigration(EmployeeDivisionTable):
         values = (
             """(1, '01-TUC'), (2, '02-PHX'), (3, '03-HES'), (4, '04-COR'), 
             (5, '05-VGS'), (6, '06-PIP'), (7, '07-NNV'), (8, '08-CAR'), 
-            (9, '09-NHS'), (10, '10-BHC'), (11, '11-IEM'), (98, '00-CRP'), (99, 'MISC')
+            (9, '09-NHS'), (10, '10-BHC'), (11, '11-IEM'), (30, '30-MEE'), (40, '40-GCS'), (98, '00-CRP'), (99, 'MISC')
             """
         )
         command = f"""
@@ -137,7 +139,7 @@ class EmployeePropertyMigrations(EmployeePropertyTable):
         FROM CMSFIL.HRTCPR AS CPR
         JOIN CMSFIL.HRTEMP AS EMP 
             ON EMP.HRTEMPID = CPR.HRTEMPID
-        WHERE EMP.COMPANYNO = 1 
+        WHERE EMP.COMPANYNO in (1, 30 , 40) 
         AND EMP.EMPLOYEENO > 0 
         AND CPR.PROPERTYNO IN (1,2,4,5,9,10,70,75)
         AND CPR.RETIREDDATE IS NULL 

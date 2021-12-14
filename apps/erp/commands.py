@@ -15,6 +15,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
         self.channel = self.bot.get_channel(core.config.BOT_CHANNEL)
         self.ping_channel = self.channel
 
+
     @commands.command(name='employee-ping', aliases=['-ep'])
     async def employee_ping(self, ctx):
         """
@@ -22,6 +23,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
         """
         embed = pretty_ping(ctx, name=self.__class__.__name__)
         await self.channel.send(embed=embed)
+
 
     @commands.command(name='whois', aliases=['-w'])
     async def employee_records(self, ctx, argument, param1, param2=None):
@@ -92,14 +94,13 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
         except Exception as e:
             await ctx.send(f'There was an error with your request: {e}')
 
+
     def employee_property_type(self, employee):
         employee_property = EmployeePropertyTable().filter('employeeid', employee[0][0]).query()
         property_type = [prop[3] for prop in employee_property]
         return sorted(list(set(property_type)))
 
+
     def employee_property_to_emoji(self, company_property):
         return [property_dict.get(prop[3]) for prop in company_property]
-
-    
-            
 
