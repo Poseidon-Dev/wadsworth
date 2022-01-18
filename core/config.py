@@ -66,6 +66,7 @@ STARTUP_COGS = [
     'apps.verizon',
 ] 
 
+
 # LOCAL DB
 DB_LOCATION = os.getenv('DB_LOCATION')
 WORD_SITE = os.getenv('WORD_SITE')

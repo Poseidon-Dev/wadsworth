@@ -43,6 +43,7 @@ def pretty_employee(ctx, employee):
     value=f"""
     > ID : {employee.id}\n> 
     > Division : {employee.division}\n> 
+    > Position : {employee.position}\n> 
     > Security : {employee.security}\n> 
     """ + '\u2800' * 27,
     inline=False)
@@ -70,6 +71,7 @@ def pretty_employees(ctx, employees):
         value=f"""
         > ID : {employee.id}\n> 
         > Division : {employee.division}\n> 
+        > Position : {employee.position}\n> 
         > Security : {employee.security}\n> 
         """ + '\u2800' * 27,
         inline=False)

@@ -8,10 +8,11 @@ class ExecuteMixin:
     """
     Establish connection with psqldb and create a standard execute/commit method
     """
-    def __init__(self):
-        self.conn = None
-        self.cur = None
-        
+
+    conn = None
+    cur = None
+
+
     def execute(self, command):
         """
         Simple cursor execution
@@ -47,11 +48,10 @@ class ExecuteMixin:
 
 class QueryBase(ExecuteMixin):
 
-    def __init__(self, table=''):
-        super().__init__()
-        self.table = table
-        self.base_command = ''
-        self.command = ''
+    base_command = ''
+    command = ''
+    table = ''
+
 
     def filter(self, col: str = 'id', val: str = '', op: str = "="):
         """
@@ -159,9 +159,7 @@ class QueryMixin(QueryBase):
 
     def __init__(self, table=''):
         self.table = table
-        super().__init__(self.table)
         self.base_command = f'SELECT * FROM {self.table}'
-        self.command = ''
 
     def select_last(self): 
         """
@@ -285,7 +283,6 @@ class QueryMixin(QueryBase):
         """
         self.execute(command)
         
-
 
 
 class Query(QueryMixin):

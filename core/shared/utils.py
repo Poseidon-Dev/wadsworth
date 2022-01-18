@@ -18,6 +18,7 @@ class Timer:
         self._start_time = None
         print(f'{self.name} | Elapsed time: {elapsed_time:0.4f} seconds')
 
+
 def pretty_ping(ctx, name):
     """
     Returns an embed for pings for a prettier discord format

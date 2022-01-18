@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands, tasks
 
 from core import config, messages
+from core.shared.utils import Timer
 
 bot = config.BOT
 
@@ -17,10 +18,12 @@ async def on_ready():
     # Load Applications
     for extension in config.STARTUP_COGS:
         try:
+            t = Timer(str(extension))
+            t.start()
             importlib.import_module(extension)
             bot.load_extension(extension)
             extension = extension.replace('apps.', '')
-            print(f'{extension} loaded')
+            t.stop()
         except Exception as e:
             exception = f'Could not load {extension}\n{e}'
             print(exception)

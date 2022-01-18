@@ -1,4 +1,5 @@
 from apps.base import Query
+from apps.erp.conn import ErpApiConn
 
 class EmployeeTable(Query):
 
@@ -13,8 +14,10 @@ class EmployeeTable(Query):
             ('security', 'INT'),
             ('division', 'INT REFERENCES ee_divisions(id) ON DELETE NO ACTION'),
             ('status', 'VARCHAR(30)'),
+            ('position', 'VARCHAR(30)')
         ]
         Query.__init__(self, self.table, self.columns)
+
 
 class EmployeeUpdatesTable(EmployeeTable):
 
@@ -81,6 +84,7 @@ class Employee:
         self.last = self.record[4].capitalize()
         self.security = self.record[5]
         self.status = self.record[7]
+        self.position = self.record[8].capitalize()
         self._division = self.record[6]
         self._company_property = []
         self._fullname = ''
@@ -128,4 +132,3 @@ class Employee:
     def __str__(self):
         return self.full_name
     
-

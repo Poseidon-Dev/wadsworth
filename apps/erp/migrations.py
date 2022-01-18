@@ -12,29 +12,58 @@ class EmployeeFetch:
 
     def fetch(self):
         command = """
-            SELECT EMP.EMPLOYEENO, 
-            REPLACE(TRIM(EMP.FIRSTNAME25), '''', ''),
-            REPLACE(TRIM(EMP.MIDDLENAME1), '''', ''),
-            REPLACE(TRIM(EMP.MIDDLENAME2), '''', ''),
-            REPLACE(TRIM(EMP.LASTNAME25), '''', ''),
-            CAST(EMP.LVLCODE AS INTEGER), 
-                CASE WHEN LENGTH(TRIM(EMP.DEPTNO)) = 1 AND COMPANYNO = 1 THEN '98'
-                WHEN EMP.COMPANYNO = 30 THEN '30'
-                WHEN EMP.COMPANYNO = 40 THEN '40'
-                WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 AND COMPANYNO = 1 THEN LEFT(EMP.DEPTNO, 1)
-                WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
-                WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 AND EMP.COMPANYNO = 1 THEN LEFT(EMP.DEPTNO, 2) END
-            AS DIVISION, EMP.STATUSCODE
-            FROM CMSFIL.HRTEMP AS EMP
-            WHERE EMP.COMPANYNO in (1, 30, 40)
-            AND EMP.EMPLOYEENO > 0 
-            """
-        return ErpApiConn().erp_commmand(command)
+        SELECT EMP.EMPLOYEENO, 
+        REPLACE(TRIM(EMP.FIRSTNAME25), '''', ''),
+        REPLACE(TRIM(EMP.MIDDLENAME1), '''', ''),
+        REPLACE(TRIM(EMP.MIDDLENAME2), '''', ''),
+        REPLACE(TRIM(EMP.LASTNAME25), '''', ''),
+        CAST(EMP.LVLCODE AS INTEGER), 
+            CASE WHEN LENGTH(TRIM(EMP.DEPTNO)) = 1 AND COMPANYNO = 1 THEN '98'
+            WHEN EMP.COMPANYNO = 30 THEN '30'
+            WHEN EMP.COMPANYNO = 40 THEN '40'
+            WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 AND COMPANYNO = 1 THEN LEFT(EMP.DEPTNO, 1)
+            WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
+            WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 AND EMP.COMPANYNO = 1 THEN LEFT(EMP.DEPTNO, 2) END
+        AS DIVISION, 
+        EMP.STATUSCODE,
+        CASE
+            WHEN LENGTH(TRIM(EMP.OCCUPDESC1)) < 1 THEN 'NULL'
+            ELSE TRIM(EMP.OCCUPDESC1) END
+        AS OCCUPATION
+        FROM CMSFIL.HRTEMP AS EMP
+        WHERE EMP.COMPANYNO in (1, 30, 40)
+        AND EMP.EMPLOYEENO > 0 
+        """
+        return ErpApiConn().comm(command)
 
 class EmployeeMasterMigration(EmployeeTable):
 
     def __init__(self):
         super().__init__()
+
+
+    def fetch(self):
+        command = """
+        SELECT EMP.EMPLOYEENO, 
+        REPLACE(TRIM(EMP.FIRSTNAME25), '''', ''),
+        REPLACE(TRIM(EMP.MIDDLENAME1), '''', ''),
+        REPLACE(TRIM(EMP.MIDDLENAME2), '''', ''),
+        REPLACE(TRIM(EMP.LASTNAME25), '''', ''),
+        CAST(EMP.LVLCODE AS INTEGER), 
+            CASE WHEN LENGTH(TRIM(EMP.DEPTNO)) = 1 AND COMPANYNO = 1 THEN '98'
+            WHEN EMP.COMPANYNO = 30 THEN '30'
+            WHEN EMP.COMPANYNO = 40 THEN '40'
+            WHEN LENGTH(TRIM(EMP.DEPTNO)) = 2 AND COMPANYNO = 1 THEN LEFT(EMP.DEPTNO, 1)
+            WHEN CAST(TRIM(EMP.DEPTNO) AS INTEGER) > 150 THEN '99'
+            WHEN LENGTH(TRIM(EMP.DEPTNO)) = 3 AND EMP.COMPANYNO = 1 THEN LEFT(EMP.DEPTNO, 2) END
+        AS DIVISION, 
+        EMP.STATUSCODE,
+        EMP.OCCUPDESC1
+        FROM CMSFIL.HRTEMP AS EMP
+        WHERE EMP.COMPANYNO in (1, 30, 40)
+        AND EMP.EMPLOYEENO > 0 
+        """
+        return ErpApiConn().comm(command)
 
     def store(self):
         records = EmployeeFetch().fetch()
@@ -60,6 +89,7 @@ class EmployeeMasterMigration(EmployeeTable):
             security = EXCLUDED.security,
             division = EXCLUDED.division,
             status = EXCLUDED.status,
+            position = EXCLUDED.position
         """
         self.execute(command)
 
@@ -127,6 +157,7 @@ class EmployeeLoggerMigrations(EmployeeLoggerTable):
             security = EXCLUDED.security,
             division = EXCLUDED.division,
             status = EXCLUDED.status,
+            position = EXCLUDED.position
         """
         self.execute(command)
 
@@ -145,7 +176,7 @@ class EmployeePropertyMigrations(EmployeePropertyTable):
         AND CPR.RETIREDDATE IS NULL 
         AND CPR.EXPDATE IS NULL
         """
-        return ErpApiConn().erp_commmand(command)
+        return ErpApiConn().comm(command)
 
     def flatten_data(self):
         records = list(self.fetch())
