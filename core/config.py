@@ -88,8 +88,8 @@ PG_PORT = os.getenv('POSTGRES_PORT')
 
 ## API INTEGRATIONS
 # ERP API
-ERP_HOST = os.getenv('ERP_HOST')
-ERP_UID = os.getenv('ERP_UID')
+ECMS_HOST = os.getenv('ECMS_HOST')
+ECMS_UID = os.getenv('ECMS_UID')
 ERP_PWD = os.getenv('ERP_PWD')
 
 # JITBIT API

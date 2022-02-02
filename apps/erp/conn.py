@@ -3,7 +3,7 @@ import core.config
 
 class ErpApiConn:
 
-    connection_string = f'DSN={core.config.ERP_HOST}; UID={core.config.ERP_UID}; PWD={core.config.ERP_PWD}'
+    connection_string = f'DSN={core.config.ECMS_HOST}; UID={core.config.ECMS_UID}; PWD={core.config.ECMS_PWD}'
 
     def __init__(self):
         self.conn = pyodbc.connect(self.connection_string)

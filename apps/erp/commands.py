@@ -1,10 +1,13 @@
 import discord, os
 from discord.ext import commands
+from ecmsapi.tables import HRTEMP, HRTCPR
+from ecmsapi import SQLQuery
+from apps.base import queries
 
 from core.shared.utils import pretty_ping
 from apps.erp.models import Employee
 import core.config
-from .utils import pretty_employee, pretty_employees, property_dict
+from .utils import pretty_employee, pretty_employees, property_dict, pretty_prop_types
 from .models import EmployeeTable, EmployeePropertyTable
 
 class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
@@ -14,6 +17,7 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
         self.bot = bot
         self.channel = self.bot.get_channel(core.config.BOT_CHANNEL)
         self.ping_channel = self.channel
+        self.timeout = 15
 
 
     @commands.command(name='employee-ping', aliases=['-ep'])
@@ -82,6 +86,12 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
                     emails = EmployeePropertyTable().filter('employeeid', employee[0]).filter('property_type', 9).query()
                     for email in emails:
                         await ctx.send(f'{email[4]}')
+
+        if argument in ['c']:
+            table = SQLQuery(HRTEMP)
+            print(param1)
+            query = table.select().filters(employeeno=param1).query()
+            await ctx.send(query)
                 
 
     async def employee_out(self, ctx, employees):
@@ -93,6 +103,58 @@ class EmployeeCommands(commands.Cog, EmployeeTable, name='employee_commands'):
                     await msg.add_reaction(emoji[0])
         except Exception as e:
             await ctx.send(f'There was an error with your request: {e}')
+
+    @commands.command(name='employee-property', aliases=['-cprop'])
+    async def property_records(self, ctx, argument, param1, param2=None):
+        property_types = {
+            '1': 'FlipPhone',
+            '2': 'Smartphone',
+            '4': 'Laptop',
+            '5': 'iPad',
+            '10': 'Comdata'
+        }
+
+        # Argument ID
+        if argument in ['a', 'add', '-a', '-add']:
+            employees = EmployeeTable().filter('id', param1).query()
+            await self.employee_out(ctx, employees)
+            await ctx.send('Is this the employee you are looking to add to?')
+            confirm = await self.bot.wait_for(
+            'message',
+            timeout=self.timeout,
+            check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+
+            if confirm.content.upper() == 'Y':
+                await ctx.send(embed=pretty_prop_types(ctx, property_types))
+                await ctx.send('What type of property?')
+                device_type = await self.bot.wait_for(
+                'message',
+                timeout=self.timeout,
+                check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+                if str(device_type.content) in property_types.keys():
+                    await ctx.send('What is the control number?')
+                    control_number = await self.bot.wait_for(
+                    'message',
+                    timeout=self.timeout,
+                    check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+                    await ctx.send('What is the description?')
+                    description = await self.bot.wait_for(
+                    'message',
+                    timeout=self.timeout,
+                    check=lambda msg: msg.author == ctx.author and msg.channel == ctx.channel)
+                    table = SQLQuery(HRTCPR)
+                    try:
+                        table.insert().inserts(
+                        employeeno=param1,
+                        propertyno=device_type.content, 
+                        controlno=control_number.content,
+                        description=description.content).query()
+                        await ctx.send('Property Added')
+                    except Exception as e:
+                        await ctx.send(f'Failed for reason {e}')
+
+            else:
+                await ctx.send('Ok then')
 
 
     def employee_property_type(self, employee):

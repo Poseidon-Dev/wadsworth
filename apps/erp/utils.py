@@ -126,6 +126,20 @@ def pretty_property(property):
     )
     return embed
 
+def pretty_prop_types(ctx, property_types):
+    name = 'Property Types'
+    embed = discord.Embed(
+        title=f'**{name}**' + '\u2800' * (35 - len(name)),
+        color=0x03f8fc,)
+    message = ''
+    for num, prop in property_types.items():
+        message += f'> {num} : {prop}\n '
+    embed.add_field(
+    name=f'{name}' '\n' ,
+    value=message + '\u2800' * 27,
+    inline=False)
+    return embed
+
 def clean_name(name):
     name = name.replace("'", '')
     return name

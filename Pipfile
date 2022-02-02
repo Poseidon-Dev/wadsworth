@@ -19,6 +19,8 @@ pywin32 = "*"
 pyad = "*"
 pdfminer = "*"
 pandas = "*"
+ecms-api = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "*"

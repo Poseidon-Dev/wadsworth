@@ -37,8 +37,8 @@ class ErpEvents(commands.Cog, EmployeeTable, name='erp_events'):
                     output = []
                     output.append(['EEID','FIRST','MIDDLE1','MIDDLE2','LAST','SECURITY','DIVISION','STATUS'])
                     for row in csv_reader:
-                        employees = EmployeeTable().filter('id', row[0]).query()
-                        # employees = EmployeeTable().filter('first', row[0].upper()).filter('last', row[1].upper()).query()
+                        # employees = EmployeeTable().filter('id', row[0]).query()
+                        employees = EmployeeTable().filter('first', row[0].upper()).filter('last', row[1].upper()).query()
                         for employee in employees:
                             output.append(employee)
                     with open(f'{filepath}export_{filename}', 'w') as out:
