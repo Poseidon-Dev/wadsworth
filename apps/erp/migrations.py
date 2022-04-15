@@ -201,5 +201,3 @@ class EmployeePropertyMigrations(EmployeePropertyTable):
         except Exception as e:
             return False
         return True
-
-    

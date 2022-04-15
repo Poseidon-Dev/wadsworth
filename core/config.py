@@ -53,16 +53,17 @@ CHANNEL = BOT.get_channel(BOT_CHANNEL)
 # CURRENT MODULES
 STARTUP_COGS = [
     'apps.info',
+    'apps.google',
     'apps.directory',
     'apps.office',
     'apps.password',
     'apps.censor',
     'apps.erp',
     'apps.support',
-    # 'apps.inventory',
-    'apps.emailtest',
-    # 'apps.scheduler'
-    # 'apps.transfers',
+    'apps.inventory',
+    # 'apps.emailtest',
+    'apps.scheduler'
+    'apps.transfers',
     'apps.verizon',
 ] 
 
@@ -88,8 +89,8 @@ PG_PORT = os.getenv('POSTGRES_PORT')
 
 ## API INTEGRATIONS
 # ERP API
-ECMS_HOST = os.getenv('ECMS_HOST')
-ECMS_UID = os.getenv('ECMS_UID')
+ERP_HOST = os.getenv('ERP_HOST')
+ERP_UID = os.getenv('ERP_UID')
 ERP_PWD = os.getenv('ERP_PWD')
 
 # JITBIT API
