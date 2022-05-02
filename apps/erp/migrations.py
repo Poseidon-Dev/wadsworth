@@ -119,7 +119,7 @@ class EmployeeDivisionMigration(EmployeeDivisionTable):
         values = (
             """(1, '01-TUC'), (2, '02-PHX'), (3, '03-HES'), (4, '04-COR'), 
             (5, '05-VGS'), (6, '06-PIP'), (7, '07-NNV'), (8, '08-CAR'), 
-            (9, '09-NHS'), (10, '10-BHC'), (11, '11-IEM'), (30, '30-MEE'), (40, '40-GCS'), (98, '00-CRP'), (99, 'MISC')
+            (9, '09-NHS'), (10, '10-BHC'), (11, '11-IEM'), (12, '12-DRP'), (30, '30-MEE'), (40, '40-GCS'), (98, '00-CRP'), (99, 'MISC')
             """
         )
         command = f"""

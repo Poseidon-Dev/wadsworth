@@ -6,6 +6,8 @@ from core.shared.utils import pretty_ping
 from .utils import pretty_keys
 from .models import OfficeTable
 
+from core.shared.utils import send_email
+
 
 class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
 
@@ -19,7 +21,7 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
         self.ping_channel = self.channel
         self.timeout = 15
 
-        self.arguments = ['-a', '-r', '-h', '-d', '-m', '-c', 'add', 'read', 'history', 'delete', 'me', 'count']
+        self.arguments = ['-a', '-r', '-h', '-d', '-m', '-c', '-b', 'add', 'read', 'history', 'delete', 'me', 'count', 'brion']
         self.boolean_choices = ["y", "n", "yes", "no", "yep", "nope", "yea", "nah"]
 
     # Commands
@@ -85,6 +87,11 @@ class OfficeCommands(commands.Cog, OfficeTable, name='office_commands'):
                     # Argument -h
                     if argument in ['-h', 'history']:
                         await self.channel.send('you made it to the dark place of history')
+
+                     # Argument -b
+                    if argument in ['-b', 'brion']:
+                        await self.channel.send('Pinging')
+                        send_email('Office', 'Someone pinged you in discord')
 
     def add_key(self, ctx, key):
             """

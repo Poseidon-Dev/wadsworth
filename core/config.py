@@ -53,7 +53,7 @@ CHANNEL = BOT.get_channel(BOT_CHANNEL)
 # CURRENT MODULES
 STARTUP_COGS = [
     'apps.info',
-    'apps.google',
+    # 'apps.google',
     'apps.directory',
     'apps.office',
     'apps.password',
@@ -62,8 +62,8 @@ STARTUP_COGS = [
     'apps.support',
     'apps.inventory',
     # 'apps.emailtest',
-    'apps.scheduler'
-    'apps.transfers',
+    # 'apps.scheduler'
+    # 'apps.transfers',
     'apps.verizon',
 ] 
 
